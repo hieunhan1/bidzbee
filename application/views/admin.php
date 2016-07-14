@@ -1,10 +1,3 @@
-<?php
-/*
-$catalogList
-$pageCurrent
-$pageUrl
-*/
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -29,7 +22,38 @@ $pageUrl
         <div class="user">
         	<span class="iconWhite iconUser"></span>Chào: <span class="b">Trần Nhân</span> | 
             <a href="" class="link"><span class="iconWhite iconPass"></span>Đổi mật khẩu</a>
-            <a href="" class="link"><span class="iconWhite iconLogOut"></span>Logout</a>
+            <a href="javascript:;" id="logout" class="link"><span class="iconWhite iconLogOut"></span>Logout</a>
+            <script type="text/javascript">
+			$(document).ready(function() {
+                $("#logout").click(function(){
+					var fields = new Object;
+						fields._request = 'users';
+						fields._action = 'logout';
+						fields.session = 'admin';
+					
+					$.ajax({ 	
+						url     : 'ajax',
+						type    : 'post',
+						data    : fields,
+						cache   : false,
+						success : function(data){
+							data = convertToJson(data);
+							if(data==false){
+								var str = '<p class="error">ERROR: Server</p>';
+								ppLoad(str);
+								return false;
+							}else if(data.result==false){
+								var str = '<p class="error">' + data.message + '</p>';
+								ppLoad(str);
+								return false;
+							}
+							
+							window.location = '/';
+						}
+					});
+				});
+            });
+			</script>
         </div>
     </div>
 	

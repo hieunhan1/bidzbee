@@ -79,6 +79,11 @@ class modelDB{
 		return $str;
 	}
 	
+	public function _password($pass){
+		$pass = crypt($pass, '258');
+		return $pass;
+	}
+	
 	public function _replace($search, $replace, $object, &$count=0){
 		if(is_array($search)){
 			foreach($search as $row){
@@ -241,14 +246,27 @@ class modelDB{
 	}
 	
 	public function _getUser(){
-		if(isset($_SESSION['users'])){
+		if(isset($_SESSION['users']) && isset($_SESSION['admin'])){
+			if(!isset($_SESSION['admin']['groups'])){
+				unset($_SESSION['admin']);
+				return false;
+			}
+			$user = $_SESSION['admin'];
+		}else if(isset($_SESSION['users'])){
+			if(!isset($_SESSION['users']['groups'])){
+				$_SESSION['users']['groups'] = 'users';
+			}
 			$user = $_SESSION['users'];
 		}else if(isset($_SESSION['admin'])){
+			if(!isset($_SESSION['admin']['groups'])){
+				unset($_SESSION['admin']);
+				return false;
+			}
 			$user = $_SESSION['admin'];
 		}else{
 			$user = array(
 				'name' => 'Guest',
-				'user' => 'guest',
+				'username' => 'guest',
 				'groups' => 'everyone',
 			);
 		}
@@ -614,7 +632,10 @@ class modelDB{
 	public function _update($collection, $document, $filter){
 		//$set: SET age = 3
 		//$inc: SET age = age + 3
-		//$document = $this->_removeDataEmpty($document);
+		if(isset($document['_removeDataEmpty'])){
+			$document = $this->_removeDataEmpty($document);
+			unset($document['_removeDataEmpty']);
+		}
 		
 		if(count($document)==0){
 			return false;

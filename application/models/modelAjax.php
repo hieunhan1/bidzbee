@@ -43,10 +43,11 @@ class modelAjax extends modelDB{
 							if($this->_validateDate($data, _DATETIME_)==true){
 								$data = $this->_dateObject($data);
 							}else{
-								$data = date(_DATETIME_);
-								$data = $this->_dateObject($data);
+								$data = '';
 							}
 							$documentNew[$name] = $data;
+						}else if($type=='pass'){
+							$documentNew[$name] = $this->_password($data);
 						}else{
 							if(is_numeric($data)){
 								if(!preg_match('/\./', $data)){
@@ -55,9 +56,11 @@ class modelAjax extends modelDB{
 									settype($data, 'float');
 								}
 								$documentNew[$name] = $data;
-							}else if(is_bool($data)){
-								settype($data, 'bool');
-								if($data!=1) $data = false;
+							}else if($data=='true'){
+								$data == true;
+								$documentNew[$name] = $data;
+							}else if($data=='false'){
+								$data == false;
 								$documentNew[$name] = $data;
 							}else{
 								$documentNew[$name] = trim($data);
@@ -94,7 +97,7 @@ class modelAjax extends modelDB{
 		return $documentNew;
 	}
 	
-	public function documentCheckAdmin($collection, $document, &$error){
+	public function documentCheckAdmin($collection, $document){
 		//check tồn tại collection
 		if($collection != _COLLECTION_){
 			$filter = array(

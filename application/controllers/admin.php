@@ -10,22 +10,11 @@ class admin{
 		include_once('models/modelAdmin.php');
 		$this->model = new modelAdmin;
 		
-		$this->getPage();
-        $this->handle();
-    }
-    
-    private function handle(){
-		$_SESSION['admin'] = array(
-			'id' => '25',
-			'name' => 'Trần Nhân',
-			'username' => 'admin',
-			//'groups' => 'administrators',
-			//'groups' => 'everyone',
-			'groups' => array('everyone', 'administrators'),
-		);
-		//unset($_SESSION['admin']);
+		if(isset($_SESSION['admin'])){
+			$this->user = $_SESSION['admin'];
+		}
 		
-		$this->user = $_SESSION['admin'];
+		$this->getPage();
     }
 	
 	private function getPage(){
@@ -83,7 +72,7 @@ class admin{
 		return $html;
 	}
 	
-	public function pageView($dataPages){
+	private function pageView($dataPages){
 		//lay thong tin data trang hiện tại
 		$dataCurrent = array();
 		if($this->collection != ''){
@@ -192,7 +181,7 @@ class admin{
 		return $html;
 	}
 	
-	public function pageAction($dataPages, $_id){
+	private function pageAction($dataPages, $_id){
 		//lay thong tin data trang hiện tại
 		$collection = $dataPages['collection'];
 		$filter = array(
@@ -233,7 +222,6 @@ class admin{
 	}
 }
 
-$control = new admin();
 if(isset($_SESSION['admin'])){
 	$control = new admin();
 	$pageCurrent = $control->pageCurrent();

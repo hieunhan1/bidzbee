@@ -120,7 +120,7 @@ class form{
 				$value = date(_DATETIME_, $value->sec);
 			}
 			$input = array(
-				'type' => $type,
+				'type' => 'text',
 				'name' => $name,
 				'value' => $value,
 				'class' => 'field input datetimepicker',
@@ -132,10 +132,10 @@ class form{
 			$result = $this->inputText($input);
 		}else if($type=='date'){
 			if($value!=''){
-				$value = date(_DATE_, $value);
+				$value = date(_DATE_, $value->sec);
 			}
 			$input = array(
-				'type' => $type,
+				'type' => 'text',
 				'name' => $name,
 				'value' => $value,
 				'class' => 'field input datepicker',

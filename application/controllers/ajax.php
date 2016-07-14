@@ -56,7 +56,38 @@ class ajax{
 		$action = $this->document[_ACTION_];
 		unset($this->document[_ACTION_]);
 		
-		if(!in_array('administrators', $user['groups'])){
+		if( (is_array($user['groups']) && in_array('administrators', $user['groups'])) || $user['groups']=='administrators' ){
+			//thuc thi ROLE Administrators
+			if($action=='create'){
+				$document = $this->model->documentCheckAdmin($collectionName, $this->document);
+				$result = $this->model->create($collectionName, $document);
+			}else if($action=='update'){
+				if(isset($this->document['_id'])){
+					$filter = array('_id'=>$this->document['_id']);
+					unset($this->document['_id']);
+				}else{
+					return array('result'=>false, 'message'=>'Không truyền ID cập nhật.');
+				}
+				$document = $this->model->documentCheckAdmin($collectionName, $this->document);
+				$result = $this->model->update($collectionName, $document, $filter);
+			}else if($action=='read'){
+				if(isset($this->document['_filter'])){
+					$filter = $this->document['_filter'];
+				}else{
+					$filter = array();
+				}
+				$result = $this->model->find($collectionName, $filter);
+			}else if($action=='delete'){
+				if(!isset($this->document['where'])){
+					return array('result'=>false, 'message'=>'Không truyền điều kiện để xóa.');
+				}
+				$where = $this->document['where'];
+				$result = $this->model->remove($collectionName, $where);
+			}else{
+				$arr = array('result'=>false, 'message'=>'ERROR: '.$action);
+				return $arr;
+			}
+		}else{
 			//check authorityCollection
 			//Create var fields
 			$allowCollection = $this->model->_authorityCollection($user, $collectionName, $fields);
@@ -114,37 +145,6 @@ class ajax{
 				$arr = array('result'=>false, 'message'=>'ERROR: '.$action);
 				return $arr;
 			}
-		}else{
-			//thuc thi ROLE Administrators
-			if($action=='create'){
-				$document = $this->model->documentCheckAdmin($collectionName, $this->document, $error);
-				$result = $this->model->create($collectionName, $document);
-			}else if($action=='update'){
-				if(isset($this->document['_id'])){
-					$filter = array('_id'=>$this->document['_id']);
-					unset($this->document['_id']);
-				}else{
-					return array('result'=>false, 'message'=>'Không truyền ID cập nhật.');
-				}
-				$document = $this->model->documentCheckAdmin($collectionName, $this->document, $error);
-				$result = $this->model->update($collectionName, $document, $filter);
-			}else if($action=='read'){
-				if(isset($this->document['_filter'])){
-					$filter = $this->document['_filter'];
-				}else{
-					$filter = array();
-				}
-				$result = $this->model->find($collectionName, $filter);
-			}else if($action=='delete'){
-				if(!isset($this->document['where'])){
-					return array('result'=>false, 'message'=>'Không truyền điều kiện để xóa.');
-				}
-				$where = $this->document['where'];
-				$result = $this->model->remove($collectionName, $where);
-			}else{
-				$arr = array('result'=>false, 'message'=>'ERROR: '.$action);
-				return $arr;
-			}
 		}
 		
 		if(is_bool($result) && $result==false){
@@ -161,59 +161,11 @@ class ajax{
     }
 	
 	// USERS
-	private function loginUser(){
-		$html = ob_start();
-		echo '<div class="frmRegister">';
-		include_once('views/web_login.php');
-		include_once('libraries/login_facebook.php');
-		include_once('libraries/login_google.php');
-		echo '</div>';
-		$html = ob_get_clean();
-		
-		$result = array('result'=>true, 'data'=>$html);
-		return $result;
-	}
-	
-	private function checkUser(){
-		if(!isset($this->document['email'])){
-			$arr = array('result'=>false, 'message'=>'ERROR: Not find email');
-			return $arr;
-		}
-		
-		$document = array(
-			'where' => array('email' => $this->document['email']),
-			'pretty' => array('name'=>1, 'email'=>1, 'groups'=>1),
-		);
-		
-		$collection = 'users';
-		$result = $this->model->findOne($collection, $document);
-		if(count($result)==0){
-			/*$this->document[_COLLECTION_FIELD_] = $collection;
-			$this->document[_ACTION_] = 'create';
-			$this->document['groups'] = 'users';
-			$result = $this->submit();
-			if($result!=false){
-				$result = $this->model->findOne($collection, $document);
-			}*/
-			
-			$this->document['groups'] = 'users';
-			$result = $this->model->create('users', $this->document);
-			if($result!=false){
-				$filter = array(
-					'where' => array('email'=>$this->document['email']),
-					'pretty' => array('name'=>1, 'email'=>1, 'groups'=>1),
-				);
-				$result = $this->model->findOne($collection, $filter);
-			}
-		}
-		
-		$_SESSION['users'] = $result;
-		return $result;
-	}
-	
-	private function logoutUser(){
-		unset($_SESSION['users']);
-		return array('result'=>true, 'message'=>'Thoát thành công');
+	private function users(){
+		include_once('users.php');
+		$users = new users();
+		$users = $users->handle($this->model, $this->document);
+		return $users;
 	}
 	//END USERS
 	
@@ -300,37 +252,6 @@ class ajax{
 		return $result;
 	}
 	//end BID
-	
-	private function test(){
-		$data = array(
-			array(
-				'_id' => '123',
-				'name' => 'Trần Nhân',
-				'alias' => 'tran-nhan',
-			),
-			array(
-				'_id' => '125',
-				'name' => 'Trần Hiền',
-				'alias' => 'tran-hien',
-			),
-		);
-		
-		$fields = array('_id', 'name', 'alias');
-		$html = '<div>
-			<p>_id: {$_id}</p>
-			<p>name: {$name}</p>
-			<p>alias: {$alias}</p>
-		</div>';
-		
-		$string = '';
-		foreach($data as $row){
-			foreach($fields as $field){
-				eval("\$".$field." = \"{$row[$field]}\";");
-			}
-			eval("\$string .= \"$html\";");
-		};
-		return $string;
-	}
 }
 
 $control = new ajax();

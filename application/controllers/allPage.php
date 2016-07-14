@@ -11,20 +11,8 @@ class allPage{
     public function __construct(){
 		include_once('models/modelAllPage.php');
 		$this->model = new modelAllPage;
-    }
-    
-    public function getUsers(){
-		if(!isset($_SESSION['users'])){
-			$_SESSION['guest'] = array(
-				'name' => 'Guest',
-				'username' => 'guest',
-				'groups' => 'everyone',
-			);
-			
-			$this->user = $_SESSION['guest'];
-		}else{
-			$this->user = $_SESSION['users'];
-		}
+		
+		$this->model->_getUser();
     }
 	
 	public function setting($lang=''){
@@ -178,8 +166,6 @@ class allPage{
 }
 
 $control = new allPage();
-
-$control->getUsers();
 $control->setting();
 
 $alias = $currentUrl['alias'];

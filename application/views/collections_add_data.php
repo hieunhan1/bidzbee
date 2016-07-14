@@ -10,6 +10,7 @@
 				'number' => 'Number',
 				'date' => 'Date',
 				'bool' => 'Boolean',
+				'pass' => 'Password',
 				'auto' => 'Auto',
 			);
 			?>
