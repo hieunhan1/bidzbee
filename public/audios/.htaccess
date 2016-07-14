@@ -1,0 +1,7 @@
+<FilesMatch ".*\.*$">
+    Deny from all
+</FilesMatch>
+
+<FilesMatch ".*\.(mp3|wma)$">
+    Allow from all
+</FilesMatch>

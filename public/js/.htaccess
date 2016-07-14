@@ -1,0 +1,7 @@
+<FilesMatch ".*\.*$">
+    Deny from all
+</FilesMatch>
+
+<FilesMatch ".*\.(js|css|jpg|gif|png|bmp)$">
+    Allow from all
+</FilesMatch>

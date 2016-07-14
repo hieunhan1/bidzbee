@@ -1,0 +1,128 @@
+body{
+	color: #333;
+}
+.container{
+	width: 1000px;
+	clear: both;
+	margin: auto;
+}
+
+/*header*/
+
+/*end header*/
+
+/*footer*/
+
+/*end footer*/
+
+/*home*/
+#home{
+	
+}
+/*end home*/
+
+/*product*/
+.productList{
+	clear: both;
+	margin-bottom: 50px;
+}
+.productList .box{
+	margin-bottom: 30px;
+}
+.productList .box .img{
+	width: 45%;
+	float: left;
+}
+.productList .box .info{
+	width: 50%;
+	float: right;
+	line-height: 200%;
+	font-size: 120%;
+	margin-top: 10px;
+}
+.productList .box .info .name{
+	font-size: 130%;
+}
+.productList .box .info .price_start{
+	width: auto;
+	float: left;
+	margin: 10px 0;
+	padding: 4px 20px;
+	border-radius: 3px;
+	border: solid 1px #999;
+	box-shadow: 0px 0px 3px #999;
+}
+.productList .box .info .price_start span{
+	color: #F00;
+	font-weight: bold;
+	font-size: 130%;
+}
+.productList .box .info .price_steps{
+	clear: both;
+}
+.productList .box .info .price_steps span{
+	color: #06F;
+	font-weight: bold;
+}
+.productList .box .countdown{
+	margin: 20px 0;
+}
+.productList .box .countdown .label{
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+	margin: 5px 0;
+}
+.productList .box .countdown .datetime{
+	color: #000;
+	font-weight: bold;
+	font-size: 200%;
+	text-align: center;
+	word-spacing: 2px;
+	padding: 15px 0;
+	border: solid 1px #CCC;
+	border-radius: 10px;
+}
+.productList .box .btn{
+	color: #FFF;
+	font-size: 120%;
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+	padding: 15px;
+	background-color: #0C0;
+	border-radius: 10px;
+	cursor: pointer;
+}
+.productList .box .btn:hover{
+	background-color: #090;
+}
+
+.productList .margin{
+	margin-left: 2%;
+}
+.productList .box2{
+	width: 44.6%;
+	float: left;
+	line-height: 180%;
+	padding: 2%;
+	border: solid 1px #CCC;
+	border-radius: 5px;
+}
+.productList .box2 .img{
+	width: 25%;
+	float: left;
+}
+.productList .box2 .info{
+	width: 70%;
+	float: right;
+}
+.productList .box2 .info h3{
+	font-size: 110%;
+	margin-bottom: 3px;
+}
+/*end product*/
+
+/*login*/
+
+/*end login*/

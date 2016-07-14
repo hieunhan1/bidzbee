@@ -1,0 +1,72 @@
+use admin
+db.createUser({ user:"root", pwd:"PublicPassword#123*", roles:[{role:"root", db:"admin"}] })
+db.createUser({ user:"adminAny", pwd:"adminAny#123*", roles:[{role:"userAdminAnyDatabase", db:"admin"}] })
+db.createUser({ user:"admin", pwd:"admin#123*", roles:[{role:"userAdmin", db:"admin"}] })
+db.createUser({ user:"userRead", pwd:"userRead#123*", roles:[{role:"read", db:"admin"}] })
+db.createUser({ user:"userRW", pwd:"userRW#123*", roles:[{role:"readWrite", db:"admin"}] })
+
+db.createUser({ user:"bidzbee1", pwd:"Bidzbee1#123*", roles:[{role:"readWrite", db:"bidzbee"}, {role:"userAdmin", db:"bidzbee"}, {role:"dbAdmin", db:"bidzbee"}] })
+
+db.createUser({ user:"bidzbee", pwd:"BidzbeeAZ#123*", roles:[{role:"userAdmin", db:"bidzbee"}, {role:"readWrite", db:"bidzbee"}] })
+
+mongod --dbpath=D:\MongoDB\data -auth
+
+mongo -u <user> -p <pass> <host>:<port>/<database>
+
+mongo -u root -p PublicPassword#123* localhost:27017/admin
+
+mongodump --host hostname --port 27017 --username username --password password --out path\name
+
+Backup va restore all database
+mongodump --host localhost --port 27017 --username root --password PublicPassword#123* --out D:\MongoDB\backup\03-07
+mongorestore --host localhost --port 27017 --username root --password PublicPassword#123* D:\MongoDB\backup\03-07
+
+Backup va restore only database
+mongodump --db bidzbee2 --username root --password PublicPassword#123* --authenticationDatabase admin --out D:\MongoDB\backup\
+mongorestore --db bidzbee --username root --password PublicPassword#123* --authenticationDatabase admin D:\MongoDB\backup\webmanager --drop
+
+mongodump --db bidzbee2 --out /home/bidzbee/backup/
+mongorestore --db bidzbee2 /home/bidzbee/backup/bidzbee2 --drop
+
+//Tim hieu sau:
+1. Replica Set
+2. Sharding
+3. Bachkup
+4. Deployment
+5. Tham chiếu database DBRefs
+
+db.updateUser( "bidzbee",
+	{
+		roles : [
+			{ role : "read", db : "bidzbee"  },
+			{ role : "readWrite", db : "bidzbee"  },
+			{ role : "userAdmin", db : "bidzbee"  }
+		]
+	}
+)
+
+
+//ROLES
+use admin
+db.createUser({ user: "SuperAdmin", pwd: "SuperAdmin#123*", roles: [ { role:"userAdminAnyDatabase", db:"admin" } ] })
+
+use bidzbee
+db.createUser(
+	{
+		user: "userbidzbee",
+		pwd: "UserBidzbee#123*",
+		roles: [ { role: "userAdmin", db: "bidzbee" } ]
+	}
+)
+
+mongo -u SuperAdmin -p SuperAdmin#123* localhost:27017/admin
+
+db.createUser({ user: "root", pwd: "PublicPassword#123*", roles: [ { role: "root", db: "admin" } ] })
+
+mongo -u root -p PublicPassword#123* localhost:27017/admin
+
+mongo -u bidzbee -p Bidzbee#123* localhost:27017/databidzbee
+
+db.createUser({ user: "bidzbee", pwd: "Bidzbee#123*", roles: ["readWrite"] })
+
+mongo -u userRW -p userRW#123* localhost:27017/bidzbee

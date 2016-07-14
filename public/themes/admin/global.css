@@ -1,0 +1,594 @@
+@charset "utf-8";
+* { margin: 0px; }
+body {
+	color: #666;
+	font-family: "Arial", Helvetica, sans-serif;
+	font-size: 13px;
+}
+img {
+    border: 0px;
+}
+a {
+	color: #307ecc;
+	text-decoration: none;
+}
+a:hover {
+	color: #d15b47;
+	text-decoration: underline;
+}
+input, textarea, select {
+	color: #666;
+	font-size: 100%;
+	font-family: "Arial", Helvetica, sans-serif;
+}
+.clear1 {
+	clear: both;
+	height: 1px;
+}
+.clear5 {
+	clear: both;
+	height: 5px;
+}
+.clear10 {
+	clear: both;
+	height: 10px;
+}
+.clear20 {
+	clear: both;
+	height: 20px;
+}
+.clear30 {
+	clear: both;
+	height: 30px;
+}
+
+/*viewpost*/
+.viewpost{
+	line-height: 180%;
+	font-size: 100%;
+}
+.viewpost h1{
+	color: #000;
+	font-weight: 100;
+	line-height: 150%;
+	font-size: 180%;
+	margin-bottom: 5px;
+}
+.viewpost h2, .viewpost h3, .viewpost h4, .viewpost h5, .viewpost h6 {
+	line-height: 180%;
+	font-weight: normal;
+	font-size: 100%;
+	margin: 15px 0;
+}
+.viewpost p, .viewpost div {
+	margin: 15px 0;
+}
+.viewpost li{
+	padding: 0;
+	margin: 5px 0;
+}
+.viewpost img{
+	max-width: 100%;
+	height: auto !important
+}
+.viewpost iframe{
+	width: 680px;
+	height: 420px;
+}
+.viewpost blockquote{
+	font-style: italic;
+	margin-left: 30px;
+	padding-left: 15px;
+	border-left: solid 3px #CCC;
+}
+.viewpost .table{
+	border-collapse: collapse;
+}
+.viewpost .table div, .viewpost .table p{
+	margin: 0;
+}
+/*end viewpost*/
+
+/*corner*/
+.corner3  { border-radius: 3px; }
+.corner5  { border-radius: 5px; }
+.corner8  { border-radius: 8px; }
+.corner10 { border-radius: 10px; }
+/*end corner*/
+
+.hr {
+	height: 1px;
+	background-color: #CCC;
+	border: none;
+	margin: 15px 0;
+}
+.error {
+	font-style: italic;
+	color: #F00;
+}
+.message {
+    color: #00F;
+}
+.notes {
+	font-style: italic;
+	opacity: 0.75;
+}
+.hidden {
+    display: none;
+}
+.font {
+    font-family: "Times New Roman", Times, serif;
+}
+.datepicker, .datetimepicker {
+	background: url(img/lich.jpg) no-repeat;
+	background-position: 95% 50%;
+}
+
+/*width, float*/
+.width15 {width: 15% !important;}
+.width20 {width: 20% !important;}
+.width25 {width: 25% !important;}
+.width30 {width: 30% !important;}
+.width33 {width: 33% !important;}
+.width40 {width: 40% !important;}
+.width48 {width: 48% !important;}
+.width50 {width: 50% !important;}
+.width60 {width: 60% !important;}
+.width65 {width: 65% !important;}
+.width70 {width: 70% !important;}
+.width75 {width: 75% !important;}
+.width80 {width: 80% !important;}
+.floatLeft {float: left;}
+.floatRight{float: right;}
+/*end width, float*/
+
+/*img max width OR height*/
+.imgHeight {
+    text-align: center;
+	overflow: hidden;
+}
+.imgHeight img {
+	max-height: 100%;
+}
+.imgWidth {
+    vertical-align: middle;
+    text-align: center;
+	overflow: hidden;
+}
+.imgWidth img {
+	max-width: 100%;
+}
+/*end img max width OR height*/
+
+/*btn*/
+.btnSmall {
+	width: auto;
+	color: #FFF;
+	font-size: 100%;
+	margin: 0;
+	padding: 5px 7px;
+    background: none;
+    border: none;
+	cursor: pointer;
+	outline: none;
+}
+.btnMedium {
+	width: auto;
+	color: #FFF;
+	font-size: 110%;
+	margin: 0;
+	padding: 7px 12px;
+    background: none;
+	border-style: solid;
+	border-width: 2px;
+	cursor: pointer;
+	outline: none;
+}
+.btnLarge {
+	width: auto;
+	color: #FFF;
+	font-size: 130%;
+    letter-spacing: 1px;
+	margin: 0;
+	padding: 12px 20px;
+    background: none;
+	border-style: solid;
+	border-width: 3px;
+	cursor: pointer;
+	outline: none;
+}
+/*end btn*/
+
+/*form submit*/
+.iAC-Collection, .iAC-Collection ul {
+	display: block;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.iAC-Collection li {
+	display: block;
+	clear: both;
+    line-height: 150%;
+    margin-bottom: 5px;
+}
+.iAC-Collection .label {
+	display: inline-block;
+    width: 18%;
+    float: left;
+    text-align: right;
+    font-weight: bold;
+    margin-right: 2%;
+    padding-top: 5px;
+}
+.iAC-Collection .label2 {
+	display: inline-block;
+    width: auto;
+    float: left;
+    text-align: right;
+    font-weight: bold;
+    margin-right: 2%;
+    padding-top: 5px;
+}
+.iAC-Collection .values {
+	display: inline-block;
+	width: 50%;
+    float: left;
+}
+.iAC-Collection .values80 {
+	width: 80% !important;
+}
+.iAC-Collection .valuesFull {
+	display: block;
+	width: 100% !important;
+	clear: both;
+}
+.iAC-Collection .string {
+    padding-top: 5px;
+}
+.iAC-Collection .input {
+	width: 95%;
+	padding: 7px 2%;
+	border: solid 1px #CCC;
+}
+.iAC-Collection .select { /*select*/
+	width: 100%;
+    padding: 7px 2%;
+	border: solid 1px #CCC;
+}
+.iAC-Collection .text { /*textarea*/
+	width: 96%;
+    height: 66px;
+    line-height: 22px;
+    overflow: auto;
+    resize: vertical;
+	padding: 7px 2%;
+	border: solid 1px #CCC;
+}
+.iAC-Collection .ckeditor { /*textarea*/
+    height: 200px;
+}
+.iAC-Collection .checkBox, .iAC-Collection .checkBoxFull { /*checkbox: Horizontal(chiều ngang) - vertical (chiều dọc)*/
+    clear: both;
+    padding-top: 5px;
+}
+.iAC-Collection .checkBox input, .iAC-Collection .checkBoxFull input {
+    width: auto;
+    float: left;
+    margin: 3px 5px 0 0;
+    cursor: pointer;
+}
+.iAC-Collection .checkBox span {
+    width: auto;
+    float: left;
+    margin-right: 20px;
+}
+.iAC-Collection .checkBoxFull span {
+    display: block;
+    margin-bottom: 10px;
+}
+.iAC-Collection .dataList, .iAC-Collection .dataListFull {
+    list-style: none;
+    display: block;
+    margin: 0 0 7px 0;
+    padding: 0;
+}
+.iAC-Collection .dataList li {
+	display: inline-block;
+	clear: none;
+    width: auto;
+    float: left;
+    margin: 2px 5px 2px 0;
+	padding: 2px 5px;
+    background-color: #F1F1F1;
+    border-radius: 5px;
+    border: solid 1px #CCC;
+}
+.iAC-Collection .dataListFull li {
+    display: block;
+    margin-bottom: 5px;
+    margin: 2px 0 5px 0;
+	padding: 2px 5px;
+    background-color: #F1F1F1;
+    border-radius: 5px;
+    border: solid 1px #CCC;
+}
+.iAC-Collection .input:hover, .iAC-Collection .select:hover, .iAC-Collection .text:hover {
+	border: solid 1px #999;
+}
+.iAC-Collection .input:focus, .iAC-Collection .select:focus, .iAC-Collection .text:focus {
+	outline: none;
+	border: solid 1px #FC0;
+}
+
+.fieldAddData, .fieldAddFields, .fieldAuthority{
+	cursor: pointer;
+}
+.fieldAddData:hover, .activeFieldAddData{
+	background-color: #FF9 !important;
+}
+/*end form submit*/
+
+/*background*/
+.bgBlue {
+	background-color: #2283c5 !important;
+	border-color: #2283c5;
+}
+.bgBlue:hover {
+	background-color: #045e9f !important;
+}
+.bgBlue2 {
+	background-color: #6fb3e0;
+	border-color: #6fb3e0;
+}
+.bgBlue2:hover {
+	background-color: #4f99c6;
+}
+.bgGreen {
+	background-color: #89b95b;
+	border-color: #89b95b;
+}
+.bgGreen:hover {
+	background-color: #5e8338;
+}
+.bgRed {
+	background-color: #d15b47;
+	border-color: #d15b47;
+}
+.bgRed:hover {
+	background-color: #b74635;
+}
+.bgYellow {
+	background-color: #ffb752;
+	border-color: #ffb752;
+}
+.bgYellow:hover {
+	background-color: #e59729;
+}
+.bgOrange {
+	background-color: #ff962d;
+	border-color: #ff962d;
+}
+.bgOrange:hover {
+	background-color: #dd6f00;
+}
+.bgPink {
+	background-color: #d6487e;
+	border-color: #d6487e;
+}
+.bgPink:hover {
+	background-color: #b73766;
+}
+.bgPurple {
+	background-color: #9585bf;
+	border-color: #9585bf;
+}
+.bgPurple:hover {
+	background-color: #7461aa;
+}
+.bgBlack {
+	background-color: #555555;
+	border-color: #555555;
+}
+.bgBlack:hover {
+	background-color: #303030;
+}
+.bgGray {
+	background-color: #999;
+	border-color: #999;
+}
+.bgGray:hover {
+	background-color: #666;
+}
+.bgWhite {
+	color: #666;
+	background-color: #FFF;
+	border-color: #666;
+}
+.bgWhite:hover {
+	color: #FFF;
+	background-color: #666;
+}
+.bgNoColor {
+	color: #666;
+	background: none;
+	border: none;
+}
+.bgNoColor:hover {
+	background-color: #CCC;
+}
+/*end background*/
+
+/*all icon*/
+.iconBlack {
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+	vertical-align: middle;
+	background: url(img/icon-default.png) no-repeat;
+	opacity: 0.7;
+}
+.iconWhite {
+	width: 24px;
+	height: 24px;
+	display: inline-block;
+	vertical-align: middle;
+	background: url(img/icon-default-white.png) no-repeat;
+}
+.iconArticle {
+	background-position: 0 -69px;
+}
+.iconProduct {
+	background-position: -432px -21px;
+}
+.iconPhoto {
+	background-position: -456px -46px;
+}
+.iconVideo {
+	background-position: -192px 2px;
+}
+.iconHome {
+	background-position: 0 -21px;
+}
+.iconConfig {
+	background-position: -360px -142px;
+}
+.iconMenu {
+	background-position: -264px 2px;
+}
+.iconAds {
+	background-position: -48px -117px;
+}
+.iconTags {
+	background-position: -24px -45px;
+}
+.iconLang {
+	background-position: -336px -141px;
+}
+.iconVar {
+	background-position: -72px -117px;
+}
+.iconType {
+	background-position: -72px -70px;
+}
+.iconPosition {
+	background-position: -24px -69px;
+}
+.iconGroup {
+	background-position: -408px -117px;
+}
+.iconContact {
+	background-position: -24px -141px;
+}
+.iconLog {
+	background-position: -48px -21px;
+}
+.iconUser {
+	background-position: -168px 3px;
+}
+.iconLogOut {
+	background-position: -380px 3px;
+}
+.iconPass {
+	background-position: -235px -22px;
+}
+.iconSetting {
+	background-position: -432px 3px;
+}
+.iconUserRole {
+	background-position: -144px -141px;
+}
+.iconOther {
+	background-position: -216px 2px;
+}
+.iconCourse {
+	background-position: -72px -45px;
+}
+.iconOpinion {
+	background-position: -120px 3px;
+}
+.iconOpening {
+	background-position: -192px -117px;
+}
+.iconMoney {
+	background-position: 0 -165px;
+}
+.iconParts {
+	background-position: -312px -21px;
+}
+.iconProcedure {
+	background-position: -336px -117px;
+}
+.iconView {
+	background-position: -45px 3px;
+}
+.iconUpdate {
+	background-position: -92px -69px;
+}
+.iconDelete {
+	background-position: -165px -93px;
+}
+.iconEnable {
+	background-position: -92px -117px;
+}
+.iconDisable {
+	background-position: -116px -117px;
+}
+.iconBack {
+	background-position: -120px -69px;
+}
+.iconDefault{
+	background-position: -384px -118px;
+}
+/*end all icon*/
+
+/*popup*/
+#pp {
+	display: none;
+}
+#pp .ppCloseStyle{
+	width: 25px;
+	height: 25px;
+	line-height: 25px;
+	float: right;
+	color: #666;
+	font-size: 110%;
+	text-align: center;
+	position: relative;
+	margin: -10px 0 0 0;
+	background-color: #EEE;
+	border-radius: 25px;
+	cursor: pointer;
+}
+#pp .ppCloseStyle:hover{
+	color: #FFF;
+	background-color: #999;
+}
+#ppBG {
+	display: block;
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 50;
+	background-color: rgba(255,255,255,0.6);
+}
+#ppContent {
+	width: auto;
+	height: auto;
+}
+#ppViewData {
+	display: block;
+	width: auto;
+	height: auto;
+	overflow: auto;
+	padding: 2%;
+	background-color: #FFF;
+	border: solid 1px #FFF;
+	border-radius: 5px;
+	box-shadow: 0px 0px 7px #333;
+	position: fixed;
+	z-index: 51;
+}
+/*end popup*/
