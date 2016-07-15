@@ -36,8 +36,11 @@ class modelAjax extends modelDB{
 							}
 							$documentNew[$name] = $data;
 						}else if($type=='bool'){
-							settype($data, 'bool');
-							if($data!=1) $data = false;
+							if($data==1 || $data=='true'){
+								$data = true;
+							}else{
+								$data = false;
+							}
 							$documentNew[$name] = $data;
 						}else if($type=='date'){
 							if($this->_validateDate($data, _DATETIME_)==true){
@@ -81,9 +84,11 @@ class modelAjax extends modelDB{
 							settype($data, 'float');
 						}
 						$documentNew[$name] = $data;
-					}else if(is_bool($data)){
-						settype($data, 'bool');
-						if($data!=1) $data = false;
+					}else if($data=='true'){
+						$data = true;
+						$documentNew[$name] = $data;
+					}else if($data=='false'){
+						$data = false;
 						$documentNew[$name] = $data;
 					}else{
 						$documentNew[$name] = trim($data);

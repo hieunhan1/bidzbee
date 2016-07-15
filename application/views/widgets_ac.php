@@ -90,7 +90,7 @@ $data = $this->model->findOne($collection, $filter);
         <p class="clear10"></p>
     </li>
     
-    <li class="field data addData" name="where" type="datalist" check="string" condition="0">
+    <li class="field addData" name="where" type="datalist" check="string" condition="0">
         <span class="label">Where</span>
         <ul class="values dataListFull listAddData sortable">
             <p><a href="javascript:;" class="ppWhere">example</a></p>
@@ -110,7 +110,7 @@ $data = $this->model->findOne($collection, $filter);
         <p class="clear10"></p>
     </li>
     
-    <li class="field data addData" name="sort" type="datalist" check="string" condition="0">
+    <li class="field addData" name="sort" type="datalist" check="string" condition="0">
         <span class="label">Sort</span>
         <ul class="values dataListFull listAddData sortable">
             <p class="error hidden">Sort is a required field</p>

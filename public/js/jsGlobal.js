@@ -554,8 +554,10 @@ function convertToJson(data){
 
 //Submit fields
 function ajaxSubmitFields(){
-	$("body").on("click", ".iAC-Submit, .btnSubmitSave", function(){
-		var tags = $(".iAC-Collection");
+	$("body").on("click", ".iAC-Submit", function(){
+		$(".iAC-Collection").removeClass("iAC-Collection-Active");
+		$(this).parents(".iAC-Collection").addClass("iAC-Collection-Active");
+		var tags = $(".iAC-Collection-Active");
 		var fields = checkGetData(tags);
 		
 		if(fields==false) {
@@ -563,12 +565,14 @@ function ajaxSubmitFields(){
 			return false;
 		}
 		
+		$(tags).find(".field").attr("disabled", true);
+		
 		$("#saveMessage").remove();
 		var str = '<p>Processing..</p>';
 		ppLoad(str);
 		
-		fields._collection = $("#collection").html();
-		fields._action = $("#action").html();
+		fields._collection = $(".iAC-Collection-Active").attr("name");
+		fields._action = $(".iAC-Collection-Active").attr("action");
 		
 		$.ajax({ 	
 			url     : 'ajax',
@@ -576,6 +580,8 @@ function ajaxSubmitFields(){
 			data    : fields,
 			cache   : false,
 			success : function(data){
+				$(tags).find(".field").attr("disabled", false);
+				
 				data = convertToJson(data);
 				if(data==false){
 					var str = '<p class="error">ERROR: Server</p>';

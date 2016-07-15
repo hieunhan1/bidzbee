@@ -38,7 +38,7 @@ $data = $this->model->findOne($collection, $filter);
         <p class="clear1"></p>
     </li>
     
-    <li class="field data addData" name="fields" type="datalist" check="string" condition="1">
+    <li class="field addData" name="fields" type="datalist" check="string" condition="1">
         <span class="label">Fields</span>
         <ul class="values dataListFull listAddData sortable">
             <p class="error hidden">Fields is a required field</p>

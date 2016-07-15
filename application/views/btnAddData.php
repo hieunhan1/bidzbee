@@ -30,16 +30,12 @@ $(document).ready(function() {
 		$(tags).parents(".addData").children(".viewFrmAddData").children(".btnAddData").hide();
 		$(tags).parents(".addData").children(".viewFrmAddData").children(".frmAddData").remove();
 		$(tags).parents(".addData").children(".viewFrmAddData").append(frm);
-		
-		ppAutoSize();
 	}
 	
 	//function hidden form add data
 	function hiddenFrmAddData(tags){
 		$(tags).parents(".addData").children(".viewFrmAddData").children(".btnAddData").show();
 		$(tags).parents(".addData").children(".viewFrmAddData").children(".frmAddData").remove();
-		
-		ppAutoSize();
 	}
 	
 	//view form add data
@@ -49,10 +45,23 @@ $(document).ready(function() {
 	
 	//create data
 	$("#ppContent, .addData").on("click", ".btnDataCreate", function(){
-		var key = $(this).parents(".frmAddData").find("input[name=key]").val();
+		var key = "";
+		if( $(this).parents(".frmAddData").find("input[name=key]").length ){
+			key = $(this).parents(".frmAddData").find("input[name=key]").val();
 			key = $.trim(key);
-		var value = $(this).parents(".frmAddData").find("input[name=value]").val();
+		}else if( $(this).parents(".frmAddData").find("select[name=key]").length ){
+			key = $(this).parents(".frmAddData").find("select[name=key]").val();
+			key = $.trim(key);
+		}
+		
+		var value = "";
+		if( $(this).parents(".frmAddData").find("input[name=value]").length ){
+			value = $(this).parents(".frmAddData").find("input[name=value]").val();
 			value = $.trim(value);
+		}else if( $(this).parents(".frmAddData").find("select[name=value]").length ){
+			value = $(this).parents(".frmAddData").find("select[name=value]").val();
+			value = $.trim(value);
+		}
 		
 		if(key=="" || value==""){
 			alert("Key and value not allow empty");
@@ -84,8 +93,19 @@ $(document).ready(function() {
 		var key = $(this).attr("key");
 		var value = $(this).attr("value");
 		
-		$(this).parents(".addData").children(".viewFrmAddData").find("input[name=key]").val(key);
-		$(this).parents(".addData").children(".viewFrmAddData").find("input[name=value]").val(value);
+		setTimeout(function(){
+			if( $(".fieldAddDataActive").parents(".addData").find("input[name=key]").length ){
+				$(".fieldAddDataActive").parents(".addData").find("input[name=key]").val(key);
+			}else if( $(".fieldAddDataActive").parents(".addData").find("select[name=key]").length ){
+				$(".fieldAddDataActive").parents(".addData").find("select[name=key]").val(key);
+			}
+			
+			if( $(".fieldAddDataActive").parents(".addData").find("input[name=value]").length ){
+				$(".fieldAddDataActive").parents(".addData").find("input[name=value]").val(value);
+			}else if( $(".fieldAddDataActive").parents(".addData").find("select[name=value]").length ){
+				$(".fieldAddDataActive").parents(".addData").find("select[name=value]").val(value);
+			}
+		}, 100);
 		
 		$(this).parents(".addData").children(".viewFrmAddData").find(".btnDataCreate").hide();
 		$(this).parents(".addData").children(".viewFrmAddData").find(".btnDataUpdate").show();
@@ -95,8 +115,23 @@ $(document).ready(function() {
 	
 	//update data
 	$("#ppContent, .addData").on("click", ".btnDataUpdate", function(){
-		var key = $(this).parents(".frmAddData").find("input[name=key]").val();
-		var value = $(this).parents(".frmAddData").find("input[name=value]").val();
+		var key = "";
+		if( $(this).parents(".frmAddData").find("input[name=key]").length ){
+			key = $(this).parents(".frmAddData").find("input[name=key]").val();
+			key = $.trim(key);
+		}else if( $(this).parents(".frmAddData").find("select[name=key]").length ){
+			key = $(this).parents(".frmAddData").find("select[name=key]").val();
+			key = $.trim(key);
+		}
+		
+		var value = "";
+		if( $(this).parents(".frmAddData").find("input[name=value]").length ){
+			value = $(this).parents(".frmAddData").find("input[name=value]").val();
+			value = $.trim(value);
+		}else if( $(this).parents(".frmAddData").find("select[name=value]").length ){
+			value = $(this).parents(".frmAddData").find("select[name=value]").val();
+			value = $.trim(value);
+		}
 		
 		if(key=="" || value==""){
 			alert("Key and value not allow empty");

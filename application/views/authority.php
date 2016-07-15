@@ -13,13 +13,13 @@
         <p class="width65">
             <select name="data" class="select">
             	<optgroup label="Group">
-                    <option value="everyone" type="group">everyone</option>
-                    <option value="users" type="group">users</option>
-                    <option value="administrators" type="group">administrators</option>
+                    <option value="everyone" type="groups">everyone</option>
+                    <option value="users" type="groups">users</option>
+                    <option value="administrators" type="groups">administrators</option>
                 </optgroup>
             	<optgroup label="Users">
-                    <option value="trannhan" type="user">trannhan</option>
-                    <option value="admin" type="user">admin</option>
+                    <option value="trannhan" type="users">trannhan</option>
+                    <option value="admin" type="users">admin</option>
                 </optgroup>
             </select>
         </p>
@@ -61,14 +61,15 @@
 //function authority object to string
 function authorityObjectToString(object){
 	var str = '';
-	for(var key in object){
-		str += '<li class="field fieldAuthority" name="' + key + '" type="datalist">';
-		str += '<span class="label2">' + key + '</span>';
+	for(var field in object){
+		str += '<li class="field fieldAuthority" name="' + field + '" type="datalist">';
+		str += '<span class="label2">' + field + '</span>';
 		str += '<ul class="values" style="display:none">';
 		
 		var strValue = '';
-		for(var value in object[key]){
-			strValue += '<li class="field" value="' + value + '">' + object[key][value] + '</li>';
+		for(var key in object[field]){
+			var value = object[field][key];
+			strValue += '<li class="field" key="' + key + '" value="' + value + '">' + key + ' <i>(' + value + ')</i></li>';
 		}
 		
 		str += strValue;
@@ -83,19 +84,19 @@ $(document).ready(function() {
 	//function view form add data
 	function viewFrmAuthority(tags){
 		var frm = $("#frmAuthority").html();
-		$(tags).parents(".authority").children(".viewFrmAuthority").children(".btnAddAuthority").hide();
-		$(tags).parents(".authority").children(".viewFrmAuthority").children(".frmAuthority").remove();
-		$(tags).parents(".authority").children(".viewFrmAuthority").append(frm);
+		$(".authority").removeClass("authorityActive");
+		$(tags).parents(".authority").addClass("authorityActive");
 		
-		ppAutoSize();
+		$(".authorityActive").find(".btnAddAuthority").hide();
+		$(".authorityActive").find(".frmAuthority").remove();
+		$(".authorityActive").find(".viewFrmAuthority").append(frm);
 	}
 	
 	//function hidden form add data
-	function hiddenFrmAuthority(tags){
-		$(tags).parents(".authority").children(".viewFrmAuthority").children(".btnAddAuthority").show();
-		$(tags).parents(".authority").children(".viewFrmAuthority").children(".frmAuthority").remove();
-		
-		ppAutoSize();
+	function hiddenFrmAuthority(){
+		$(".authorityActive").find(".btnAddAuthority").show();
+		$(".authorityActive").find(".frmAuthority").remove();
+		$(".authority").removeClass("authorityActive");
 	}
 	
 	//view form add data
@@ -105,21 +106,21 @@ $(document).ready(function() {
 	
 	//create data
 	$("#ppContent, .authority").on("click", ".btnAuthorityCreate", function(){
-		var name = $(this).parents(".frmAuthority").find("select[name=data]").val();
+		var name = $(".authorityActive").find("select[name=data]").val();
 			name = $.trim(name);
-		var type = $(this).parents(".frmAuthority").find("select[name=data] option:selected").attr("type");
+		var type = $(".authorityActive").find("select[name=data] option:selected").attr("type");
 			type = $.trim(type);
-		var read = $(this).parents(".frmAuthority").find("input[name=read]:checked").val();
+		var read = $(".authorityActive").find("input[name=read]:checked").val();
 			read = parseInt($.trim(read));
-		var create = $(this).parents(".frmAuthority").find("input[name=create]:checked").val();
+		var create = $(".authorityActive").find("input[name=create]:checked").val();
 			create = parseInt($.trim(create));
-		var update = $(this).parents(".frmAuthority").find("input[name=update]:checked").val();
+		var update = $(".authorityActive").find("input[name=update]:checked").val();
 			update = parseInt($.trim(update));
-		var del = $(this).parents(".frmAuthority").find("input[name=delete]:checked").val();
+		var del = $(".authorityActive").find("input[name=delete]:checked").val();
 			del = parseInt($.trim(del));
 		
 		if(name=="" || type==""){
-			alert("Value not allow empty");
+			alert("Value and type not allow empty");
 			return false;
 		}
 		
@@ -134,7 +135,7 @@ $(document).ready(function() {
 		var str = authorityObjectToString(object);
 		
 		var arrData = new Array();
-		$(this).parents(".authority").find(".authorityGroup").children(".field").each(function(index, element) {
+		$(".authorityActive").find(".fieldAuthority").each(function(index, element) {
             arrData[index] = $(element).attr("name");
         });
 		if(arrData.indexOf(name) != -1){
@@ -143,9 +144,9 @@ $(document).ready(function() {
 		}
 		
 		if(type=='groups'){
-			$(this).parents(".authority").find(".authorityGroup").append(str);
+			$(".authorityActive").find(".authorityGroup").append(str);
 		}else{
-			$(this).parents(".authority").find(".authorityUsers").append(str);
+			$(".authorityActive").find(".authorityUsers").append(str);
 		}
 		hiddenFrmAuthority(this);
 	});
@@ -157,21 +158,21 @@ $(document).ready(function() {
 		$(".fieldAuthority").removeClass("fieldAuthorityActive");
 		$(this).addClass("fieldAuthorityActive");
 		
-		var name = $(this).attr("name");
-		var read = $(this).children(".values").children(".field:first").html();
-		var create = $(this).children(".values").children(".field:eq(1)").html();
-		var update = $(this).children(".values").children(".field:eq(2)").html();
-		var del = $(this).children(".values").children(".field:eq(3)").html();
+		var name = $(".fieldAuthorityActive").attr("name");
+		var read = $(".fieldAuthorityActive").find(".field:first").attr("value");
+		var create = $(".fieldAuthorityActive").find(".field:eq(1)").attr("value");
+		var update = $(".fieldAuthorityActive").find(".field:eq(2)").attr("value");
+		var del = $(".fieldAuthorityActive").find(".field:eq(3)").attr("value");
 		
-		$(this).parents(".authority").find("select[name=data]").val(name);
-		$(this).parents(".authority").find("input[name=read][value=" + read + "]").attr("checked", true);
-		$(this).parents(".authority").find("input[name=create][value=" + create + "]").attr("checked", true);
-		$(this).parents(".authority").find("input[name=update][value=" + update + "]").attr("checked", true);
-		$(this).parents(".authority").find("input[name=delete][value=" + del + "]").attr("checked", true);
+		$(".authorityActive").find("select[name=data]").val(name);
+		$(".authorityActive").find("input[name=read][value=" + read + "]").attr("checked", true);
+		$(".authorityActive").find("input[name=create][value=" + create + "]").attr("checked", true);
+		$(".authorityActive").find("input[name=update][value=" + update + "]").attr("checked", true);
+		$(".authorityActive").find("input[name=delete][value=" + del + "]").attr("checked", true);
 		
-		$(this).parents(".authority").find(".btnAuthorityCreate").hide();
-		$(this).parents(".authority").find(".btnAuthorityUpdate").show();
-		$(this).parents(".authority").find(".btnAuthorityDelete").show();
+		$(".authorityActive").find(".btnAuthorityCreate").hide();
+		$(".authorityActive").find(".btnAuthorityUpdate").show();
+		$(".authorityActive").find(".btnAuthorityDelete").show();
 	});
 	
 	//update data
@@ -205,7 +206,7 @@ $(document).ready(function() {
 		var str = authorityObjectToString(object);
 		
 		var arrData = new Array();
-		$(this).parents(".authority").find(".authorityGroup").children(".field").each(function(index, element) {
+		$(".authorityActive").find(".fieldAuthority").each(function(index, element) {
             arrData[index] = $(element).attr("name");
         });
 		if(arrData.indexOf(name)!=-1 && name!=$(".fieldAuthorityActive").attr("name")){
@@ -213,7 +214,13 @@ $(document).ready(function() {
 			return false;
 		}
 		
-		$(".fieldAuthorityActive").replaceWith(str);
+		if(type=='groups'){
+			$(".authorityActive").find(".authorityGroup").append(str);
+		}else{
+			$(".authorityActive").find(".authorityUsers").append(str);
+		}
+		
+		$(".fieldAuthorityActive").remove();
 		
 		hiddenFrmAuthority(this);
 	});

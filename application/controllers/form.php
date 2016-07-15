@@ -1,25 +1,32 @@
 <?php
 class form{
-	public function view($collection, $action, $fields, $data=array()){
+	public function view($dataPages, $action, $data=array()){		
 		$fieldsString = '';
-		foreach($fields as $name=>$field){
-			$value = '';
-			if(isset($data[$name])){
-				$value = $data[$name];
+		if( isset($dataPages['fields']) && is_array($dataPages['fields']) ){
+			foreach($dataPages['fields'] as $name=>$field){
+				$value = '';
+				if(isset($data[$name])){
+					$value = $data[$name];
+				}
+				
+				$fieldsString .= $this->field($name, $field, $value);
 			}
-			
-			$fieldsString .= $this->field($field, $name, $value);
 		}
 		
-		$str = '<ul class="iAC-Collection" name="'.$collection.'" action="'.$action.'">
-			'.$fieldsString.'
+		$_id = '0';
+		if(isset($data['_id'])){
+			$_id = $data['_id'];
+		}
+		
+		$str = '<ul class="iAC-Collection" name="'.$dataPages['collection'].'" action="'.$action.'">
 			<li class="field" name="_id" type="string" check="string" condition="0">
 				<ul class="values">
 					<li class="field">
-						<p class="value"><input type="text" name="_id" value="'.$data['_id'].'" class="field input hidden" /></p>
+						<p class="value"><input type="text" name="_id" value="'.$_id.'" class="field input hidden" /></p>
 					</li>
 				</ul>
 			</li>
+			'.$fieldsString.'
 			<li class="field" name="submit" type="noaction">
 				<span class="label"></span>
 				<ul class="values">
@@ -29,12 +36,18 @@ class form{
 					</li>
 				</ul>
 			</li>
-		</ul>';
+		</ul>
+		
+		<script type="text/javascript">
+		$(document).ready(function() {
+			ajaxSubmitFields();
+		});
+		</script>';
 		
 		return $str;
 	}
 	
-	public function field($field, $name, $value){
+	public function field($name, $field, $value){
 		$arrProperties = array('name', 'type', 'check', 'condition', 'class', 'id');
 		$properties = ' name="'.$name.'"';
 		foreach($arrProperties as $key){
@@ -58,7 +71,7 @@ class form{
 			$notes = '<p class="notes">'.$field['notes'].'</p>';
 		}
 		
-		$view='';
+		$view = '';
 		if(isset($field['view'])){
 			$view = $field['view'];
 		}
@@ -75,8 +88,13 @@ class form{
 				'value' => $value,
 				'class' => 'field input',
 			);
-			if(isset($field['maxlength'])){
-				$input['maxlength'] = $field['maxlength'];
+			if(isset($field['properties'])){
+				foreach($field['properties'] as $k=>$v){
+					if($k=='value' && $value!=''){
+						$v = $value;
+					}
+					$input[$k] = $v;
+				}
 			}
 			
 			$result = $this->inputText($input);
@@ -86,6 +104,15 @@ class form{
 				'name' => $name,
 				'class' => 'field text',
 			);
+			if(isset($field['properties'])){
+				foreach($field['properties'] as $k=>$v){
+					if($k!='value'){
+						$input['properties'][$k] = $v;
+					}else if($value==''){
+						$value = $v;
+					}
+				}
+			}
 			$input['value'] = $value;
 			
 			$result = $this->textArea($input);
@@ -95,6 +122,16 @@ class form{
 				'name' => $name,
 				'class' => 'field select',
 			);
+			if(isset($field['properties'])){
+				foreach($field['properties'] as $k=>$v){
+					if($k!='selected'){
+						$input['properties'][$k] = $v;
+					}else if($value==''){
+						$value = $v;
+					}
+				}
+			}
+			
 			if(isset($field['data'])){
 				$input['data'] = $field['data'];
 			}
@@ -108,10 +145,19 @@ class form{
 				'name' => $name,
 				'class' => 'field',
 			);
+			if(isset($field['properties'])){
+				foreach($field['properties'] as $k=>$v){
+					if($k!='checked'){
+						$input['properties'][$k] = $v;
+					}else if($value==''){
+						$value = $v;
+					}
+				}
+			}
+			
 			if(isset($field['data'])){
 				$input['data'] = $field['data'];
 			}
-			$input['name'] = $name;
 			$input['value'] = $value;
 			
 			$result = $this->inputList($input);
@@ -125,8 +171,14 @@ class form{
 				'value' => $value,
 				'class' => 'field input datetimepicker',
 			);
-			if(isset($field['maxlength'])){
-				$input['maxlength'] = $field['maxlength'];
+			if(isset($field['properties'])){
+				foreach($field['properties'] as $k=>$v){
+					if($k!='value'){
+						$input['properties'][$k] = $v;
+					}else if($value==''){
+						$value = $v;
+					}
+				}
 			}
 			
 			$result = $this->inputText($input);
@@ -140,8 +192,14 @@ class form{
 				'value' => $value,
 				'class' => 'field input datepicker',
 			);
-			if(isset($field['maxlength'])){
-				$input['maxlength'] = $field['maxlength'];
+			if(isset($field['properties'])){
+				foreach($field['properties'] as $k=>$v){
+					if($k!='value'){
+						$input['properties'][$k] = $v;
+					}else if($value==''){
+						$value = $v;
+					}
+				}
 			}
 			
 			$result = $this->inputText($input);
@@ -152,6 +210,15 @@ class form{
 				'id' => $name.'_ck',
 				'class' => 'field text',
 			);
+			if(isset($field['properties'])){
+				foreach($field['properties'] as $k=>$v){
+					if($k!='value'){
+						$input['properties'][$k] = $v;
+					}else if($value==''){
+						$value = $v;
+					}
+				}
+			}
 			$input['value'] = $value;
 			
 			$result = $this->textCkeditor($input);
@@ -185,15 +252,17 @@ class form{
 	}
 	
 	private function inputList($input){
+		$view = 'checkBoxFull';
 		$properties = '';
 		foreach($input['properties'] as $key=>$value){
-			$properties .= ' '.$key.'="'.$value.'"';
+			if($key!='view'){
+				$properties .= ' '.$key.'="'.$value.'"';
+			}else{
+				$view = $value;
+			}
 		}
 		
-		$name = '';
-		if(isset($input['name'])){
-			$name = $input['name'];
-		}
+		$name = $input['properties']['name'];
 		
 		$i = 0;
 		$str = '';
@@ -208,7 +277,7 @@ class form{
 			}
 		}
 		
-		$str = '<p class="value checkBoxFull">'.$str.'</p>';
+		$str = '<p class="value '.$view.'">'.$str.'</p>';
 		return $str;
 	}
 	

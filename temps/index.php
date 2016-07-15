@@ -30,7 +30,11 @@
 
 <script type="text/javascript" src="../public/js/jsJquery.js"></script>
 <?php
-
+session_start();
+//session_destroy();
+echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
 ?>
 
 <!--<div class="box" _id="">

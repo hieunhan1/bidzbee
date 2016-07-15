@@ -74,11 +74,8 @@ class admin{
 	
 	private function pageView($dataPages){
 		//lay thong tin data trang hiện tại
-		$dataCurrent = array();
-		if($this->collection != ''){
-			$filter = $this->model->_getCollectionFilter($dataPages);
-			$dataCurrent = $this->model->find($this->collection, $filter);
-		}
+		$filter = $this->model->_getCollectionFilter($dataPages);
+		$dataCurrent = $this->model->find($this->collection, $filter);
 		//end lay thong tin data trang hiện tại
 		
 		//vòng lặp xuất data
@@ -183,39 +180,46 @@ class admin{
 	
 	private function pageAction($dataPages, $_id){
 		//lay thong tin data trang hiện tại
-		$collection = $dataPages['collection'];
-		$filter = array(
-			'where' => array('_id'=>$_id),
-		);
-		$dataCurrent = $this->model->findOne($collection, $filter);
+		$dataCurrent = array();
+		if($_id != 0){
+			$filter = array(
+				'where' => array('_id'=>$_id),
+			);
+			$dataCurrent = $this->model->findOne($this->collection, $filter);
+			if(!$dataCurrent){
+				return '<p class="error">ERROR: Không tìm thấy dữ liệu</p>';
+			}
+		}
 		//end lay thong tin data trang hiện tại
+		
+		//vòng lặp xuất data
+		if(isset($dataPages['php_admin']) && $dataPages['php_admin']!=''){
+			eval($dataPages['php_admin']);
+		}
+		//end vòng lặp xuất data
 		
 		//include_once form
 		include_once('controllers/form.php');
 		$form = new form();
 		
-		//vòng lặp xuất data
-		$php = '';
-		if(isset($dataPages['php_admin'])){
-			eval($dataPages['php_admin']);
-		}
-		//end vòng lặp xuất data
-		
 		//xuất html
-		$css_admin = '';
-		if(isset($dataPages['css_admin'])){
-			$css_admin = $dataPages['css_admin'];
+		$css = '';
+		if(isset($dataPages['css_admin']) && $dataPages['css_admin']!=''){
+			$css = $dataPages['css_admin'];
 		}
 		
-		$javascript_admin = '';
-		if(isset($dataPages['javascript_admin'])){
-			$javascript_admin = $dataPages['javascript_admin'];
+		$javascript = '';
+		if(isset($dataPages['javascript_admin']) && $dataPages['javascript_admin']!=''){
+			$javascript = $dataPages['javascript_admin'];
 		}
 		
 		$html = '';
-		if(isset($dataPages['html_admin'])){
+		if(isset($dataPages['html_admin']) && $dataPages['html_admin']!=''){
 			eval($dataPages['html_admin']);
+		}else{
+			$html = $form->view($dataPages, $this->action, $dataCurrent);
 		}
+		$html .= $css.$javascript;
 		//end xuất html
 		
 		return $html;

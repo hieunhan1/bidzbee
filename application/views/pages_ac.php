@@ -105,7 +105,7 @@ $data = $this->model->findOne($collection, $filter);
         <ul class="values">
             <li class="field">
                 <p class="value">
-                    <select name="collection" class="field select">
+                    <select name="collection" class="field select" id="collectionPages">
                     <?php if(isset($data['collection'])) echo '<option value="'.$data['collection'].'">'.$data['collection'].'</option>';?>
                     </select>
                 </p>
@@ -137,7 +137,7 @@ $data = $this->model->findOne($collection, $filter);
         <p class="clear10"></p>
     </li>
     
-    <li class="field data addData" name="where" type="datalist" check="string" condition="0">
+    <li class="field addData" name="where" type="datalist" check="string" condition="0">
         <span class="label">Where</span>
         <ul class="values dataListFull listAddData sortable">
             <p><a href="javascript:;" class="ppWhere">example</a></p>
@@ -157,7 +157,7 @@ $data = $this->model->findOne($collection, $filter);
         <p class="clear10"></p>
     </li>
     
-    <li class="field data addData" name="sort" type="datalist" check="string" condition="0">
+    <li class="field addData" name="sort" type="datalist" check="string" condition="0">
         <span class="label">Sort</span>
         <ul class="values dataListFull listAddData sortable">
             <p class="error hidden">Sort is a required field</p>
@@ -190,7 +190,7 @@ $data = $this->model->findOne($collection, $filter);
     
     <p class="clear1" style="background-color:#FC0;"></p><p class="clear10"></p>
     
-    <li class="field data addData" name="widgets" type="datalist" check="string" condition="0">
+    <li class="field addData" name="widgets" type="datalist" check="string" condition="0">
         <span class="label">Widgets</span>
         <ul class="values dataListFull listAddData sortable">
             <p class="error hidden">Widgets is a required field</p>
@@ -259,6 +259,54 @@ $data = $this->model->findOne($collection, $filter);
     
     <p class="clear1 admin" style="background-color:#FC0;"></p><p class="clear10"></p>
     
+    <li class="field addFields admin" name="fields" type="datalist" check="string" condition="0">
+    	<span class="label">Fields</span>
+        <ul class="values dataListFull listAddFields sortable">
+            <?php
+			function fieldArrayToString($data){
+				$str = '';
+				if(is_array($data) && count($data)>0){
+					foreach($data as $key=>$value){
+						if(!is_array($value)){
+							$str .= '<li class="field" key="'.$key.'" value="'.$value.'">'.$key.' <i>('.$value.')</i></li>';
+						}else{
+							$children = fieldArrayToString($value);
+							$str .= '<li class="field" name="'.$key.'" type="datalist">
+								<ul class="values dataListFull">
+									'.$children.'
+									<p class="clear1"></p>
+								</ul>
+							</li>';
+						}
+					}
+				}
+				
+				return $str;
+			}
+			
+			$str = '';
+			if(isset($data['fields']) && is_array($data['fields'])){
+				foreach($data['fields'] as $name=>$row){
+					$fields = fieldArrayToString($row);
+					$str .= '<li class="field fieldAddFields" name="'.$name.'" type="datalist">
+						<span class="label2">'.$name.'</span>
+						<ul class="values values80 dataListFull" style="display:none">
+							'.$fields.'
+						</ul>
+						<p class="clear1"></p>
+					</li>';
+				}
+			}
+			
+			echo $str;
+			?>
+        </ul>
+        <div class="viewFrmAddFields values80 floatRight">
+            <input type="button" name="btnFormAddField" value="Add" class="btnFormAddField btnSmall bgGreen corner5" />
+        </div>
+        <p class="clear10"></p>
+    </li>
+    
     <li class="field admin" name="php_admin" type="textarea" check="string" condition="0">
         <span class="label">PHP admin</span>
         <ul class="values values80">
@@ -312,14 +360,14 @@ $data = $this->model->findOne($collection, $filter);
                 <ul class="values valuesFull authorityGroup">
                     <?php
 					if(isset($data['authority']['groups']) && is_array($data['authority']['groups'])){
-						$data = $data['authority']['groups'];
-						foreach($data as $key=>$allows){
+						$dataAuth = $data['authority']['groups'];
+						foreach($dataAuth as $name=>$allows){
 							$str = '';
-							foreach($allows as $name=>$allow){
-								$str .= '<li class="field" value="'.$name.'">'.$allow.'</li>';
+							foreach($allows as $key=>$value){
+								$str .= '<li class="field" key="'.$key.'" value="'.$value.'">'.$key.' <i>('.$value.')</i></li>';
 							}
-							echo '<li class="field fieldAuthority" name="'.$key.'" type="datalist">
-								<span class="label2">'.$key.'</span>
+							echo '<li class="field fieldAuthority" name="'.$name.'" type="datalist">
+								<span class="label2">'.$name.'</span>
 								<ul class="values" style="display:none">
 									'.$str.'
 								</ul>
@@ -330,17 +378,17 @@ $data = $this->model->findOne($collection, $filter);
                 </ul>
             </li>
             <li class="field" name="users" type="datalist">
-                <ul class="values authorityUsers">
+                <ul class="values valuesFull authorityUsers">
                     <?php
 					if(isset($data['authority']['users']) && is_array($data['authority']['users'])){
-						$data = $data['authority']['users'];
-						foreach($data as $key=>$allows){
+						$dataAuth = $data['authority']['users'];
+						foreach($dataAuth as $name=>$allows){
 							$str = '';
-							foreach($allows as $name=>$allow){
-								$str .= '<li class="field" value="'.$name.'">'.$allow.'</li>';
+							foreach($allows as $key=>$value){
+								$str .= '<li class="field" key="'.$key.'" value="'.$value.'">'.$key.' <i>('.$value.')</i></li>';
 							}
-							echo '<li class="field fieldAuthority" name="'.$key.'" type="datalist">
-								<span class="label2">'.$key.'</span>
+							echo '<li class="field fieldAuthority" name="'.$name.'" type="datalist">
+								<span class="label2">'.$name.'</span>
 								<ul class="values" style="display:none">
 									'.$str.'
 								</ul>
@@ -372,6 +420,7 @@ $data = $this->model->findOne($collection, $filter);
 include_once('btnAddData.php');
 include_once('authority.php');
 include_once('ppWhere.php');
+include_once('pages_add_fields.php');
 ?>
 
 <style type="text/css">
@@ -402,7 +451,7 @@ $(document).ready(function() {
 	
 	//load collection
 	function autoLoadCollection(){
-		var selected = $("select[name=collection]").val();
+		var selected = $("#collectionPages").val();
 		var checked = new Object();
 		$("input[name=pretty]:checked").each(function(index, element) {
 			var value = $(element).val();
@@ -445,12 +494,12 @@ $(document).ready(function() {
 					}
 					str += '<option value="' + data[key].name + '"' + select + '>' + data[key].label + '</option>';
 				}
-				$("select[name=collection]").html(str);
+				$("#collectionPages").html(str);
 			}
 		});
 	}
 	autoLoadCollection();
-	$("select[name=collection]").change(function(){
+	$("#collectionPages").change(function(){
 		autoLoadCollection();
 	});
 	

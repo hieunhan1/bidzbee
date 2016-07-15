@@ -24,7 +24,7 @@
             <p class="clear1"></p>
         </li>
         
-        <li name="datetime" type="datetime" check="datetime" condition="1" class="field" style="display:none;">
+        <li name="datetime" type="datetime" check="datetime" condition="1" class="field hidden">
             <ul class="values">
                 <li class="field"><p class="value"><input type="datetime" name="datetime" value="<?php echo date(_DATETIME_);?>" class="field" /></p></li>
             </ul>
