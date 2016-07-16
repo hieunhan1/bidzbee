@@ -1,13 +1,12 @@
 <?php
-$collection = 'widgets';
+$collection = _WIDGETS_;
 $filter = array(
 	'where' => array('_id'=>$_GET['_id']),
 );
 $data = $this->model->findOne($collection, $filter);
 ?>
-<div id="collection" class="hidden"><?php echo $collection;?></div>
-<div id="action" class="hidden"><?php echo $this->action;?></div>
-<ul class="iAC-Collection">
+
+<ul class="iAC-Collection" name="<?php echo $collection;?>" action="<?php echo $this->action;?>">
 	<li class="field" name="_id" type="text" check="string" condition="0">
         <ul class="values">
             <li class="field">

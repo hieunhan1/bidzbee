@@ -217,7 +217,7 @@ class admin{
 		if(isset($dataPages['html_admin']) && $dataPages['html_admin']!=''){
 			eval($dataPages['html_admin']);
 		}else{
-			$html = $form->view($dataPages, $this->action, $dataCurrent);
+			$html = $form->view($this->model, $dataPages, $this->action, $dataCurrent);
 		}
 		$html .= $css.$javascript;
 		//end xuất html

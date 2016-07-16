@@ -1,13 +1,11 @@
 <?php
-$collection = 'pages';
+$collection = _PAGES_;
 $filter = array(
 	'where' => array('_id'=>$_GET['_id']),
 );
 $data = $this->model->findOne($collection, $filter);
 ?>
-<div id="collection" class="hidden"><?php echo $collection;?></div>
-<div id="action" class="hidden"><?php echo $this->action;?></div>
-<ul class="iAC-Collection">
+<ul class="iAC-Collection" name="<?php echo $collection;?>" action="<?php echo $this->action;?>">
 	<li class="field" name="_id" type="text" check="string" condition="0">
         <ul class="values">
             <li class="field">
@@ -259,6 +257,52 @@ $data = $this->model->findOne($collection, $filter);
     
     <p class="clear1 admin" style="background-color:#FC0;"></p><p class="clear10"></p>
     
+    <!--
+    <li class="field admin" name="php_admin" type="textarea" check="string" condition="0">
+        <span class="label">PHP admin</span>
+        <ul class="values values80">
+            <li class="field">
+                <p class="value"><textarea name="php_admin" class="field text" style="height:200px;"><?php if(isset($data['php_admin'])) echo $data['php_admin'];?></textarea></p>
+            </li>
+            <p class="error hidden">PHP admin is a required field</p>
+        </ul>
+        <p class="clear1"></p>
+    </li>
+    
+    <li class="field admin" name="html_admin" type="textarea" check="string" condition="0">
+        <span class="label">HTML Admin</span>
+        <ul class="values values80">
+            <li class="field">
+                <p class="value"><textarea name="html_admin" class="field text" style="height:200px;"><?php if(isset($data['html_admin'])) echo $data['html_admin'];?></textarea></p>
+            </li>
+            <p class="error hidden">HTML Admin is a required field</p>
+        </ul>
+        <p class="clear1"></p>
+    </li>
+    
+    <li class="field admin" name="css_admin" type="textarea" check="string" condition="0">
+        <span class="label">CSS admin</span>
+        <ul class="values values80">
+            <li class="field">
+                <p class="value"><textarea name="css_admin" class="field text" style="height:200px;"><?php if(isset($data['css_admin'])) echo $data['css_admin'];?></textarea></p>
+            </li>
+            <p class="error hidden">CSS admin is a required field</p>
+        </ul>
+        <p class="clear1"></p>
+    </li>
+    
+    <li class="field admin" name="javascript_admin" type="textarea" check="string" condition="0">
+        <span class="label">Javascript admin</span>
+        <ul class="values values80">
+            <li class="field">
+                <p class="value"><textarea name="javascript_admin" class="field text" style="height:200px;"><?php if(isset($data['javascript_admin'])) echo $data['javascript_admin'];?></textarea></p>
+            </li>
+            <p class="error hidden">Javascript admin is a required field</p>
+        </ul>
+        <p class="clear1"></p>
+    </li>
+    -->
+    
     <li class="field addFields admin" name="fields" type="datalist" check="string" condition="0">
     	<span class="label">Fields</span>
         <ul class="values dataListFull listAddFields sortable">
@@ -305,50 +349,6 @@ $data = $this->model->findOne($collection, $filter);
             <input type="button" name="btnFormAddField" value="Add" class="btnFormAddField btnSmall bgGreen corner5" />
         </div>
         <p class="clear10"></p>
-    </li>
-    
-    <li class="field admin" name="php_admin" type="textarea" check="string" condition="0">
-        <span class="label">PHP admin</span>
-        <ul class="values values80">
-            <li class="field">
-                <p class="value"><textarea name="php_admin" class="field text" style="height:200px;"><?php if(isset($data['php_admin'])) echo $data['php_admin'];?></textarea></p>
-            </li>
-            <p class="error hidden">PHP admin is a required field</p>
-        </ul>
-        <p class="clear1"></p>
-    </li>
-    
-    <li class="field admin" name="html_admin" type="textarea" check="string" condition="0">
-        <span class="label">HTML Admin</span>
-        <ul class="values values80">
-            <li class="field">
-                <p class="value"><textarea name="html_admin" class="field text" style="height:200px;"><?php if(isset($data['html_admin'])) echo $data['html_admin'];?></textarea></p>
-            </li>
-            <p class="error hidden">HTML Admin is a required field</p>
-        </ul>
-        <p class="clear1"></p>
-    </li>
-    
-    <li class="field admin" name="css_admin" type="textarea" check="string" condition="0">
-        <span class="label">CSS admin</span>
-        <ul class="values values80">
-            <li class="field">
-                <p class="value"><textarea name="css_admin" class="field text" style="height:200px;"><?php if(isset($data['css_admin'])) echo $data['css_admin'];?></textarea></p>
-            </li>
-            <p class="error hidden">CSS admin is a required field</p>
-        </ul>
-        <p class="clear1"></p>
-    </li>
-    
-    <li class="field admin" name="javascript_admin" type="textarea" check="string" condition="0">
-        <span class="label">Javascript admin</span>
-        <ul class="values values80">
-            <li class="field">
-                <p class="value"><textarea name="javascript_admin" class="field text" style="height:200px;"><?php if(isset($data['javascript_admin'])) echo $data['javascript_admin'];?></textarea></p>
-            </li>
-            <p class="error hidden">Javascript admin is a required field</p>
-        </ul>
-        <p class="clear1"></p>
     </li>
     
     <p class="clear1" style="background-color:#FC0;"></p><p class="clear10"></p>

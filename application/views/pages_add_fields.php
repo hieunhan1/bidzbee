@@ -245,7 +245,8 @@
     	<option value="maxlength">maxlength</option>
     	<option value="checked">checked</option>
     	<option value="selected">selected</option>
-    	<option value="view">class view</option>
+    	<option value="type">type</option>
+    	<option value="view">view</option>
     	<option value="style">style</option>
     	<option value="placeholder">placeholder</option>
     	<option value="readonly">readonly</option>

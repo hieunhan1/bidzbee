@@ -1,6 +1,10 @@
 <?php
 class form{
-	public function view($dataPages, $action, $data=array()){		
+	private $model;
+	
+	public function view($model, $dataPages, $action, $data=array()){		
+		$this->model = $model;
+		
 		$fieldsString = '';
 		if( isset($dataPages['fields']) && is_array($dataPages['fields']) ){
 			foreach($dataPages['fields'] as $name=>$field){
@@ -135,6 +139,11 @@ class form{
 			if(isset($field['data'])){
 				$input['data'] = $field['data'];
 			}
+			
+			if(isset($field['connect'])){
+				$input['connect'] = $field['connect'];
+			}
+			
 			$input['value'] = $value;
 			
 			$result = $this->select($input);
@@ -149,7 +158,7 @@ class form{
 				foreach($field['properties'] as $k=>$v){
 					if($k!='checked'){
 						$input['properties'][$k] = $v;
-					}else if($value==''){
+					}else if(!is_bool($value) && $value==''){
 						$value = $v;
 					}
 				}
@@ -158,6 +167,11 @@ class form{
 			if(isset($field['data'])){
 				$input['data'] = $field['data'];
 			}
+			
+			if(isset($field['connect'])){
+				$input['connect'] = $field['connect'];
+			}
+			
 			$input['value'] = $value;
 			
 			$result = $this->inputList($input);
@@ -224,16 +238,23 @@ class form{
 			$result = $this->textCkeditor($input);
 		}else if($type=='datalist'){
 			if(is_array($value)){
-				foreach($value as $key=>$row){
-					$result .= '<p>'.$key.': <b>'.$row.'</b></p>';
+				foreach($value as $key=>$v){
+					$result .= '<li class="field fieldAddData" key="'.$key.'" value="'.$v.'">'.$key.' <i>('.$v.')</i></li>';
 				}
 			}
 		}
 		
+		$datalist = '';
+		if($type!='datalist'){
+			$result = '<li class="field">'.$result.'</li>';
+		}else{
+			$datalist = 'dataListFull listAddData sortable ';
+		}
+		
 		$str = '<li'.$properties.'>
 			'.$label.'
-			<ul class="values '.$view.'">
-				<li class="field">'.$result.'</li>
+			<ul class="values '.$datalist.$view.'">
+				'.$result.'
 				'.$error.$notes.'
 			</ul>
 			<p class="clear1"></p>
@@ -251,6 +272,55 @@ class form{
 		return $str;
 	}
 	
+	private function arrayDataConnect($input){
+		$array = array();
+		if(isset($input['data'])){
+			foreach($input['data'] as $value=>$label){
+				$check = false;
+				if(isset($input['value'])){
+					if(!is_array($input['value']) && $input['value']==$value){
+						$check = true;
+					}else if(is_array($input['value']) && in_array($value, $input['value'])){
+						$check = true;
+					}
+				}
+				$array[] = array('value'=>$value, 'label'=>$label, 'check'=>$check);
+			}
+		}
+		
+		if(isset($input['connect'])){
+			$filter = $this->model->_getCollectionFilter($input['connect']);
+			
+			$collection = $input['connect']['collection'];
+			$v = $input['connect']['value'];
+			$l = $input['connect']['label'];
+			
+			$filter['pretty'] = array(
+				$v => 1,
+				$l => 1,
+			);
+			$data = $this->model->find($collection, $filter);
+			foreach($data as $field){
+				$value = $field[$v];
+				$label = $field[$l];
+				
+				$check = false;
+				if(isset($input['value'])){
+					if(!is_array($input['value']) && $input['value']==$value){
+						$check = true;
+					}else{
+						if(is_array($input['value']) && in_array($value, $input['value'])){
+							$check = true;
+						}
+					}
+				}
+				$array[] = array('value'=>$value, 'label'=>$label, 'check'=>$check);
+			}
+		}
+		
+		return $array;
+	}
+	
 	private function inputList($input){
 		$view = 'checkBoxFull';
 		$properties = '';
@@ -263,22 +333,20 @@ class form{
 		}
 		
 		$name = $input['properties']['name'];
+		unset($input['properties']);
 		
-		$i = 0;
-		$str = '';
-		if(isset($input['data'])){
-			foreach($input['data'] as $key=>$label){
-				$checked = '';
-				if(isset($input['value']) && $key==$input['value']){
-					$checked = 'checked="checked"';
-				}
-				$str .= '<span><input '.$properties.' value="'.$key.'" id="'.$name.$i.'" '.$checked.' />'.$label.'</span>';
-				$i++;
+		$str = ''; $i = 0;
+		$array = $this->arrayDataConnect($input);
+		foreach($array as $key=>$row){
+			$check = '';
+			if($row['check']==true){
+				$check = 'checked="checked"';
 			}
+			$str .= '<span><input '.$properties.' value="'.$row['value'].'" id="'.$name.$i.'" '.$check.' />'.$row['label'].'</span>';
+			$i++;
 		}
 		
-		$str = '<p class="value '.$view.'">'.$str.'</p>';
-		return $str;
+		return '<p class="value '.$view.'">'.$str.'</p>';
 	}
 	
 	private function textArea($input){
@@ -300,15 +368,13 @@ class form{
 		}
 		
 		$str = '';
-		if(isset($input['data'])){
-			foreach($input['data'] as $key=>$label){
-				$selected = '';
-				if(isset($input['value']) && $key==$input['value']){
-					$selected = ' selected="selected"';
-				}
-				
-				$str .= '<option value="'.$key.'"'.$selected.'>'.$label.'</option>';
+		$array = $this->arrayDataConnect($input);
+		foreach($array as $key=>$row){
+			$check = '';
+			if($row['check']==true){
+				$check = ' selected="selected"';
 			}
+			$str .= '<option value="'.$row['value'].'"'.$check.'>'.$row['label'].'</option>';
 		}
 		
 		$str = '<p class="value"><select'.$properties.'>'.$str.'</select></p>';
@@ -316,10 +382,13 @@ class form{
 	}
 	
 	private function textCkeditor($input){
+		$view = 'ckeditorFull';
 		$properties = '';
-		if(isset($input['properties'])){
-			foreach($input['properties'] as $key=>$value){
+		foreach($input['properties'] as $key=>$value){
+			if($key!='view'){
 				$properties .= ' '.$key.'="'.$value.'"';
+			}else{
+				$view = $value;
 			}
 		}
 		
@@ -331,7 +400,10 @@ class form{
 		if(isset($input['properties']['id'])){
 			$id = $input['properties']['id'];
 		}
-		$str .= $this->ckeditorFull($id);
+		
+		if(method_exists(get_class(), $view)){
+			$str .= $this->$view($id);
+		}
 		return $str;
 	}
 	
