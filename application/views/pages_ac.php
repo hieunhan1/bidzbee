@@ -351,6 +351,21 @@ $data = $this->model->findOne($collection, $filter);
         <p class="clear10"></p>
     </li>
     
+    <li class="field" name="upload" type="checkbox" check="string" condition="0">
+        <span class="label">Form upload</span>
+        <ul class="values">
+            <li class="field">
+                <p class="value checkBox">
+                	<span><input type="radio" name="upload" value="1" id="upload1" class="field" checked="checked" />Yes</span>
+                	<span><input type="radio" name="upload" value="0" id="upload0" class="field" <?php if(isset($data['upload']) && $data['upload']==0) echo 'checked="checked"';?> />No</span>
+                </p>
+                <p class="clear1"></p>
+            </li>
+            <p class="error hidden">Select upload</p>
+        </ul>
+        <p class="clear10"></p>
+    </li>
+    
     <p class="clear1" style="background-color:#FC0;"></p><p class="clear10"></p>
     
     <li class="field authority" name="authority" type="datalist" check="string" condition="0">

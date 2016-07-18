@@ -38,12 +38,16 @@ class ajax{
 					$error = 'ERROR: Does not exist request '.strtoupper($request);
 					$result = $this->model->_error($error);
 				}
+			}else if(isset($_FILES['files']['name'][0])){
+				include_once('uploads.php');
+				$uploads = new uploads();
+				
+				$result = $uploads->upload($this->model);
 			}else{			
 				$error = 'ERROR: Does not exist request.';
 				$result = $this->model->_error($error);
 			}
 		}
-		
 		echo json_encode($result);
     }
     

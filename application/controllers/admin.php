@@ -222,6 +222,14 @@ class admin{
 		$html .= $css.$javascript;
 		//end xuất html
 		
+		//view form upload
+		if(isset($dataPages['upload']) && $dataPages['upload']==true){
+			$upload = ob_start();
+			include_once("views/form_upload.php");
+			$upload = ob_get_clean();
+			$html .= $upload;
+		}
+		
 		return $html;
 	}
 }

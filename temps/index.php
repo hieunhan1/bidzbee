@@ -32,8 +32,10 @@
 <?php
 session_start();
 //session_destroy();
+
+$id = new MongoID();
 echo '<pre>';
-print_r($_SESSION);
+print_r((string)$id . 'aaaaaa');
 echo '</pre>';
 ?>
 

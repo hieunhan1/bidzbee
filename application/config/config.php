@@ -31,6 +31,13 @@ define('_SET_', '_set');
 define('_CONTROL_', 'control');
 define('_ADMIN_CATALOG_', 'catalog_admin');
 
+/*UPLOAD*/
+define('_UPLOAD_SIZE_', 8*1024*1024);
+define('_UPLOAD_TEMP_', '../public/temp/');
+define('_UPLOAD_IMAGE_', '../public/images/');
+define('_URL_TEMP_', 'public/temp/');
+define('_URL_IMAGE_', 'public/images/');
+
 /*name CSS*/
 /*define('_CSS_SUBMIT_', 'iAC-Submit');
 define('_CSS_SUBMIT_ALL', 'iAC-Submit-All');
