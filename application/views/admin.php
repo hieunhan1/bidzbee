@@ -142,7 +142,8 @@
             </div>-->
             
             <?php echo $pageCurrent;?>
-            <p class="clear30"></p>
+            
+            <p style="clear:both; height:180px;"></p>
     	</div><!--end viewContent-->
     </div><!--end right-->
 

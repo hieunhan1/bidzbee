@@ -434,114 +434,6 @@ function checkGetData(tags, condition){
 	}
 }
 
-//Get DATA Parent
-function dataParent(tags, condition){
-	//check object
-	if(typeof dataObject != "object"){
-		var dataObject = new Object();
-	}
-	//check var condition
-	if(typeof condition == "undefined"){
-		var condition = 0;
-	}
-	
-	//check error
-	$(tags).children(".error").hide(100);
-	var errors = new Object();
-	
-	var total = $(tags).children(".field").length;
-	if(total>0 && total>=condition){
-		$(tags).children(".field").each(function(index, element) {
-			//check exist type
-			if(typeof $(element).attr("type")!="undefined" && $(element).attr("type")!="noaction"){
-				var type = $(element).attr("type");
-				
-				//get info
-				var data = new Object();
-					data.type = type;
-				
-				if(typeof $(element).attr("name") != "undefined"){
-					var name = $(element).attr("name");
-				}else{
-					return false;
-				}
-				
-				var check = "";
-				if(typeof $(element).attr("check") != "undefined"){
-					check = $(element).attr("check");
-					data.check = check;
-				}
-				
-				if(typeof $(element).attr("condition") != "undefined"){
-					condition = $(element).attr("condition");
-				}
-				data.condition = condition;
-				
-				if($(element).children(".label").length){
-					data.label = $(element).children(".label").html();
-				}
-				
-				//check values data
-				var values = $(element).children(".values");
-				
-				//check type string
-				if(type == "radio"){
-					data.data = checkDataRadio(values, condition);
-				}else if(type == "checkbox"){
-					data.data = checkDataCheckBox(values, condition);
-				}else if(type == "textckeditor"){
-					data.data = checkDataCkeditor(values, condition);
-				}else if(type == "datalist"){ //check type dataList
-					data.data = checkDataList(values, condition);
-				}else if(type == "group"){ //check type group
-					data.data = dataParent(values, condition);
-				}else{
-					data.data = checkDataString(values, condition, check);
-				}
-				
-				//check error
-				if(data.data == false){
-					errors[name] = false;
-					$(element).children(".values").children(".error").show(100);
-				}else{
-					$(element).children(".values").children(".error").hide(100);
-				}
-				
-				dataObject[name] = data;
-			}else if(typeof $(element).attr("value") != "undefined"){
-				var name = $(element).html();
-				var value = $(element).attr("value");
-				
-				var data = new Object();
-					data.name = name;
-					data.value = value;
-				
-				dataObject[index] = data;
-			}else{
-				return false;
-			}
-		});
-		
-		//export error
-		var error = 0;
-		for(var key in errors){
-			error++;
-		}
-		
-		if(error==0){
-			return dataObject;
-		}else{
-			console.log(errors);
-			return false;
-		}
-	}else if(total==0 && condition==0){
-		return null;
-	}else{
-		$(tags).children(".error").show(100);
-		return false;
-	}
-}
-
 function convertToJson(data){
 	try{
 		data = $.parseJSON(data);
@@ -552,11 +444,83 @@ function convertToJson(data){
 	}
 }
 
+function actionUpload(){
+	if( $(".iAC-Collection input[name=_id]").length ){
+		var id = $(".iAC-Collection input[name=_id]").val();
+		if(id=="" || id=="0"){
+			return false;
+		}
+		
+		var name = $(".iAC-Collection input[name=name]").val();
+		
+		var files = new Object();
+			files.id = id;
+			files.name = name;
+			files.data = new Object();
+		
+		var count = 0;
+		$("#uploads-console .list-file .item").each(function(index, element) {
+			count++;
+            var name = $(element).attr("_name");
+            var file = $(element).attr("_file");
+			var data = new Object();
+				data.name = name;
+				data.file = file;
+				
+			files.data[index] = data;
+        });
+		
+		if(count==0) return false;
+		
+		$.ajax({ 	
+			url     : 'ajax',
+			type    : 'post',
+			data    : {_request:'actionUpload', files:files},
+			cache   : false,
+			success : function(data){
+				data = convertToJson(data);
+				if(data==false){
+					console.log("ERROR: Action upload");
+					return false;
+				}
+				
+				for(var i in data){
+					var row = data[i];
+					if(row.result!=false){
+						var id = row.file;
+						var url = '/public/images/' + row.file + '.' + row.extension;
+						$("#" + id).attr("_url", url);
+					}else{
+						console.log(row.message);
+					}
+				}
+			}
+		});
+	}
+}
+
+function reloadCKeditor(){
+	var editor = CKEDITOR.instances.content_ck;
+	
+	var content = editor.getData();
+		content = content.replace(/\/public\/temp\//g, '/public/images/');
+		
+	editor.setData(content);
+	setTimeout(function(){
+		editor.setData(content);
+	}, 200);
+}
+
 //Submit fields
 function ajaxSubmitFields(){
 	$("body").on("click", ".iAC-Submit", function(){
 		$(".iAC-Collection").removeClass("iAC-Collection-Active");
 		$(this).parents(".iAC-Collection").addClass("iAC-Collection-Active");
+		
+		if( $("#uploads-console").length ){
+			reloadCKeditor();
+		}
+		
 		var tags = $(".iAC-Collection-Active");
 		var fields = checkGetData(tags);
 		
@@ -588,12 +552,13 @@ function ajaxSubmitFields(){
 					ppLoad(str);
 					return false;
 				}else if(data.result==false){
-					var str = '<p class="error">ERROR: ' + data.message + '</p>';
+					var str = '<p class="error">' + data.message + '</p>';
 					ppLoad(str);
+					console.log(data);
 					return false;
 				}
-				console.log(data);
 				
+				console.log(data);
 				ppClose();
 				
 				var message = '<div id="saveMessage" class="bgGreen corner5" style="width:15%; color:#FFF; text-align:center; position:fixed; top:45px; left:40%; padding:8px 0; z-index:2;"><p>Success!</p></div>';
@@ -611,6 +576,10 @@ function ajaxSubmitFields(){
 					var hostname = $(location).attr('hostname');
 					var pathname = $(location).attr('pathname');
 					window.history.pushState(null, 'Title', 'http://' + hostname + pathname + '?_id=' + _id);
+				}
+				
+				if( $("#uploads-console").length ){
+					actionUpload();
 				}
 			}
 		});

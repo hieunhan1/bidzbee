@@ -33,9 +33,26 @@
 session_start();
 //session_destroy();
 
-$id = new MongoID();
+$data = array();
+
+$a = array(
+	array('type'=>'image', 'name'=>'name 1'),
+	array('type'=>'image', 'name'=>'name 2'),
+);
+
+$data['data'] = $a;
+
+$b = array(
+	array('type'=>'image', 'name'=>'name 3'),
+	array('type'=>'image', 'name'=>'name 4'),
+);
+
+foreach($b as $row){
+	array_push($data['data'], $row);
+}
+
 echo '<pre>';
-print_r((string)$id . 'aaaaaa');
+print_r($data);
 echo '</pre>';
 ?>
 

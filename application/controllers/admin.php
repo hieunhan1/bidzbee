@@ -22,6 +22,7 @@ class admin{
 		$this->page = '';
 		if(isset($currentUrl['other'])){
 			$this->page = $currentUrl['other'][0];
+			$_SESSION['admin']['pageCurrent'] = $this->page;
 		}
 		
 		if(!isset($_GET['_id'])){

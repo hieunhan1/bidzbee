@@ -73,6 +73,7 @@ class modelDB{
 	
 	public function _removeSymbol($str){
 		$str = str_replace('"', '', $str);
+		$str = str_replace("'", '&#39;', $str);
 		$str = str_replace('&', '', $str);
 		$str = str_replace('<', '', $str);
 		$str = str_replace('>', '', $str);
@@ -321,46 +322,22 @@ class modelDB{
 		return $allow;
 	}
 	
-	public function _authorityCollection($user, $collectionName, &$fields, $arrConnect=NULL){
-		$db = $this->_connectDatabase($arrConnect);
-		$collection = $this->_select($db, _CONTROL_);
-		
-		$where = array('name' => $collectionName);
-		$getInfoCollection = $this->_findOne($collection, $where);
-		
-		if($collectionName == _CONTROL_){
-			$getInfoCollection['authority'] = array(
-				'groups' => array(
-					'administrators' => array(
-						'read' => '1',
-						'create' => '1',
-						'update' => '1',
-						'delete' => '1',
-					),
-					'everyone' => array(
-						'read' => '1',
-						'create' => '0',
-						'update' => '0',
-						'delete' => '0',
-					)
-				)
-			);
+	public function _authorityCollection($user, $auth){
+		$fieldAuth = array();
+		foreach($fields as $key=>$field){
+			if(isset($field['authority'])){
+				$fieldAuth[$key] = $field['authority'];
+			}
 		}
 		
-		if(!isset($getInfoCollection['authority'])){
-			return false;
+		$userAuth = array();
+		if(count($fieldAuth) > 0){
+			foreach($fieldAuth as $key=>$auth){
+				$userAuth[$key] = $this->_authorityCheck($user, $auth);
+			}
 		}
 		
-		if(isset($getInfoCollection['fields'])){
-			$fields = $getInfoCollection['fields'];
-		}else{
-			$fields = array();
-		}
-		$authority = $getInfoCollection['authority'];
-		
-		$allow = $this->_authorityCheck($user, $authority);
-		
-		return $allow;
+		return $userAuth;
 	}
 	
 	public function _authorityFields($user, $fields){
@@ -381,7 +358,7 @@ class modelDB{
 		return $userAuth;
 	}
 	
-	public function _documentCheck($collectionName, $document, &$error){
+	public function _documentCheck($fields, $document, &$error){
 		$error = array();
 		$documentNew = array();
 		if(isset($document['_id'])){
@@ -394,6 +371,7 @@ class modelDB{
 			if(isset($field['condition'])){
 				$condition = $field['condition'];
 			}
+			
 			$data = '';
 			if(isset($document[$key])){
 				$data = $document[$key];
@@ -403,17 +381,15 @@ class modelDB{
 			if( method_exists(get_class(), $check) ){
 				$result = $this->$check($data, $condition);
 			}else{
-				$error = array('result'=>false, 'message'=>'ERROR: Does not exist check '.strtoupper($field['check']));
+				$error = array('result'=>false, 'message'=>'Does not exist check '.strtoupper($field['check']));
 				return false;
 			}
 			
 			//xuất lỗi nếu có
-			if(!is_bool($result)){
-				$documentNew[$key] = $result;
+			if(is_bool($result) && $result==false){
+				$error[$key] = $data;
 			}else{
-				if(is_bool($result)){
-					$error[$key] = $data;
-				}
+				$documentNew[$key] = $result;
 			}
 		}
 		
@@ -424,7 +400,7 @@ class modelDB{
 		}
 	}
 	
-	public function _checkString($data, $condition=NULL){
+	public function _checkString($data, $condition){
 		if(!is_array($data)){
 			$data = trim($data);
 		}else{
@@ -443,21 +419,27 @@ class modelDB{
 		}
 	}
 	
-	public function _checkNumber($data, $condition=NULL){
+	public function _checkNumber($data, $condition){
 		$data = trim($data);
 		settype($condition, 'int');
 		if($data=='' && $condition==0){
 			return $data;
 		}
 		
-		if(is_numeric($data) && strlen($data)>=$condition){
+		if(strlen($data)>=$condition){
+			if(!preg_match('/\./', $data)){
+				settype($data, 'int');
+			}else{
+				settype($data, 'float');
+			}
+			
 			return $data;
 		}else{
 			return false;
 		}
 	}
 	
-	public function _checkTel($data, $condition=NULL){
+	public function _checkTel($data, $condition){
 		$data = trim($data);
 		settype($condition, 'int');
 		if($data=='' && $condition==0){
@@ -472,7 +454,7 @@ class modelDB{
 		}
 	}
 	
-	public function _checkEmail($data, $condition=NULL){
+	public function _checkEmail($data, $condition){
 		$data = trim($data);
 		settype($condition, 'int');
 		if($data=='' && $condition==0){
@@ -492,30 +474,22 @@ class modelDB{
 		return $d && $d->format($format) == $date;
 	}
 	
-	public function _checkDate($data, $condition=NULL){
+	public function _checkDate($data, $condition){
 		$data = trim($data);
 		settype($condition, 'int');
 		if($data=='' && $condition==0){
 			return $data;
 		}
 		
-		$result = $this->_validateDate($data, _DATETIME_);
-		if($result==true){
-			$date = DateTime::createFromFormat(_DATETIME_, $data);
-			$date = $date->format(_DATETIME_DEFAULT_);
+		if($this->_validateDate($data, _DATETIME_)==true){
+			$data = $this->_dateObject($data);
+		}else if($this->_validateDate($data, _DATE_)==true){
+			$data = $this->_dateObject($data);
 		}else{
-			$result = $this->_validateDate($data, _DATE_);
-			if($result==true){
-				$data .= ' 00:00:00';
-				$date = DateTime::createFromFormat(_DATETIME_, $data);
-				$date = $date->format(_DATETIME_DEFAULT_);
-			}else{
-				return false;
-			}
+			return false;
 		}
 		
-		$date = strtotime($date);
-		return $date;
+		return $data;
 	}
 	
 	public function _checkUser($data, $condition){
@@ -531,6 +505,22 @@ class modelDB{
 		}else{
 			return false;
 		}
+	}
+	
+	public function _checkBool($data, $condition){
+		$data = trim($data);
+		settype($condition, 'int');
+		if($data=='' && $condition==0){
+			return $data;
+		}
+		
+		if($data==1 || $data=='true'){
+			$data = true;
+		}else{
+			$data = false;
+		}
+		
+		return $data;
 	}
 	
 	public function _checkConfirm($data, $condition){
@@ -670,6 +660,7 @@ class modelDB{
 		}
 		
 		$result = $collection->update($filter, array($set=>$document), $multi);
+		return $result;
 		if($result){
 			return $result;
 		}else{

@@ -39,6 +39,16 @@ class ajax{
 					$result = $this->model->_error($error);
 				}
 			}else if(isset($_FILES['files']['name'][0])){
+				$user = $this->model->_getUser();
+				
+				if( !isset($user['groups']) ){
+					return false;
+				}
+				
+				if($user['groups']!='administrators'){
+					return false;
+				}
+				
 				include_once('uploads.php');
 				$uploads = new uploads();
 				
@@ -48,6 +58,7 @@ class ajax{
 				$result = $this->model->_error($error);
 			}
 		}
+		
 		echo json_encode($result);
     }
     
@@ -70,7 +81,7 @@ class ajax{
 					$filter = array('_id'=>$this->document['_id']);
 					unset($this->document['_id']);
 				}else{
-					return array('result'=>false, 'message'=>'Không truyền ID cập nhật.');
+					return array('result'=>false, 'message'=>'ERROR: Không truyền ID cập nhật.');
 				}
 				$document = $this->model->documentCheckAdmin($collectionName, $this->document);
 				$result = $this->model->update($collectionName, $document, $filter);
@@ -83,7 +94,7 @@ class ajax{
 				$result = $this->model->find($collectionName, $filter);
 			}else if($action=='delete'){
 				if(!isset($this->document['where'])){
-					return array('result'=>false, 'message'=>'Không truyền điều kiện để xóa.');
+					return array('result'=>false, 'message'=>'ERROR: Không truyền điều kiện để xóa.');
 				}
 				$where = $this->document['where'];
 				$result = $this->model->remove($collectionName, $where);
@@ -92,50 +103,68 @@ class ajax{
 				return $arr;
 			}
 		}else{
-			//check authorityCollection
-			//Create var fields
-			$allowCollection = $this->model->_authorityCollection($user, $collectionName, $fields);
-			if($allowCollection==false){
-				$arr = array('result'=>false, 'message'=>'Collection: Access deny');
-				return $arr;
-			}
-		
-			//kiem tra quyền thực thi
-			if(!isset($allowCollection[$action]) || $allowCollection[$action]==0){
-				$arr = array('result'=>false, 'message'=>'Document: Access deny');
-				return $arr;
-			}
-		
-			//check authorityFields
-			$allowFields = $this->model->_authorityFields($user, $fields);
-			if(is_bool($allowFields)){
-				$arr = array('result'=>false, 'message'=>'Fields: Access deny');
+			//get pages
+			$filter = array(
+				'where' => array('name' => $user['pageCurrent']),
+			);
+			$dataPages = $this->model->findOne(_PAGES_, $filter);
+			
+			//check collection
+			$collection = '';
+			if(isset($dataPages['collection'])){
+				$collection = $dataPages['collection'];
+			}else{
+				$arr = array('result'=>false, 'message'=>'ERROR: Pages không tồn tại Collection');
 				return $arr;
 			}
 			
+			//authority collection
+			$authCollection = array();
+			if(isset($dataPages['authority'])){
+				$authCollection = $dataPages['authority'];
+			}
+			$allowCollection = $this->model->_authorityCheck($user, $authCollection);
+			if(!isset($allowCollection[$action]) || $allowCollection[$action]==0){
+				$arr = array('result'=>false, 'message'=>'ERROR: Collection access deny');
+				return $arr;
+			}
+		
+			//authority fields
+			$fields = array();
+			if(isset($dataPages['fields'])){
+				$fields = $dataPages['fields'];
+			}else{
+				$arr = array('result'=>false, 'message'=>'ERROR: Field empty.');
+				return $arr;
+			}
+			$allowFields = $this->model->_authorityFields($user, $fields);
+			if(is_array($allowFields)){
+				foreach($allowFields as $name=>$allow){
+					if(isset($allow[$action]) && $allow[$action]==0){
+						$arr = array('result'=>false, 'message'=>'ERROR: Field '.strtoupper($name).' access deny');
+						return $arr;
+					}
+				}
+			}
+			
 			//thuc thi
+			if(!isset($dataPages['']))
 			if($action=='create'){
 				$document = $this->model->_documentCheck($fields, $this->document, $error);
 				if($document==false){
-					$arr = array('result'=>false, 'message'=>'Document: Incorrect', 'error'=>$error);
+					$arr = array('result'=>false, 'message'=>'ERROR: Create incorrect', 'error'=>$error);
 					return $arr;
 				}
 				$result = $this->model->create($collectionName, $document);
 			}else if($action=='update'){
 				$document = $this->model->_documentCheck($fields, $this->document, $error);
 				if($document==false){
-					$arr = array('result'=>false, 'message'=>'Document: Incorrect', 'error'=>$error);
+					$arr = array('result'=>false, 'message'=>'ERROR: Update incorrect', 'error'=>$error);
 					return $arr;
 				}
 				
-				if(!isset($document['_filter'])){
-					$filter = array('_id'=>$document['_id']);
-				}else{
-					$filter = $document['_filter'];
-					unset($document['_filter']);
-				}
-				
-				$result = $this->model->update($collectionName, $document, $filter);
+				$filter = array('_id'=>$document['_id']);
+				$result = $this->model->update($collection, $document, $filter);
 			}else if($action=='read'){
 				if(isset($this->document['filter'])){
 					$filter = $this->document['filter'];
@@ -172,6 +201,16 @@ class ajax{
 		return $users;
 	}
 	//END USERS
+	
+	//ACTION UPLOAD
+	private function actionUpload(){
+		include_once('uploads.php');
+		$uploads = new uploads();
+		
+		$result = $uploads->uploadAction($this->model, $this->document);
+		return $result;
+	}
+	//END ACTION UPLOAD
 	
 	//BID
 	private function updateBID(){

@@ -139,7 +139,6 @@ class modelAjax extends modelDB{
 			if($collection != _COLLECTION_){
 				$collection = $this->_select($this->db, $collection);
 				$result = $this->_update($collection, $document, $filter);
-				
 			}else{
 				if(isset($filter['_id'])){
 					$document['_id'] = $filter['_id'];

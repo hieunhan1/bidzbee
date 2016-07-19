@@ -9,14 +9,46 @@
         </div>
     </div>
     <div class="list-file">
-        <!--<div class="item active">
-        	<p class="avarta">chọn làm<br />ảnh đại diện</p>
-            <p class="img imgWidth"><img src="public/images/iphone.jpg" alt="" /></p>
-            <p class="copy"><a href="javascript:;">Copy link</a></p>
-            <p class="delete"><a href="javascript:;">Delete</a></p>
-        </div>-->
+    	<?php
+		$filter = array(
+			'where' => array('id'=>$_id),
+		);
+        $data = $this->model->findOne(_FILES_, $filter);
+		if(isset($data['data'])){
+			foreach($data['data'] as $files){
+				$id = $files['file'];
+				$name = $files['name'];
+				$file = $files['file'] . '.' . $files['extension'];
+				
+				$active = '';
+				if(isset($dataCurrent['img']) && $dataCurrent['img']==$file){
+					$active = ' active';
+				}
+				
+				if($files['type']=='image'){
+					$url = _URL_IMAGE_ . $file;
+					$thumb = _URL_THUMB_ . $file;
+					echo '<div class="item'.$active.'" id="'.$id.'" _name="'.$name.'" _file="'.$file.'" _url="'.$url.'">
+						<p class="avarta">chọn làm<br />ảnh đại diện</p>
+						<p class="img imgWidth"><img src="'.$thumb.'" alt="'.$name.'" /></p>
+						<p class="insert"><a href="javascript:;">Insert</a></p>
+						<p class="delete"><a href="javascript:;">Delete</a></p>
+					</div>';
+				}else{
+					$url = _URL_FILE_ . $file;
+					echo '<div class="item" id="'.$id.'" _name="'.$name.'" _file="'.$file.'" _url="'.$url.'">
+						<p class="avarta">chọn làm<br />đại diện</p>
+						<p class="img imgWidth"><span>'.$files['extension'].'</span></p>
+						<p class="copy"><a href="javascript:;">Copy link</a></p>
+						<p class="delete"><a href="javascript:;">Delete</a></p>
+					</div>';
+				}
+			}
+		}
+		?>
     </div>
 </div>
+<div id="uploads-close">&raquo;</div>
 
 <style type="text/css">
 #standard-upload-files{
@@ -55,7 +87,7 @@
 	color: #333;
 }
 #uploads-console .list-file{
-	width: 67%;
+	width: 65%;
 	height: 110px;
 	overflow: auto;
 	line-height: 20px;
@@ -63,7 +95,7 @@
 }
 #uploads-console .list-file .item{
 	width: 100px;
-	height: 90px;
+	height: 80px;
 	float: left;
 	font-size: 90%;
 	font-weight: bold;
@@ -95,10 +127,24 @@
 }
 #uploads-console .list-file .item .img{
 	width: 100%;
-	height: 68px;
+	height: 58px;
+	margin-bottom: 5px;
+}
+#uploads-console .list-file .item span{
+	display: block;
+	width: 100%;
+	height: 58px;
+	line-height: 58px;
+	color: #999;
+	font-size: 200%;
+	text-transform: uppercase;
 	margin-bottom: 5px;
 }
 #uploads-console .list-file .item .copy{
+	width: auto;
+	float: left;
+}
+#uploads-console .list-file .item .insert{
 	width: auto;
 	float: left;
 }
@@ -129,6 +175,23 @@
 #uploads-console .list-file .item .bar-text{
 	margin-left: 10px;
 }
+#uploads-close{
+	width: 3%;
+	max-width: 50px;
+	float: right;
+	line-height: 145px;
+	text-align: center;
+	background-color: #CCC;
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	z-index: 2;
+	cursor: pointer;
+}
+#uploads-close:hover{
+	color: #FFF;
+	background-color: #999;
+}
 </style>
 
 <script type="text/javascript">
@@ -136,6 +199,16 @@ $(document).ready(function() {
 	$("#uploads-console").on("click", ".item", function(){
 		$("#uploads-console .item").removeClass("active");
 		$(this).addClass("active");
+		
+		var file = $(this).attr("_file");
+		
+		if( $(".iAC-Collection input[name=img]").length ){
+			$(".iAC-Collection input[name=img]").val(file);
+		}
+		
+		if( $(".iAC-Collection input[name=file]").length ){
+			$(".iAC-Collection input[name=file]").val(file);
+		}
 	});
 	
 	(function(){
@@ -152,6 +225,11 @@ $(document).ready(function() {
 			
 			if( !$("#uploads-console .active").length ){
 				$("#uploads-console .item:first").addClass("active");
+				
+				var file = $("#uploads-console .active").attr("_file");
+				if( $(".iAC-Collection input[name=img]").length ){
+					$(".iAC-Collection input[name=img]").val(file);
+				}
 			}
 		}
 		
@@ -198,11 +276,36 @@ $(document).ready(function() {
 			this.className = "drop-zone";
 			return false;
 		};
-		
 	})();
 	
+	function InsertHTML(value) {
+		// Get the editor instance that we want to interact with.
+		var editor = CKEDITOR.instances.content_ck;
+		
+		// Check the active editing mode.
+		if ( editor.mode == 'wysiwyg' ){
+			// Insert HTML code.
+			// http://docs.ckeditor.com/#!/api/CKEDITOR.editor-method-insertHtml
+			editor.insertHtml( value );
+		}else{
+			alert( 'You must be in WYSIWYG mode!' );
+		}
+	}
+	
+	$("#uploads-console").on("click", ".insert", function(){
+		var name = $(this).parents(".item").attr("_name");
+		var url = $(this).parents(".item").attr("_url");
+		var str = '<p style="text-align: center;"><img src="' + url + '" alt="' + name + '" /></p>';
+			
+		InsertHTML(str);
+	});
+	
+	$("#uploads-close").on("click", function(){
+		$("#uploads-console").toggle(200);
+	});
+	
 	/*copy link image*/
-	function copySuccess(){
+	/*function copySuccess(){
 		$(".js-message").show(100);
 		$(".js-data").hide(100);
 		$(".js-btn").hide(100);
@@ -240,7 +343,7 @@ $(document).ready(function() {
 	$(".js-copycancel").live("click", function(){
 		$("#copyData").hide(100);
 		return true;
-	});
+	});*/
 	/*end copy link image*/
 });
 </script>

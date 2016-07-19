@@ -18,6 +18,7 @@ define('_DATE_', 'd-m-Y');
 define('_COLLECTION_', 'collections');
 define('_PAGES_', 'pages');
 define('_POSTS_', 'posts');
+define('_FILES_', 'files');
 define('_WIDGETS_', 'widgets');
 define('_SETTING_', 'setting');
 define('_LIMIT_', '30');
@@ -33,10 +34,20 @@ define('_ADMIN_CATALOG_', 'catalog_admin');
 
 /*UPLOAD*/
 define('_UPLOAD_SIZE_', 8*1024*1024);
-define('_UPLOAD_TEMP_', '../public/temp/');
+define('_UPLOAD_TEMP_',  '../public/temp/');
 define('_UPLOAD_IMAGE_', '../public/images/');
-define('_URL_TEMP_', 'public/temp/');
-define('_URL_IMAGE_', 'public/images/');
+define('_UPLOAD_THUMB_', '../public/thumbs/');
+define('_UPLOAD_AUDIO_', '../public/audios/');
+define('_UPLOAD_FILE_',  '../public/files/');
+define('_UPLOAD_VIDEO_', '../public/videos/');
+define('_URL_TEMP_',  '/public/temp/');
+define('_URL_IMAGE_', '/public/images/');
+define('_URL_THUMB_', '/public/thumbs/');
+define('_URL_AUDIO_', '/public/audios/');
+define('_URL_FILE_',  '/public/files/');
+define('_URL_VIDEO_', '/public/videos/');
+define('_THUMB_WIDTH_', 300);
+define('_THUMB_HEIGHT_', 250);
 
 /*name CSS*/
 /*define('_CSS_SUBMIT_', 'iAC-Submit');
