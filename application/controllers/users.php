@@ -44,7 +44,7 @@ class users{
 		}
 		
 		$filter = array(
-			'where' => array($field=>$user, 'password'=>$password),
+			'where' => array($field=>$user, 'password'=>$password, 'status'=>true),
 			'pretty' => array('name'=>1, 'email'=>1, 'username'=>1, 'img'=>1, 'date_expiration'=>1, 'is_admin'=>1, 'groups'=>1),
 		);
 		$result = $this->model->findOne('users', $filter);

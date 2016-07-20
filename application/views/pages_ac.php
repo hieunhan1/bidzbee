@@ -5,7 +5,7 @@ $filter = array(
 );
 $data = $this->model->findOne($collection, $filter);
 ?>
-<ul class="iAC-Collection" name="<?php echo $collection;?>" action="<?php echo $this->action;?>">
+<ul id="iAC-Collection" class="iAC-Collection" name="<?php echo $collection;?>" action="<?php echo $this->action;?>">
 	<li class="field" name="_id" type="text" check="string" condition="0">
         <ul class="values">
             <li class="field">
@@ -60,7 +60,7 @@ $data = $this->model->findOne($collection, $filter);
             <li class="field">
                 <p class="value"><input type="text" name="label" value="<?php echo $data['label'];?>" class="field input" /></p>
             </li>
-            <p class="error hidden">Label name is a required field</p>
+            <p class="error hidden">Label is a required field</p>
         </ul>
         <p class="clear1"></p>
     </li>
@@ -356,8 +356,8 @@ $data = $this->model->findOne($collection, $filter);
         <ul class="values">
             <li class="field">
                 <p class="value checkBox">
-                	<span><input type="radio" name="upload" value="1" id="upload1" class="field" checked="checked" />Yes</span>
-                	<span><input type="radio" name="upload" value="0" id="upload0" class="field" <?php if(isset($data['upload']) && $data['upload']==0) echo 'checked="checked"';?> />No</span>
+                	<span><input type="radio" name="upload" value="1" id="upload1" class="field" <?php if(isset($data['upload']) && $data['upload']==1) echo 'checked="checked"';?> />Yes</span>
+                	<span><input type="radio" name="upload" value="0" id="upload0" class="field" checked="checked" />No</span>
                 </p>
                 <p class="clear1"></p>
             </li>
@@ -537,6 +537,6 @@ $(document).ready(function() {
 	autoLoadResponsive();
 	
 	//submit
-	ajaxSubmitFields();
+	btnAjaxSubmit();
 });
 </script>

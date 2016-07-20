@@ -2,21 +2,22 @@
 class allPage{
     public $model;
 	public $user;
+    public $setting;
     public $alias;
     public $page;
     public $pageInfo;
     public $collection;
-    public $setting;
     
     public function __construct(){
 		include_once('models/modelAllPage.php');
 		$this->model = new modelAllPage;
 		
-		$this->model->_getUser();
+		$this->user = $this->model->_getUser();
     }
 	
 	public function setting($lang=''){
 		$filter = array(
+			'where' => array('status'=>true),
 			'pretty' => array('_id'=>0, 'name'=>1, 'value'=>1),
 		);
 		$data = $this->model->find('setting', $filter);
@@ -35,7 +36,7 @@ class allPage{
 		if($this->alias==''){
 			$this->page = 'home';
 			$filter = array(
-				'where' => array('page'=>$this->page),
+				'where' => array('page'=>'home'),
 			);
 		}else{
 			$filter = array(
@@ -43,97 +44,134 @@ class allPage{
 			);
 		}
 		
-		$dataCurrent = $this->model->findOne(_POSTS_, $filter);
-		if(isset($dataCurrent['page'])){
-			$this->page = $dataCurrent['page'];
+		$pageInfo = $this->model->findOne(_POSTS_, $filter);
+		if(isset($pageInfo['page'])){
+			$this->page = $pageInfo['page'];
 		}
 		
-		$this->pageInfo = $dataCurrent;
+		$this->pageInfo = $pageInfo;
 		
-		$html = $this->pageHTML();
-		
-		return $html;
+		return $this->pageHTML();
 	}
 	
 	private function pageHTML(){
 		$filter = array(
-			'where' => array('type'=>'web', 'status'=>'1', 'name'=>$this->page),
+			'where' => array('type'=>'web', 'status'=>true, 'name'=>$this->page),
 		);
 		$dataPages = $this->model->findOne(_PAGES_, $filter);
 		
+		$arrHTML	= array();
+		$arrCSS		= array();
+		$arrScript	= array();
+		
 		//xuất widgets
 		if(isset($dataPages['widgets'])){
-			$strWidget = '';
 			foreach($dataPages['widgets'] as $widget=>$label){
-				$strWidget .= '$'.$widget.' = $this->widgets("'.$widget.'");';
+				$strWidget = '$'.$widget.' = $this->widgets("'.$widget.'", $css, $script);';
+				eval($strWidget);
+				
+				$arrCSS[] = $css;
+				$arrScript[] = $script;
 			}
-			eval($strWidget);
 		}
-		//end xuất widgets
+		
+		//get dataCurrent
+		$dataCurrent = array();
+		if(isset($dataPages['collection']) && $dataPages['collection']!=''){
+			$collection = $dataPages['collection'];
+			
+			$data = array();
+			$array = array('pretty', 'where', 'sort', 'limit');
+			foreach($array as $name){
+				if(isset($dataPages[$name]) && $dataPages[$name]!=''){
+					$data[$name] = $dataPages[$name];
+				}
+			}
+			
+			$filter = $this->model->_getCollectionFilter($data);
+			$dataCurrent = $this->model->find($collection, $filter);
+		}
 		
 		//vòng lặp xuất data
 		if(isset($dataPages['php'])){
 			eval($dataPages['php']);
 		}
-		//end vòng lặp xuất data
+		
+		//xuất css
+		if(isset($dataPages['css']) && $dataPages['css']!=''){
+			$arrCSS[] = '<style type="text/css">'.$dataPages['css'].'</style>';
+		}
+		$css = '';
+		foreach($arrCSS as $row){
+			$css .= $row;
+		}
+		
+		//xuất script
+		if(isset($dataPages['javascript']) && $dataPages['javascript']!=''){
+			$arrScript[] = $dataPages['javascript'];
+		}
+		$script = '';
+		foreach($arrScript as $row){
+			$script .= $row;
+		}
 		
 		//xuất html
-		$css = '';
-		if(isset($dataPages['css']) && $dataPages['css']!=''){
-			$css = '<style type="text/css">'.$dataPages['css'].'</style>';
-		}
-		
-		$javascript = '';
-		if(isset($dataPages['javascript'])){
-			$javascript = $dataPages['javascript'];
-		}
-		
 		$html = '';
 		if(isset($dataPages['html'])){
 			eval($dataPages['html']);
 		}
-		//end xuất html
+		
+		$html .= $css.$script;
 		
 		return $html;
 	}
 	
-	public function widgets($name){
+	private function widgets($name, &$css, &$script){
 		$filter = array(
-			'where' => array('status'=>'1', 'name'=>$name),
+			'where' => array('status'=>true, 'name'=>$name),
 		);
-		$dataCollection = $this->model->findOne(_WIDGETS_, $filter);
+		$dataWidgets = $this->model->findOne(_WIDGETS_, $filter);
+		if(!$dataWidgets){
+			return false;
+		}
 		
-		//lấy collection
+		//get dataCurrent
 		$dataCurrent = array();
-		if(isset($dataCollection['collection']) && $dataCollection['collection']!=''){
-			$collection = $dataCollection['collection'];
-			$filter = $this->model->_getCollectionFilter($dataCollection);
+		if(isset($dataWidgets['collection']) && $dataWidgets['collection']!=''){
+			$collection = $dataWidgets['collection'];
+			
+			$data = array();
+			$array = array('pretty', 'where', 'sort', 'limit');
+			foreach($array as $name){
+				if(isset($dataWidgets[$name]) && $dataWidgets[$name]!=''){
+					$data[$name] = $dataWidgets[$name];
+				}
+			}
+			
+			$filter = $this->model->_getCollectionFilter($data);
 			$dataCurrent = $this->model->find($collection, $filter);
 		}
-		//end lấy collection
 		
 		//vòng lặp xuất data
-		if(isset($dataCollection['php']) && $dataCollection['php']!=''){
-			eval($dataCollection['php']);
+		if(isset($dataWidgets['php']) && $dataWidgets['php']!=''){
+			eval($dataWidgets['php']);
 		}
-		//end vòng lặp xuất data
+		
+		//xuất css
+		if(isset($dataWidgets['css']) && $dataWidgets['css']!=''){
+			$css = '<style type="text/css">'.$dataWidgets['css'].'</style>';
+		}
+		
+		//xuất script
+		if(isset($dataWidgets['javascript'])){
+			$script = $dataWidgets['javascript'];
+		}
 		
 		//xuất html
-		$css = '';
-		if(isset($dataCollection['css']) && $dataCollection['css']!=''){
-			$css = '<style type="text/css">'.$dataCollection['css'].'</style>';
-		}
-		
-		$javascript = '';
-		if(isset($dataCollection['javascript'])){
-			$javascript = $dataCollection['javascript'];
-		}
-		
 		$html = '';
-		if(isset($dataCollection['html'])){
-			eval($dataCollection['html']);
+		if(isset($dataWidgets['html'])){
+			eval($dataWidgets['html']);
 		}
-		//end xuất html
 		
 		return $html;
 	}
@@ -166,11 +204,16 @@ class allPage{
 }
 
 $control = new allPage();
+
+//get setting
 $control->setting();
 
+//get page
 $alias = $currentUrl['alias'];
 $html = $control->currentPage($alias);
 echo $html;
+
+
 
 /*$currentPage = $control->currentPage($file, $head);
 

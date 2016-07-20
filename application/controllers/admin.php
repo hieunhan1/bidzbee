@@ -56,18 +56,22 @@ class admin{
 			}
 		}else{
 			//page default
-			$html = ob_start();
-			if(!isset($_GET['_id'])){
-				$file = 'views/'.$this->page.'.php';
+			if( (is_array($this->user['groups']) && in_array('administrators', $this->user['groups'])) || $this->user['groups']=='administrators' ){
+				$html = ob_start();
+				if(!isset($_GET['_id'])){
+					$file = 'views/'.$this->page.'.php';
+				}else{
+					$file = 'views/'.$this->page.'_ac.php';
+				}
+				if(file_exists($file)){
+					include_once($file);
+				}else{
+					echo '<p>ERROR: Trang không tồn tại</p>';
+				}
+				$html = ob_get_clean();
 			}else{
-				$file = 'views/'.$this->page.'_ac.php';
+				$html = '<p>ERROR: Trang không tồn tại</p>';
 			}
-			if(file_exists($file)){
-				include_once($file);
-			}else{
-				echo '<p>ERROR: Trang không tồn tại</p>';
-			}
-			$html = ob_get_clean();
 		}
 		
 		return $html;

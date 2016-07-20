@@ -22,7 +22,7 @@ class form{
 			$_id = $data['_id'];
 		}
 		
-		$str = '<ul class="iAC-Collection" name="'.$dataPages['collection'].'" action="'.$action.'">
+		$str = '<ul id="iAC-Collection" class="iAC-Collection" name="'.$dataPages['collection'].'" action="'.$action.'">
 			<li class="field" name="_id" type="string" check="string" condition="0">
 				<ul class="values">
 					<li class="field">
@@ -44,7 +44,7 @@ class form{
 		
 		<script type="text/javascript">
 		$(document).ready(function() {
-			ajaxSubmitFields();
+			btnAjaxSubmit();
 		});
 		</script>';
 		

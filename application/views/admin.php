@@ -117,8 +117,8 @@
             </div>
             
             <div class="btnQuick">
-                <p class="btnSubmitSave corner5"><span class="iconArticle iconBlack"></span>Lưu</p>
-                <p class="btnClose corner5"><span class="iconBack iconBlack"></span>Quay lại</p>
+                <p class="btnSubmitSave corner5"><span class="iconArticle iconBlack"></span>Save</p>
+                <p class="btnClose corner5"><span class="iconBack iconBlack"></span>Back</p>
             </div>
         </div>
         

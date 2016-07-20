@@ -6,7 +6,7 @@ $filter = array(
 $data = $this->model->findOne($collection, $filter);
 ?>
 
-<ul class="iAC-Collection" name="<?php echo $collection;?>" action="<?php echo $this->action;?>">
+<ul id="iAC-Collection" class="iAC-Collection" name="<?php echo $collection;?>" action="<?php echo $this->action;?>">
 	<li class="field" name="_id" type="text" check="string" condition="0">
         <ul class="values">
             <li class="field">
@@ -36,18 +36,18 @@ $data = $this->model->findOne($collection, $filter);
             <li class="field">
                 <p class="value"><input type="text" name="label" value="<?php echo $data['label'];?>" class="field input" /></p>
             </li>
-            <p class="error hidden">Label name is a required field</p>
+            <p class="error hidden">Label is a required field</p>
         </ul>
         <p class="clear1"></p>
     </li>
     
     <li class="field" name="name" type="text" check="string" condition="1">
-        <span class="label">Page name</span>
+        <span class="label">Widget name</span>
         <ul class="values">
             <li class="field">
                 <p class="value"><input type="text" name="name" value="<?php echo $data['name'];?>" class="field input" /></p>
             </li>
-            <p class="error hidden">Page name is a required field</p>
+            <p class="error hidden">Widget name is a required field</p>
         </ul>
         <p class="clear1"></p>
     </li>
@@ -57,7 +57,7 @@ $data = $this->model->findOne($collection, $filter);
         <ul class="values">
             <li class="field">
                 <p class="value">
-                    <select name="collection" class="field select">
+                    <select name="collection" class="field select" id="collectionPages">
                     <?php if(isset($data['collection'])) echo '<option value="'.$data['collection'].'">'.$data['collection'].'</option>';?>
                     </select>
                 </p>
@@ -67,24 +67,24 @@ $data = $this->model->findOne($collection, $filter);
         <p class="clear1"></p>
     </li>
     
-    <li class="field" name="fields" type="checkbox" check="string" condition="0">
-        <span class="label">Fields</span>
+    <li class="field" name="pretty" type="checkbox" check="string" condition="0">
+        <span class="label">Pretty</span>
         <ul class="values">
             <li class="field">
                 <p class="value checkBox" id="checkBox">
                 	<?php
-                    if(isset($data['fields']) && is_array($data['fields'])){
-						foreach($data['fields'] as $value){
-							echo '<span><input type="checkbox" name="fields" value="'.$value.'" class="field" checked="checked">'.$value.'</span>';
+                    if(isset($data['pretty']) && is_array($data['pretty'])){
+						foreach($data['pretty'] as $value){
+							echo '<span><input type="checkbox" name="pretty" value="'.$value.'" class="field" checked="checked">'.$value.'</span>';
 						}
-					}else if(isset($data['fields']) && $data['fields']!=''){
-						echo '<span><input type="checkbox" name="fields" value="'.$data['fields'].'" class="field" checked="checked">'.$data['fields'].'</span>';
+					}else if(isset($data['pretty']) && $data['pretty']!=''){
+						echo '<span><input type="checkbox" name="pretty" value="'.$data['pretty'].'" class="field" checked="checked">'.$data['pretty'].'</span>';
 					}
 					?>
                 </p>
                 <p class="clear1"></p>
             </li>
-            <p class="error hidden">Fields is a required field</p>
+            <p class="error hidden">Pretty is a required field</p>
         </ul>
         <p class="clear10"></p>
     </li>
@@ -185,58 +185,6 @@ $data = $this->model->findOne($collection, $filter);
         <p class="clear1"></p>
     </li>
     
-    <li class="field authority" name="authority" type="datalist" check="string" condition="0">
-        <span class="label">Authority</span>
-        <ul class="values listAuthority">
-            <li class="field" name="groups" type="datalist">
-                <ul class="values valuesFull authorityGroup">
-                    <?php
-					if(isset($data['authority']['groups']) && is_array($data['authority']['groups'])){
-						$data = $data['authority']['groups'];
-						foreach($data as $key=>$allows){
-							$str = '';
-							foreach($allows as $name=>$allow){
-								$str .= '<li class="field" value="'.$name.'">'.$allow.'</li>';
-							}
-							echo '<li class="field fieldAuthority" name="'.$key.'" type="datalist">
-								<span class="label2">'.$key.'</span>
-								<ul class="values" style="display:none">
-									'.$str.'
-								</ul>
-							</li>';
-						}
-					}
-					?>
-                </ul>
-            </li>
-            <li class="field" name="users" type="datalist">
-                <ul class="values authorityUsers">
-                    <?php
-					if(isset($data['authority']['users']) && is_array($data['authority']['users'])){
-						$data = $data['authority']['users'];
-						foreach($data as $key=>$allows){
-							$str = '';
-							foreach($allows as $name=>$allow){
-								$str .= '<li class="field" value="'.$name.'">'.$allow.'</li>';
-							}
-							echo '<li class="field fieldAuthority" name="'.$key.'" type="datalist">
-								<span class="label2">'.$key.'</span>
-								<ul class="values" style="display:none">
-									'.$str.'
-								</ul>
-							</li>';
-						}
-					}
-					?>
-                </ul>
-            </li>
-        </ul>
-        <div class="viewFrmAuthority values80 floatRight">
-            <input type="button" name="btnAddAuthority" value="Add" class="btnAddAuthority btnSmall bgGreen corner5" />
-        </div>
-        <p class="clear5"></p>
-    </li>
-    
     <li class="field" name="submit" type="noaction">
         <span class="label"></span>
         <ul class="values">
@@ -250,7 +198,6 @@ $data = $this->model->findOne($collection, $filter);
 
 <?php
 include_once('btnAddData.php');
-include_once('authority.php');
 include_once('ppWhere.php');
 ?>
 
@@ -264,10 +211,11 @@ include_once('ppWhere.php');
 
 <script type="text/javascript">
 $(document).ready(function() {
+	//load collection
 	function autoLoadCollection(){
-		var selected = $("select[name=collection]").val();
+		var selected = $("#collectionPages").val();
 		var checked = new Object();
-		$("input[name=fields]:checked").each(function(index, element) {
+		$("input[name=pretty]:checked").each(function(index, element) {
 			var value = $(element).val();
             checked[value] = value;
         });
@@ -294,29 +242,30 @@ $(document).ready(function() {
 						var select = '';
 					}else{
 						var select = ' selected="selected"';
-						var fields = data[key].fields;
-						var strField = '';
-						for(var i in fields){
+						var pretty = data[key].fields;
+						var strPretty = '';
+						for(var i in pretty){
 							if(!checked[i]){
 								var strCheck = '';
 							}else{
 								var strCheck = ' checked="checked"';
 							}
-							strField += '<span><input type="checkbox" name="fields" value="' + i + '" class="field"' + strCheck + ' />' + i + '</span>';
+							strPretty += '<span><input type="checkbox" name="pretty" value="' + i + '" class="field"' + strCheck + ' />' + i + '</span>';
 						}
-						$("#checkBox").html(strField);
+						$("#checkBox").html(strPretty);
 					}
 					str += '<option value="' + data[key].name + '"' + select + '>' + data[key].label + '</option>';
 				}
-				$("select[name=collection]").html(str);
+				$("#collectionPages").html(str);
 			}
 		});
 	}
 	autoLoadCollection();
-	$("select[name=collection]").change(function(){
+	$("#collectionPages").change(function(){
 		autoLoadCollection();
 	});
 	
+	//load responsive
 	function autoLoadResponsive(){
 		$(".btnResponsive").click(function(){
 			var str = '/*mobile*/\n';
@@ -334,6 +283,7 @@ $(document).ready(function() {
 	}
 	autoLoadResponsive();
 	
-	ajaxSubmitFields();
+	//submit
+	btnAjaxSubmit();
 });
 </script>

@@ -4,6 +4,8 @@ define('_DB_', 'bidzbee2');
 define('_DB_USER_', 'root'); //bidzbee
 define('_DB_PASS_', 'PublicPassword#123*'); //BidzbeeAZ#123*
 
+define('_LANG_', 'vi');
+
 /*cache*/
 define('_CACHE_FILE_', 'cache/');
 define('_CACHE_TIME_', 3600*12);
@@ -67,8 +69,8 @@ define('_MAIL_', 'hieunhan112@gmail.com');
 define('_MAIL_NAME_', 'No name');
 
 /*WEBSITE*/
-/*define('_ERROR_CONTROLLER_', 'Not found file controller: ');
-define('_ERROR_FILE_', 'Not found file: ');
+define('_ERROR_CONTROLLER_', 'Not found file controller: ');
+/*define('_ERROR_FILE_', 'Not found file: ');
 define('_ERROR_PAGE_', 'Not found page: ');
 define('_NO_IMAGE_', 'public/themes/no-image.jpg');*/
 

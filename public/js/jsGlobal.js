@@ -513,30 +513,106 @@ function reloadCKeditor(){
 
 //Submit fields
 function ajaxSubmitFields(){
+	if( $("#uploads-console").length ){
+		reloadCKeditor();
+	}
+	
+	var tags = $(".iAC-Collection-Active");
+	var fields = checkGetData(tags);
+	
+	if(fields==false) {
+		srollTop();
+		return false;
+	}
+	
+	$(tags).find(".field").attr("disabled", true);
+	
+	$("#saveMessage").remove();
+	var str = '<p>Processing..</p>';
+	ppLoad(str);
+	
+	fields._collection = $(".iAC-Collection-Active").attr("name");
+	fields._action = $(".iAC-Collection-Active").attr("action");
+	
+	$.ajax({ 	
+		url     : 'ajax',
+		type    : 'post',
+		data    : fields,
+		cache   : false,
+		success : function(data){
+			$(tags).find(".field").attr("disabled", false);
+			
+			data = convertToJson(data);
+			if(data==false){
+				var str = '<p class="error">ERROR: Server</p>';
+				ppLoad(str);
+				return false;
+			}else if(data.result==false){
+				var str = '<p class="error">' + data.message + '</p>';
+				ppLoad(str);
+				console.log(data);
+				return false;
+			}
+			
+			console.log(data);
+			ppClose();
+			
+			var message = '<div id="saveMessage" class="bgGreen corner5" style="width:15%; color:#FFF; text-align:center; position:fixed; top:45px; left:40%; padding:8px 0; z-index:2;"><p>Success!</p></div>';
+			$("body").append(message);
+			setTimeout(function(){
+				$("#saveMessage").remove();
+			}, 3000);
+			
+			if(typeof data.data._id != "undefined"){
+				var _id = data.data._id;
+				
+				$("input[name=_id]").val(_id);
+				$(".iAC-Collection-Active").attr("action", "update");
+				
+				var hostname = $(location).attr('hostname');
+				var pathname = $(location).attr('pathname');
+				window.history.pushState(null, 'Title', 'http://' + hostname + pathname + '?_id=' + _id);
+			}
+			
+			if( $("#uploads-console").length ){
+				actionUpload();
+			}
+		}
+	});
+}
+
+function btnAjaxSubmit(){
 	$("body").on("click", ".iAC-Submit", function(){
 		$(".iAC-Collection").removeClass("iAC-Collection-Active");
 		$(this).parents(".iAC-Collection").addClass("iAC-Collection-Active");
 		
-		if( $("#uploads-console").length ){
-			reloadCKeditor();
-		}
+		ajaxSubmitFields();
+	});
+	
+	$("body").on("click", ".btnSubmitSave", function(){
+		$(".iAC-Collection").removeClass("iAC-Collection-Active");
+		$("#iAC-Collection").addClass("iAC-Collection-Active");
 		
-		var tags = $(".iAC-Collection-Active");
-		var fields = checkGetData(tags);
+		ajaxSubmitFields();
+	});
+}
+/*end check, get DATA*/
+
+/*delete*/
+(function(){
+	$(".adTable .row .delete").click(function(){
+		$(".adTable .row").removeClass("rowActive");
+		$(this).parents(".row").addClass("rowActive");
 		
-		if(fields==false) {
-			srollTop();
+		var id = $(this).parents(".row").attr("_id");
+		var name = $(this).parents(".row").find(".name").html();
+		if( confirm('Delete "' + name + '"?') == false ){
 			return false;
 		}
 		
-		$(tags).find(".field").attr("disabled", true);
-		
-		$("#saveMessage").remove();
-		var str = '<p>Processing..</p>';
-		ppLoad(str);
-		
-		fields._collection = $(".iAC-Collection-Active").attr("name");
-		fields._action = $(".iAC-Collection-Active").attr("action");
+		var fields = new Object();
+		fields._action = "delete";
+		fields._id = id;
 		
 		$.ajax({ 	
 			url     : 'ajax',
@@ -544,8 +620,6 @@ function ajaxSubmitFields(){
 			data    : fields,
 			cache   : false,
 			success : function(data){
-				$(tags).find(".field").attr("disabled", false);
-				
 				data = convertToJson(data);
 				if(data==false){
 					var str = '<p class="error">ERROR: Server</p>';
@@ -559,33 +633,14 @@ function ajaxSubmitFields(){
 				}
 				
 				console.log(data);
-				ppClose();
-				
-				var message = '<div id="saveMessage" class="bgGreen corner5" style="width:15%; color:#FFF; text-align:center; position:fixed; top:45px; left:40%; padding:8px 0; z-index:2;"><p>Success!</p></div>';
-				$("body").append(message);
-				setTimeout(function(){
-					$("#saveMessage").remove();
-				}, 3000);
-				
-				if(typeof data.data._id != "undefined"){
-					var _id = data.data._id;
-					
-					$("input[name=_id]").val(_id);
-					$("#action").html("update");
-					
-					var hostname = $(location).attr('hostname');
-					var pathname = $(location).attr('pathname');
-					window.history.pushState(null, 'Title', 'http://' + hostname + pathname + '?_id=' + _id);
-				}
-				
-				if( $("#uploads-console").length ){
-					actionUpload();
-				}
+				$(".adTable .rowActive").remove();
 			}
 		});
 	});
-}
+})();
+/*end delete*/
 
+/*auto name, alias, title, tags*/
 function changeAlias(str, replace){
 	var alias = str;
 	alias = alias.toLowerCase();
@@ -618,7 +673,66 @@ function removeSpecialCharacters(str, replace){
 	alias = alias.replace(/^\ +|\ +$/g,""); //cắt bỏ ký tự - ở đầu và cuối chuỗi
 	return alias;
 }
-/*end check, get DATA*/
+
+function checkAlias(){
+	var alias = $.trim( $("input[name=alias]").val() );
+	$.ajax({
+		url: 'ajax',
+		type:'POST',
+		data:{_request:checkAlias, alias:alias},
+		cache:false,
+		success: function(data) {
+			console.log(data);
+		}
+	});
+}
+
+function aliasAuto(dest, source){
+	var alias = $(dest).val();
+	if(alias==''){
+		var alias = $.trim( $(source).val() );
+			alias = changeAlias(alias, '-');
+		$(dest).val(alias);
+	}
+}
+
+function titleAuto(dest, source){
+	var title = $(dest).val();
+	if(title==''){
+		var name = $.trim( $(source).val() );
+		$(dest).val(name);
+	}
+}
+
+function tagsAuto(dest, source){
+	var tags = $(dest).val();
+	if(tags==''){
+		var name = removeSpecialCharacters( $.trim($(source).val()), ' ' );
+		$(dest).val(name);
+	}
+}
+
+$("input[name=name]").blur(function(){
+	aliasAuto("input[name=alias]", "input[name=name]");
+	titleAuto("input[name=title]", "input[name=name]");
+	tagsAuto("input[name=tags]", "input[name=name]");
+});
+
+$("input[name=alias]").blur(function(){
+	aliasAuto();
+});
+
+$("input[name=tags]").dblclick(function(){ 
+	var tags = $(this).val();
+	if(tags==''){
+		tags = $("input[name=name]").val();
+	}
+	tags = removeSpecialCharacters(tags, ' ');
+	
+	var str = tags + ',' + changeAlias(tags, ' ');
+	$(this).val(str);
+});
+/*end auto name, alias, title, tags*/
 
 $(document).ready(function(e) {
 	/*auto load view width, height*/

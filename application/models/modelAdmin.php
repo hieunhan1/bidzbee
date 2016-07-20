@@ -56,10 +56,10 @@ class modelAdmin extends modelDB{
 		return $result;
 	}
 	
-	public function pageDataList($collectionName, &$totalDataList){
+	public function pageDataList($collection, &$totalDataList){
 		$colControl = $this->_select($this->db, _CONTROL_);
 		
-		$collection = $this->_select($this->db, $collectionName);
+		$collection = $this->_select($this->db, $collection);
 		
 		$totalDataList = $this->_count($collection);
 		$filter = array(

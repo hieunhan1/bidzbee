@@ -14,13 +14,14 @@ $collection = _COLLECTION_;
         
         <?php
 		$filter = array(
+			'pretty' => array('name'=>1, 'label'=>1, 'order'=>1, 'status'=>1),
 			'sort' => array('order'=>1, 'name'=>1),
 		);
 		$data = $this->model->find($collection, $filter);
         if(count($data) > 0){
 			foreach($data as $id=>$row){
 				echo '<tr class="row" _id="'.$id.'">
-					<td align="center">&nbsp;</td>
+					<td align="center"><input type="checkbox" name="listRow" value="'.$row['_id'].'" style="margin-top:7px"></td>
 					<td>
 						<p class="name height">'.$row['name'].'</p>
 						<p class="action">&nbsp;

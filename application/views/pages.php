@@ -8,19 +8,21 @@ $collection = 'pages';
             <th width="50">.NO</th>
             <th width="20%" align="left">Name</th>
             <th width="20%" align="left">Label</th>
+            <th width="20%" align="left">Type</th>
             <th width="15%">Order</th>
             <th>&nbsp;</th>
         </tr>
         
         <?php
 		$filter = array(
-			'sort' => array('order'=>1, 'name'=>1),
+			'pretty' => array('name'=>1, 'label'=>1, 'type'=>1, 'order'=>1, 'status'=>1),
+			'sort' => array('type'=>-1, 'order'=>1, 'name'=>1),
 		);
 		$data = $this->model->find($collection, $filter);
         if(count($data) > 0){
 			foreach($data as $id=>$row){
 				echo '<tr class="row" _id="'.$id.'">
-					<td align="center">&nbsp;</td>
+					<td align="center"><input type="checkbox" name="listRow" value="'.$row['_id'].'" style="margin-top:7px"></td>
 					<td>
 						<p class="name height">'.$row['name'].'</p>
 						<p class="action">&nbsp;
@@ -32,6 +34,7 @@ $collection = 'pages';
 						</p>
 					</td>
 					<td>'.$row['label'].'</td>
+					<td>'.$row['type'].'</td>
 					<td align="center">'.$row['order'].'</td>
 					<td>&nbsp;</td>
 				</tr>';

@@ -59,13 +59,13 @@ class modelAjax extends modelDB{
 									settype($data, 'float');
 								}
 								$documentNew[$name] = $data;
-							}else if($data=='true'){
+							}/*else if($data=='true'){
 								$data == true;
 								$documentNew[$name] = $data;
 							}else if($data=='false'){
 								$data == false;
 								$documentNew[$name] = $data;
-							}else{
+							}*/else{
 								$documentNew[$name] = trim($data);
 							}
 						}
@@ -84,13 +84,13 @@ class modelAjax extends modelDB{
 							settype($data, 'float');
 						}
 						$documentNew[$name] = $data;
-					}else if($data=='true'){
+					}/*else if($data=='true'){
 						$data = true;
 						$documentNew[$name] = $data;
 					}else if($data=='false'){
 						$data = false;
 						$documentNew[$name] = $data;
-					}else{
+					}*/else{
 						$documentNew[$name] = trim($data);
 					}
 				}else{

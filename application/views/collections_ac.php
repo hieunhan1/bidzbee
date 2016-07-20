@@ -6,7 +6,7 @@ $filter = array(
 $data = $this->model->findOne($collection, $filter);
 ?>
 
-<ul class="iAC-Collection" name="<?php echo $collection;?>" action="<?php echo $this->action;?>">
+<ul id="iAC-Collection" class="iAC-Collection" name="<?php echo $collection;?>" action="<?php echo $this->action;?>">
 	<li class="field" name="_id" type="text" check="string" condition="0">
         <ul class="values">
             <li class="field">
@@ -81,6 +81,6 @@ $data = $this->model->findOne($collection, $filter);
 
 <script type="text/javascript">
 $(document).ready(function() {
-	ajaxSubmitFields();
+	btnAjaxSubmit();
 });
 </script>

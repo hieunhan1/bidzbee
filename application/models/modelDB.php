@@ -123,7 +123,9 @@ class modelDB{
 		$key = explode(' ', $key);
 		$total = count($key);
 		
-		$value = trim($value);
+		if(!is_bool($value)){
+			$value = trim($value);
+		}
 		
 		if($total==1){
 			$where = $this->_setValue($value);
@@ -265,11 +267,12 @@ class modelDB{
 			}
 			$user = $_SESSION['admin'];
 		}else{
-			$user = array(
+			$user = '';
+			/*$user = array(
 				'name' => 'Guest',
 				'username' => 'guest',
 				'groups' => 'everyone',
-			);
+			);*/
 		}
 		
 		return $user;
@@ -454,7 +457,7 @@ class modelDB{
 		}
 	}
 	
-	public function _checkEmail($data, $condition){
+	public function _checkEmail($data, $condition=NULL){
 		$data = trim($data);
 		settype($condition, 'int');
 		if($data=='' && $condition==0){
@@ -492,7 +495,7 @@ class modelDB{
 		return $data;
 	}
 	
-	public function _checkUser($data, $condition){
+	public function _checkUser($data, $condition=NULL){
 		$data = trim($data);
 		settype($condition, 'int');
 		if($data=='' && $condition==0){
@@ -578,10 +581,11 @@ class modelDB{
 		
 		if(!isset($document['_id'])){
 			$document['_id'] = $this->_id();
+		}else{
+			$document['_id'] = $this->_id($document['_id']);
 		}
 		
 		$result = $collection->insert($document);
-		
 		if($result['ok']==1){
 			foreach($document['_id'] as $_id){
 				return array('_id'=>$_id);
@@ -611,6 +615,10 @@ class modelDB{
 	}
 	
 	public function _remove($collection, $document){
+		if(isset($document['_id'])){
+			$document['_id'] = $this->_id($document['_id']);
+		}
+		
 		$result = $collection->remove($document);
 		if($result['ok']==1){
 			return $result;
@@ -668,23 +676,8 @@ class modelDB{
 		}
 	}
 	
-	public function _getIndexInfo($collection){
-		$data = $collection->getIndexInfo(); //db.pages.getIndexes();
-		return $data;
-	}
-	
-	public function _createIndex($collection, $arr){ 
-		$data = $collection->createIndex($arr, array('unique'=>1, 'dropDups'=>1));
-		return $data;
-	}
-	
-	public function _deleteIndex($collection, $arr){
-		$data = $collection->deleteIndex($arr);
-		return $data;
-	}
-	
-	public function _ensureIndex($collection, $arr){
-		$data = $collection->ensureIndex($arr, array('unique'=>1, 'dropDups'=>1));
+	public function _findAndModify($collection, $query, $update, $fields=NULL, $options=NULL){
+		$data = $collection->findAndModify($query, $update, $fields, $options);
 		return $data;
 	}
 	
@@ -775,6 +768,26 @@ class modelDB{
 		return $result;
 	}
 	
+	public function _getIndexInfo($collection){
+		$data = $collection->getIndexInfo(); //db.pages.getIndexes();
+		return $data;
+	}
+	
+	public function _createIndex($collection, $arr){ 
+		$data = $collection->createIndex($arr, array('unique'=>1, 'dropDups'=>1));
+		return $data;
+	}
+	
+	public function _deleteIndex($collection, $arr){
+		$data = $collection->deleteIndex($arr);
+		return $data;
+	}
+	
+	public function _ensureIndex($collection, $arr){
+		$data = $collection->ensureIndex($arr, array('unique'=>1, 'dropDups'=>1));
+		return $data;
+	}
+	
 	public function _aggregate($collection, $arrOption){
 		$data = $collection->aggregate($arrOption);
 		return $data;
@@ -786,11 +799,6 @@ class modelDB{
 		//FETCH for retrieving documents
 		//SHARD_MERGE for merging results from shards
 		$data = $collection->find($arrWhere)->explain();
-		return $data;
-	}
-	
-	public function _findAndModify($collection, $query, $update, $fields=NULL, $options=NULL){
-		$data = $collection->findAndModify($query, $update, $fields, $options);
 		return $data;
 	}
 }

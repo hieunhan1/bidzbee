@@ -73,6 +73,7 @@
                             <option value="email">Email</option>
                             <option value="user">User</option>
                             <option value="date">Datetime</option>
+                            <option value="bool">Boolean</option>
                             <option value="confirm">Confirm</option>
                         </select>
                     </p>
