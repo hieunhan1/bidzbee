@@ -62,3 +62,12 @@
 [20-Jul-2016 17:22:36 Asia/Ho_Chi_Minh] PHP Notice:  Use of undefined constant name - assumed 'name' in D:\xampp\htdocs\bidzbee\application\controllers\allPage.php on line 111
 [20-Jul-2016 17:56:38 Asia/Ho_Chi_Minh] PHP Notice:  Trying to get property of non-object in D:\xampp\htdocs\bidzbee\application\controllers\allPage.php(157) : eval()'d code on line 55
 [20-Jul-2016 17:58:22 Asia/Ho_Chi_Minh] PHP Notice:  Trying to get property of non-object in D:\xampp\htdocs\bidzbee\application\controllers\allPage.php(157) : eval()'d code on line 55
+[21-Jul-2016 18:50:50 Asia/Ho_Chi_Minh] PHP Notice:  Array to string conversion in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 377
+[21-Jul-2016 18:58:48 Asia/Ho_Chi_Minh] PHP Notice:  Object of class MongoDate could not be converted to int in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 386
+[21-Jul-2016 18:58:48 Asia/Ho_Chi_Minh] PHP Notice:  Object of class MongoDate could not be converted to int in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 386
+[21-Jul-2016 18:58:48 Asia/Ho_Chi_Minh] PHP Notice:  Object of class MongoDate could not be converted to int in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 389
+[21-Jul-2016 18:58:48 Asia/Ho_Chi_Minh] PHP Notice:  Object of class MongoDate could not be converted to int in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 389
+[21-Jul-2016 19:00:55 Asia/Ho_Chi_Minh] PHP Fatal error:  Call to undefined function string() in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 387
+[21-Jul-2016 19:02:16 Asia/Ho_Chi_Minh] PHP Fatal error:  Call to undefined function string() in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 387
+[21-Jul-2016 19:04:16 Asia/Ho_Chi_Minh] PHP Notice:  Object of class MongoDate could not be converted to int in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 390
+[21-Jul-2016 19:04:16 Asia/Ho_Chi_Minh] PHP Notice:  Object of class MongoDate could not be converted to int in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 390
