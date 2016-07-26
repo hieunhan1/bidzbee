@@ -14,12 +14,19 @@ function urlExcept($url, $listUrl){
 }
 
 function getUrl(){
-	$host = $_SERVER['HTTP_HOST'];
+	$host = '';
+	if(isset($_SERVER['HTTP_HOST'])){
+		$host = $_SERVER['HTTP_HOST'];
+	}
 	$uri = $_SERVER['REQUEST_URI'];
 	$urlArr = explode('/', $uri);
 	$total = count($urlArr);
 	
-	$alias = $urlArr[1];
+	$alias = '';
+	if(isset($urlArr[1])){
+		$alias = $urlArr[1];
+	}
+	
 	$other = NULL;
 	
 	$urlExcept = array(

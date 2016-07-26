@@ -92,8 +92,10 @@ class admin{
 			$pretty = $dataPages['pretty'];
 			if($dataCurrent){
 				foreach($dataCurrent as $key=>$row){
-					if(isset($row['status'])){
+					if(isset($row['status']) && $row['status']==true){
 						$status = '<a href="javascript:;" class="status status1 corner5"></a>';
+					}else if(isset($row['status']) && $row['status']==false){
+						$status = '<a href="javascript:;" class="status status0 corner5"></a>';
 					}else{
 						$status = '';
 					}

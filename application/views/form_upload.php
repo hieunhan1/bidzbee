@@ -215,6 +215,8 @@ $(document).ready(function() {
 		var dropzone = document.getElementById("drop-zone");
 		
 		var displayUploads = function(data){
+			console.log(data);
+			
 			$("#standard-upload-files").val("");
 			
 			for(var i in data){

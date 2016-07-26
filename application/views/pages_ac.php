@@ -14,6 +14,32 @@ $data = $this->model->findOne($collection, $filter);
         </ul>
     </li>
     
+    <li class="field" name="pages-load" type="noaction">
+        <span class="label">Page load</span>
+        <ul class="values">
+            <li class="field">
+                <p class="value">
+                	<select name="pages-load" class="select">
+                    	<option value="">-- load page tương tự --</option>
+                        <?php
+                        $filter = array(
+							'pretty' => array('name'=>1),
+							'sort' => array('type'=>-1, 'order'=>1),
+						);
+						$dataPageLoad = $this->model->find(_PAGES_, $filter);
+						foreach($dataPageLoad as $id=>$rowPageLoad){
+							echo '<option value="'.$id.'">'.$rowPageLoad['name'].'</option>';
+						}
+						?>
+                    </select>
+                </p>
+                <p class="clear1"></p>
+            </li>
+            <p class="error hidden">Select status</p>
+        </ul>
+        <p class="clear10"></p>
+    </li>
+    
 	<li class="field" name="status" type="checkbox" check="string" condition="1">
         <span class="label">Status</span>
         <ul class="values">
@@ -448,6 +474,27 @@ include_once('pages_add_fields.php');
 
 <script type="text/javascript">
 $(document).ready(function() {
+	//load page tuong tu
+	function loadPages(){
+		$("select[name=pages-load]").change(function(){
+			var id = $(this).val();
+			var fields = new Object();
+				fields._request = 'loadPages';
+				fields.id = id;
+				
+			$.ajax({ 	
+				url     : 'ajax',
+				type    : 'post',
+				data    : fields,
+				cache   : false,
+				success : function(data){
+					console.log(data);
+				}
+			});
+		});
+	}
+	loadPages();
+	
 	//load type web || admin
 	function autoLoadType(){
 		var type = $("input[name=type]:checked").val();

@@ -50,7 +50,7 @@ class modelAjax extends modelDB{
 							}
 							$documentNew[$name] = $data;
 						}else if($type=='pass'){
-							$documentNew[$name] = $this->_password($data);
+							$documentNew[$name] = $data; //$this->_password($data);
 						}else{
 							if(is_numeric($data)){
 								if(!preg_match('/\./', $data)){

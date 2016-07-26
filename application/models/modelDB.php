@@ -54,6 +54,11 @@ class modelDB{
 		return $dateObject;
 	}
 	
+	public function _number($number){
+		settype($number, 'int');
+		return number_format($number, 0, ',', '.');
+	}
+	
 	public function _print($arr){
 		$str = '<pre>';
         ob_start();
@@ -85,6 +90,15 @@ class modelDB{
 		return $pass;
 	}
 	
+	public function _randomString($lenght){
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$randstring = '';
+		for($i=0; $i<$lenght; $i++) {
+			$randstring .= $characters[rand(0, strlen($characters))];
+		}
+		return $randstring;
+	}
+	
 	public function _replace($search, $replace, $object, &$count=0){
 		if(is_array($search)){
 			foreach($search as $row){
@@ -98,16 +112,27 @@ class modelDB{
 	}
 	
 	public function _setValue($value){
-		if(is_numeric($value)){
-			if(!preg_match('/\./', $value)){
-				settype($value, 'int');
-			}else{
-				settype($value, 'float');
+		if(!preg_match('/^var /i', $value) && !preg_match('/^function /i', $value)){
+			if(is_numeric($value)){
+				if(!preg_match('/\./', $value)){
+					settype($value, 'int');
+				}else{
+					settype($value, 'float');
+				}
+			}else if($value=='true'){
+				$value = true;
+			}else if($value=='false'){
+				$value = false;
 			}
-		}else if($value=='true'){
-			$value = true;
-		}else if($value=='false'){
-			$value = false;
+		}else{
+			if(preg_match('/^var /i', $value)){
+				$str = preg_replace('/^var /i', '', $value);
+				$str = '$value = '.$str.';';
+			}else if(preg_match('/^function /i', $value)){
+				$str = preg_replace('/^function /i', '', $value);
+			}
+			
+			eval($str);
 		}
 		
 		return $value;
@@ -585,6 +610,19 @@ class modelDB{
 			$document['_id'] = $this->_id($document['_id']);
 		}
 		
+		$user = $this->_getUser();
+		if($user != ''){
+			$user = array(
+				'_id' => (string)$user['_id'],
+				'name' => (string)$user['name'],
+				'username' => (string)$user['username'],
+			);
+		}
+		$document['_create'] = array(
+			'datetime' => $this->_dateObject(),
+			'user' => $user,
+		);
+		
 		$result = $collection->insert($document);
 		if($result['ok']==1){
 			foreach($document['_id'] as $_id){
@@ -603,6 +641,19 @@ class modelDB{
 		}else{
 			$document['_id'] = $this->_id();
 		}
+		
+		$user = $this->_getUser();
+		if($user != ''){
+			$user = array(
+				'_id' => (string)$user['_id'],
+				'name' => (string)$user['name'],
+				'username' => (string)$user['username'],
+			);
+		}
+		$document['_create'] = array(
+			'datetime' => $this->_dateObject(),
+			'user' => $user,
+		);
 		
 		$result = $collection->save($document);
 		if($result['ok']==1){
@@ -667,8 +718,20 @@ class modelDB{
 			$filter['_id'] = $this->_id($filter['_id']);
 		}
 		
+		$user = $this->_getUser();
+		if($user != ''){
+			$user = array(
+				'_id' => (string)$user['_id'],
+				'name' => (string)$user['name'],
+				'username' => (string)$user['username'],
+			);
+		}
+		$document['_update'] = array(
+			'datetime' => $this->_dateObject(),
+			'user' => $user,
+		);
+		
 		$result = $collection->update($filter, array($set=>$document), $multi);
-		return $result;
 		if($result){
 			return $result;
 		}else{

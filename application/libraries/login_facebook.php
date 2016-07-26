@@ -17,10 +17,9 @@ window.fbAsyncInit = function() {
 		version    : 'v2.2',
 	});
 
-	FB.getLoginStatus(function(response) {
+	/*FB.getLoginStatus(function(response) {
 		statusChangeCallback(response);
-	});
-
+	});*/
 };
 
 function statusChangeCallback(response) {
@@ -52,7 +51,8 @@ function Login(){
 function getUserInfo() {
 	FB.api('/me?fields=id,name,email', function(response) {
 		var fields = new Object();
-			fields._request = 'checkUser';
+			fields._request = 'users';
+			fields._action = 'loginThirdParty';
 			fields.name = response.name;
 			fields.email = response.email;
 			fields.login = {name:'facebook', id:response.id, img:'https://graph.facebook.com/' + response.id + '/picture?type=large'};
@@ -66,5 +66,5 @@ function Logout(){
 }
 </script>
 
-<div class="facebook" onClick="Login();"><span class="iconF">f</span>Login</div>
+<div class="box2" onClick="Login();"><span class="icon facebook">f</span>Login facebook</div>
 <div id="status" class="hidden"></div>

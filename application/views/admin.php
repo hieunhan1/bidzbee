@@ -113,7 +113,7 @@
             </div>
             
             <div class="lang">
-            	<a href="" class="link"><span class="iconBlack iconPosition"></span>English</a>
+            	<a href="javascript:;" class="link"><span class="iconBlack iconPosition"></span>English</a>
             </div>
             
             <div class="btnQuick">

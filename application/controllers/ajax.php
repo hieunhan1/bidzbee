@@ -53,7 +53,7 @@ class ajax{
 		$action = $this->document[_ACTION_];
 		unset($this->document[_ACTION_]);
 		
-		if( (is_array($user['groups']) && in_array('administrators', $user['groups'])) || $user['groups']=='administrators' ){
+		if( isset($user['groups']) && ((is_array($user['groups']) && in_array('administrators', $user['groups'])) || $user['groups']=='administrators') ){
 			if(isset($this->document[_COLLECTION_FIELD_])){
 				$collection = $this->document[_COLLECTION_FIELD_];
 				unset($this->document[_COLLECTION_FIELD_]);
@@ -104,7 +104,7 @@ class ajax{
 				$arr = array('result'=>false, 'message'=>'ERROR: Không tồn tại '.strtoupper($action).' này!');
 				return $arr;
 			}
-		}else{
+		}else if(isset($user['groups'])){
 			//get pages
 			$filter = array(
 				'where' => array('name' => $user['pageCurrent']),
@@ -190,6 +190,8 @@ class ajax{
 				$arr = array('result'=>false, 'message'=>'ERROR: Không tồn tại '.strtoupper($action).' này!');
 				return $arr;
 			}
+		}else{
+			return array('result'=>false, 'message'=>'ERROR: Phiên làm việc đã hết, vui lòng ấn F5 đăng nhập.');
 		}
 		
 		if(is_bool($result) && $result==false){
@@ -237,15 +239,17 @@ class ajax{
 			return $arr;
 		}
 		
-		//authority collection
-		$authCollection = array();
-		if(isset($dataPages['authority'])){
-			$authCollection = $dataPages['authority'];
-		}
-		$allowCollection = $this->model->_authorityCheck($user, $authCollection);
-		if(!isset($allowCollection['create']) || $allowCollection['create']==0){
-			$arr = array('result'=>false, 'message'=>'ERROR: Collection access deny');
-			return $arr;
+		if( (is_array($user['groups']) && !in_array('administrators', $user['groups'])) || $user['groups']!='administrators' ){
+			//authority collection
+			$authCollection = array();
+			if(isset($dataPages['authority'])){
+				$authCollection = $dataPages['authority'];
+			}
+			$allowCollection = $this->model->_authorityCheck($user, $authCollection);
+			if(!isset($allowCollection['create']) || $allowCollection['create']==0){
+				$arr = array('result'=>false, 'message'=>'ERROR: Collection access deny');
+				return $arr;
+			}
 		}
 		
 		include_once('uploads.php');
@@ -264,225 +268,29 @@ class ajax{
 	//END ACTION UPLOAD
 	
 	//BID
-	private function updateBID(){
-		if(!isset($_POST['_id'])){
-			$result = array('result'=>false, 'message'=>'<p class="error" style="padding:20px 50px"><b>ERROR: ID</b></p>');
-			return $result;
-		}
-		$idProduct = $_POST['_id'];
-		
-		$filter = array(
-			'where' => array('_id'=>$idProduct),
-			'pretty' => array('_id'=>0, 'price_current'=>1, 'price_step'=>1, 'datetime'=>1),
-		);
-		$dataProduct = $this->model->findOne(_POSTS_, $filter);
-		$price_current = $dataProduct['price_current'];
-		
-		$filter = array(
-			'where' => array('product'=>$idProduct),
-			'sort' => array('_id'=>-1),
-			'limit' => 1,
-		);
-		$dataUserBID = $this->model->find('user_bid', $filter);
-		$name = '';
-		if(isset($dataUserBID['name'])){
-			$name = $dataUserBID['name'];
-		}
-		
-		//check time
-		if(isset($dataProduct['datetime']) && $dataProduct['datetime']>0){
-			$dateEnd = time() - $dataProduct['datetime'];
-		}else if(!isset($dataProduct['datetime']) || $dataProduct['datetime']==0){
-			$dateEnd = 0;
-			$document = array();
-			$document['datetime'] = time();
-			$filter = array('_id'=>$idProduct);
-			$this->model->update(_POSTS_, $document, $filter);
-		}
-		
-		if($dateEnd>=30 && count($dataUserBID)>0){
-			$message = 'Chúc mừng <b>'.strtoupper($name).'</b> dành chiến thắng với giá đấu <b>'.number_format($price_current, 0, ',', '.').'</b>';
-			$result = array('result'=>true, 'message'=>$message);
-			return $result;
-		}else if($dateEnd>=30 && count($dataUserBID)==0){
-			$message = 'Phiên đấu giá đã đóng với <b>0</b> lượt BID.';
-			$result = array('result'=>true, 'message'=>$message);
-			return $result;
-		}
-		//end check time
-		
-		if(isset($_POST['bid']) && isset($_SESSION['users'])){
-			$user = $_SESSION['users'];
-			$name = $user['name'];
-			if(isset($dataUserBID['user']) && $dataUserBID['user']==$user['_id']){
-				$result = array('result'=>false, 'message'=>'<p class="message" style="padding:20px 50px"><b>MESSAGE: Hiện tại giá bạn là cao nhất</b></p>');
-				return $result;
-			}
-			
-			$price_current = $price_current + $dataProduct['price_step'];
-			
-			$document = array();
-			$document['price_current'] = $price_current;
-			$document['datetime'] = time();
-			$filter = array('_id'=>$idProduct);
-			$this->model->update(_POSTS_, $document, $filter);
-			
-			$document = array(
-				'product' => $idProduct,
-				'user' => $user['_id'],
-				'name' => $name,
-				'price' => $price_current,
-				'date' => time(),
-			);
-			$this->model->create('user_bid', $document);
-		}
-		
-		$dateEnd = 30 - $dateEnd;
-		$result = array('result'=>true, 'message'=>'Success!', 'data'=>array(
-			'price' => number_format($price_current, 0, ',', '.'),
-			'name' => $name,
-			'time' => $dateEnd,
-		));
+	private function BID(){
+		include_once('bid.php');
+		$bid = new bid();
+		$result = $bid->handle($this->model, $this->document);
 		return $result;
 	}
 	//end BID
 	
-	private function getProduct($_id){
-		$filter = array(
-			'where' => array('_id'=>$_id),
-			'pretty' => array(
-				'_id'=>0,
-				'price_cost'=>1,
-				'price_start'=>1,
-				'price_step'=>1,
-				'price_current'=>1,
-				'count_bid'=>1,
-				'date_bid'=>1
-			),
-		);
-		$data = $this->model->findOne(_POSTS_, $filter);
-		if($data){
-			return $data;
+	//loadPages
+	public function loadPages(){
+		if(isset($this->document['id'])){
+			include_once('libraries/simple_html_dom.php');
+			
+			$link = $_SERVER['HTTP_HOST'].'/cp_admin/pages/?id='.$this->document['id'];
+			$html = file_get_html($link);
+			//$html = $html->find('#'.$tags, 0)->innertext;
+			
+			return $html;
 		}else{
 			return false;
 		}
 	}
-	
-	private function BID(){
-		//get product
-		if(isset($this->document['_id'])){
-			$idProduct = $this->document['_id'];
-			$dataProduct = $this->getProduct($idProduct);
-			if($dataProduct==false){
-				return array('result'=>false, 'message'=>'ERROR: Không tìm thấy ID '.$idProduct);
-			}
-		}else{
-			return array('result'=>false, 'message'=>'ERROR: _ID?');
-		}
-		
-		//check date BID
-		$dateCurrent = time();
-		if(isset($dataProduct['date_bid'])){
-			$date_bid = $dataProduct['date_bid']->sec;
-			
-			//$dateCurrent = 1468050032;
-			//$date_bid    = 1468050001;
-			
-			if($date_bid<=$dateCurrent && $date_bid+30>=$dateCurrent){
-				//được BID
-				return array('result'=>false, 'message'=>'được BID');
-			}else if(($date_bid<=$dateCurrent) && ($date_bid+30<=$dateCurrent)){
-				//đóng BID
-				return array('result'=>false, 'message'=>'đóng BID');
-			}else{
-				return array('result'=>false, 'message'=>'ERROR: Sản phẩm chưa lên sàn.');
-			}
-		}else{
-			return array('result'=>false, 'message'=>'ERROR: Sản phẩm không lên sàn.');
-		}
-		
-		
-		
-		
-		
-		
-		return true;
-		
-		$price_current = $dataProduct['price_current'];
-		
-		$filter = array(
-			'where' => array('product'=>$idProduct),
-			'sort' => array('_id'=>-1),
-			'limit' => 1,
-		);
-		$dataUserBID = $this->model->find('user_bid', $filter);
-		$name = '';
-		if(isset($dataUserBID['name'])){
-			$name = $dataUserBID['name'];
-		}
-		
-		//check time
-		if(isset($dataProduct['datetime']) && $dataProduct['datetime']>0){
-			$dateEnd = time() - $dataProduct['datetime'];
-		}else if(!isset($dataProduct['datetime']) || $dataProduct['datetime']==0){
-			$dateEnd = 0;
-			$document = array();
-			$document['datetime'] = time();
-			$filter = array('_id'=>$idProduct);
-			$this->model->update(_POSTS_, $document, $filter);
-		}
-		
-		if($dateEnd>=30 && count($dataUserBID)>0){
-			$message = 'Chúc mừng <b>'.strtoupper($name).'</b> dành chiến thắng với giá đấu <b>'.number_format($price_current, 0, ',', '.').'</b>';
-			$result = array('result'=>true, 'message'=>$message);
-			return $result;
-		}else if($dateEnd>=30 && count($dataUserBID)==0){
-			$message = 'Phiên đấu giá đã đóng với <b>0</b> lượt BID.';
-			$result = array('result'=>true, 'message'=>$message);
-			return $result;
-		}
-		//end check time
-		
-		if(isset($_POST['bid']) && isset($_SESSION['users'])){
-			$user = $_SESSION['users'];
-			$name = $user['name'];
-			if(isset($dataUserBID['user']) && $dataUserBID['user']==$user['_id']){
-				$result = array('result'=>false, 'message'=>'<p class="message" style="padding:20px 50px"><b>MESSAGE: Hiện tại giá bạn là cao nhất</b></p>');
-				return $result;
-			}
-			
-			$price_current = $price_current + $dataProduct['price_step'];
-			
-			$document = array();
-			$document['price_current'] = $price_current;
-			$document['datetime'] = time();
-			$filter = array('_id'=>$idProduct);
-			$this->model->update(_POSTS_, $document, $filter);
-			
-			$document = array(
-				'product' => $idProduct,
-				'user' => $user['_id'],
-				'name' => $name,
-				'price' => $price_current,
-				'date' => time(),
-			);
-			$this->model->create('user_bid', $document);
-		}
-		
-		$dateEnd = 30 - $dateEnd;
-		$result = array('result'=>true, 'message'=>'Success!', 'data'=>array(
-			'price' => number_format($price_current, 0, ',', '.'),
-			'name' => $name,
-			'time' => $dateEnd,
-		));
-		return $result;
-		
-		
-		
-		$result = array('result'=>true, 'message'=>'Success!', 'data'=>$this->document);
-		//echo json_encode($result);
-		return $result;
-	}
+	//end loadPages
 }
 
 $control = new ajax();

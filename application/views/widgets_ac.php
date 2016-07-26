@@ -155,7 +155,7 @@ $data = $this->model->findOne($collection, $filter);
         <span class="label">HTML</span>
         <ul class="values values80">
             <li class="field">
-                <p class="value"><textarea name="html" class="field text" style="height:300px;"><?php echo $data['html'];?></textarea></p>
+                <p class="value"><textarea name="html" class="field text" style="height:300px;"><?php if(isset($data['html'])) echo $data['html'];?></textarea></p>
             </li>
             <p class="error hidden">HTML is a required field</p>
         </ul>
