@@ -199,4 +199,93 @@ class users{
 			return array('result'=>false, 'message'=>'ERROR: Mật khẩu chưa đạt yêu cầu', 'data'=>$error);
 		}
 	}
+	
+	private function changePassword(){
+		$user = $this->model->_getUser();
+		if($user==''){
+			return array('result'=>false, 'message'=>'ERROR: Vui lòng đăng nhập');
+		}
+		
+		if( !isset($this->document['password']) || !isset($this->document['password_new']) || !isset($this->document['password_confirm']) ){
+			return array('result'=>false, 'message'=>'ERROR: Thông tin không đủ.');
+		}
+		
+		$password = $this->document['password'];
+		$password_new = $this->document['password_new'];
+		$password_confirm = $this->document['password_confirm'];
+		
+		if( strlen($password)<6 || strlen($password_new)<6 || $password_new!=$password_confirm ){
+			return array('result'=>false, 'message'=>'ERROR: Password chưa đúng.');
+		}
+		
+		if( $password==$password_new ){
+			return array('result'=>false, 'message'=>'Mật khẩu mới phải khác mật khẩu cũ.');
+		}
+		
+		$filter = array(
+			'where' => array('_id'=>$user['_id']),
+			'pretty' => array('_id'=>0, 'salt'=>1),
+		);
+		$salt = $this->model->findOne('users', $filter);
+		
+		$password = $this->model->_password($password.$salt);
+		$filter = array(
+			'where' => array('_id'=>$user['_id'], 'password'=>$password),
+			'pretty' => array('salt'=>1, 'log_change_pass'=>1),
+		);
+		$data = $this->model->findOne('users', $filter);
+		
+		if($data){
+			$document = array(
+				'password' => $this->model->_password($password_new.$salt),
+			);
+			
+			if(!isset($data['log_change_pass'])){
+				$document['log_change_pass'] = array();
+				$document['log_change_pass'][] = array(
+					'datetime' => $this->model->_dateObject(),
+					'password_old' => $password,
+				);
+			}else{
+				$log_change_pass = $data['log_change_pass'];
+				array_push($log_change_pass, array(
+						'datetime' => $this->model->_dateObject(),
+						'password_old' => $password,
+					)
+				);
+				$document['log_change_pass'] = $log_change_pass;
+			}
+			
+			$filter = array(
+				'_id'=>$user['_id'],
+			);
+			$this->model->update('users', $document, $filter);
+			return array('result'=>true, 'message'=>'Thay đổi mật khẩu thành công');
+		}else{
+			return array('result'=>false, 'message'=>'Mật khẩu không đúng');
+		}
+	}
+	
+	private function changeInfo(){
+		$user = $this->model->_getUser();
+		if($user==''){
+			return array('result'=>false, 'message'=>'ERROR: Vui lòng đăng nhập');
+		}
+		
+		$document = array();
+		
+		$array = array('name', 'gender', 'birthday', 'address', 'tel');
+		foreach($array as $name){
+			if(isset($this->document[$name])){
+				$document[$name] = $this->document[$name];
+			}
+		}
+		
+		$documentNew = $this->model->documentCheckAdmin('users', $document);
+		$filter = array(
+			'_id'=>$user['_id'],
+		);
+		$this->model->update('users', $documentNew, $filter);
+		return array('result'=>true, 'message'=>'Thay đổi thành công');
+	}
 }

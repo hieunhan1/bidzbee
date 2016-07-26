@@ -76,7 +76,7 @@ class bid{
 			}
 			
 			$data[$id] = '<p class="img imgWidth"><img src="'._URL_THUMB_.$row['img'].'" alt="'.$row['name'].'" /></p>
-			<p class="action-bid gray">Khởi điểm: '.$this->model->_number($row['price_start']).'</p>
+			<p class="action-bid gray" type="register">Khởi điểm: '.$this->model->_number($row['price_start']).'</p>
 			<p class="time-bid"><span></span></p>
 			<div class="info-bid">
 				<p class="count-bid">'.$count_bid.' BIDS</p>
@@ -114,7 +114,8 @@ class bid{
 				
 				return $result;
 			}else{
-				return array('result'=>false, 'message'=>'ERROR: Sản phẩm chưa đến giờ đấu.');
+				//return array('result'=>false, 'message'=>'ERROR: Sản phẩm chưa đến giờ đấu.');
+				return array('result'=>true, 'message'=>date(_DATETIME_, $this->product['date_bid']->sec), 'status'=>'future');
 			}
 		}else{
 			return array('result'=>false, 'message'=>'ERROR: Sản phẩm không lên sàn.');

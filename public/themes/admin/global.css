@@ -46,6 +46,7 @@ input, textarea, select {
 .viewpost{
 	line-height: 180%;
 	font-size: 100%;
+	word-wrap: break-word;
 }
 .viewpost h1{
 	color: #000;

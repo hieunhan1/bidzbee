@@ -213,7 +213,7 @@ function checkDataString(tags, condition, type){
 		}
 	}else if(type == "user"){
 		var check = checkUser(str);
-		if(check==false){
+		if(str.length<condition || check==false){
 			return false;
 		}
 	}else if(type == "confirm"){

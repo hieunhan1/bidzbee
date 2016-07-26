@@ -185,6 +185,54 @@ $data = $this->model->findOne($collection, $filter);
         <p class="clear1"></p>
     </li>
     
+    <li class="field addFields" name="fields" type="datalist" check="string" condition="0">
+    	<span class="label">Fields</span>
+        <ul class="values dataListFull listAddFields sortable">
+            <?php
+			function fieldArrayToString($data){
+				$str = '';
+				if(is_array($data) && count($data)>0){
+					foreach($data as $key=>$value){
+						if(!is_array($value)){
+							$str .= '<li class="field" key="'.$key.'" value="'.$value.'">'.$key.' <i>('.$value.')</i></li>';
+						}else{
+							$children = fieldArrayToString($value);
+							$str .= '<li class="field" name="'.$key.'" type="datalist">
+								<ul class="values dataListFull">
+									'.$children.'
+									<p class="clear1"></p>
+								</ul>
+							</li>';
+						}
+					}
+				}
+				
+				return $str;
+			}
+			
+			$str = '';
+			if(isset($data['fields']) && is_array($data['fields'])){
+				foreach($data['fields'] as $name=>$row){
+					$fields = fieldArrayToString($row);
+					$str .= '<li class="field fieldAddFields" name="'.$name.'" type="datalist">
+						<span class="label2">'.$name.'</span>
+						<ul class="values values80 dataListFull" style="display:none">
+							'.$fields.'
+						</ul>
+						<p class="clear1"></p>
+					</li>';
+				}
+			}
+			
+			echo $str;
+			?>
+        </ul>
+        <div class="viewFrmAddFields values80 floatRight">
+            <input type="button" name="btnFormAddField" value="Add" class="btnFormAddField btnSmall bgGreen corner5" />
+        </div>
+        <p class="clear10"></p>
+    </li>
+    
     <li class="field" name="submit" type="noaction">
         <span class="label"></span>
         <ul class="values">
@@ -199,6 +247,7 @@ $data = $this->model->findOne($collection, $filter);
 <?php
 include_once('btnAddData.php');
 include_once('ppWhere.php');
+include_once('pages_add_fields.php');
 ?>
 
 <style type="text/css">

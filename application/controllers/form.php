@@ -412,6 +412,10 @@ class form{
 		CKEDITOR.replace( '{$name}', {
 			uiColor: '#E1E1E1',
 			height: 400,
+            entities: false,
+            basicEntities: false,
+            entities_greek: false,
+            entities_latin: false,
 			pasteFromWordPromptCleanup: true,
 			pasteFromWordRemoveFontStyles: true,
 			forcePasteAsPlainText: true,
@@ -440,6 +444,10 @@ class form{
 		CKEDITOR.replace( '{$name}', {
 			uiColor: '#E1E1E1',
 			height: 250,
+            entities: false,
+            basicEntities: false,
+            entities_greek: false,
+            entities_latin: false,
 			pasteFromWordPromptCleanup: true,
 			pasteFromWordRemoveFontStyles: true,
 			forcePasteAsPlainText: true,
@@ -466,6 +474,10 @@ class form{
 		CKEDITOR.replace( '{$name}', {
 			uiColor: '#E1E1E1',
 			height: 120,
+            entities: false,
+            basicEntities: false,
+            entities_greek: false,
+            entities_latin: false,
 			pasteFromWordPromptCleanup: true,
 			pasteFromWordRemoveFontStyles: true,
 			forcePasteAsPlainText: true,

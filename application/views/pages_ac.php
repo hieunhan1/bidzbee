@@ -14,7 +14,7 @@ $data = $this->model->findOne($collection, $filter);
         </ul>
     </li>
     
-    <li class="field" name="pages-load" type="noaction">
+    <!--<li class="field" name="pages-load" type="noaction">
         <span class="label">Page load</span>
         <ul class="values">
             <li class="field">
@@ -38,7 +38,7 @@ $data = $this->model->findOne($collection, $filter);
             <p class="error hidden">Select status</p>
         </ul>
         <p class="clear10"></p>
-    </li>
+    </li>-->
     
 	<li class="field" name="status" type="checkbox" check="string" condition="1">
         <span class="label">Status</span>
@@ -329,7 +329,7 @@ $data = $this->model->findOne($collection, $filter);
     </li>
     -->
     
-    <li class="field addFields admin" name="fields" type="datalist" check="string" condition="0">
+    <li class="field addFields" name="fields" type="datalist" check="string" condition="0">
     	<span class="label">Fields</span>
         <ul class="values dataListFull listAddFields sortable">
             <?php
@@ -493,7 +493,6 @@ $(document).ready(function() {
 			});
 		});
 	}
-	loadPages();
 	
 	//load type web || admin
 	function autoLoadType(){

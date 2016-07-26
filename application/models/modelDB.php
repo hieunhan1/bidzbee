@@ -610,18 +610,23 @@ class modelDB{
 			$document['_id'] = $this->_id($document['_id']);
 		}
 		
-		$user = $this->_getUser();
-		if($user != ''){
-			$user = array(
-				'_id' => (string)$user['_id'],
-				'name' => (string)$user['name'],
-				'username' => (string)$user['username'],
-			);
-		}
 		$document['_create'] = array(
 			'datetime' => $this->_dateObject(),
-			'user' => $user,
 		);
+		
+		$user = $this->_getUser();
+		if($user != ''){
+			$userNew = array(
+				'_id' => (string)$user['_id'],
+				'name' => (string)$user['name'],
+			);
+			if(isset($user['username'])){
+				$userNew['username'] = $user['username'];
+			}
+		}
+		if(isset($userNew)){
+			$document['_create']['user'] = $userNew;
+		}
 		
 		$result = $collection->insert($document);
 		if($result['ok']==1){
@@ -642,18 +647,23 @@ class modelDB{
 			$document['_id'] = $this->_id();
 		}
 		
-		$user = $this->_getUser();
-		if($user != ''){
-			$user = array(
-				'_id' => (string)$user['_id'],
-				'name' => (string)$user['name'],
-				'username' => (string)$user['username'],
-			);
-		}
 		$document['_create'] = array(
 			'datetime' => $this->_dateObject(),
-			'user' => $user,
 		);
+		
+		$user = $this->_getUser();
+		if($user != ''){
+			$userNew = array(
+				'_id' => (string)$user['_id'],
+				'name' => (string)$user['name'],
+			);
+			if(isset($user['username'])){
+				$userNew['username'] = $user['username'];
+			}
+		}
+		if(isset($userNew)){
+			$document['_create']['user'] = $userNew;
+		}
 		
 		$result = $collection->save($document);
 		if($result['ok']==1){
@@ -718,18 +728,23 @@ class modelDB{
 			$filter['_id'] = $this->_id($filter['_id']);
 		}
 		
-		$user = $this->_getUser();
-		if($user != ''){
-			$user = array(
-				'_id' => (string)$user['_id'],
-				'name' => (string)$user['name'],
-				'username' => (string)$user['username'],
-			);
-		}
 		$document['_update'] = array(
 			'datetime' => $this->_dateObject(),
-			'user' => $user,
 		);
+		
+		$user = $this->_getUser();
+		if($user != ''){
+			$userNew = array(
+				'_id' => (string)$user['_id'],
+				'name' => (string)$user['name'],
+			);
+			if(isset($user['username'])){
+				$userNew['username'] = $user['username'];
+			}
+		}
+		if(isset($userNew)){
+			$document['_update']['user'] = $userNew;
+		}
 		
 		$result = $collection->update($filter, array($set=>$document), $multi);
 		if($result){

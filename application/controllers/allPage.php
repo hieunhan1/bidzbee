@@ -65,7 +65,7 @@ class allPage{
 		$arrScript	= array();
 		
 		//xuất widgets
-		if(isset($dataPages['widgets'])){
+		if(isset($dataPages['widgets']) && $dataPages['widgets']!=''){
 			foreach($dataPages['widgets'] as $widget=>$label){
 				$strWidget = '$'.$widget.' = $this->widgets("'.$widget.'", $css, $script);';
 				eval($strWidget);

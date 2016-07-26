@@ -274,23 +274,139 @@ class ajax{
 		$result = $bid->handle($this->model, $this->document);
 		return $result;
 	}
-	//end BID
 	
-	//loadPages
-	public function loadPages(){
-		if(isset($this->document['id'])){
-			include_once('libraries/simple_html_dom.php');
-			
-			$link = $_SERVER['HTTP_HOST'].'/cp_admin/pages/?id='.$this->document['id'];
-			$html = file_get_html($link);
-			//$html = $html->find('#'.$tags, 0)->innertext;
-			
-			return $html;
+	private function viewDetail(){
+		if(!isset($this->document['_id']) || !isset($this->document['collection'])){
+			return array('result'=>false, 'message'=>'ERROR: Dữ liệu không đủ');
+		}
+		
+		$_id = $this->document['_id'];
+		$collection = $this->document['collection'];
+		
+		$filter = array(
+			'where' => array('_id'=>$_id),
+		);
+		$data = $this->model->findOne($collection, $filter);
+		
+		//reminders
+		$count = 0;
+		$btnReminders = 'view-frm-register';
+		$user = $this->model->_getUser();
+		if(isset($data['reminders'])){
+			$count = count($data['reminders']);
+			if($user!=''){
+				$btnReminders = 'btnReminders';
+				foreach($data['reminders'] as $row){
+					if($row['_id']==(string)$user['_id']){
+						$btnReminders = 'active';
+					}
+				}
+			}
 		}else{
-			return false;
+			if($user!=''){
+				$btnReminders = 'btnReminders';
+			}
+		}
+		$reminders = '<span class="reminders '.$btnReminders.'" type="register" _id="'.$data['_id'].'"></span> <b>'.$count.'</b> nhắc nhở';
+		
+		//list image
+		$strListImg = '';
+		$filter = array(
+			'where' => array('id'=>$_id),
+		);
+		$listImage = $this->model->findOne(_FILES_, $filter);
+		if($listImage && isset($listImage['data']) && count($listImage['data'])>1){
+			foreach($listImage['data'] as $row){
+				$file = $row['file'].'.'.$row['extension'];
+				if($file!=$data['img']){
+					$active = '';
+				}else{
+					$active = ' active';
+				}
+				$strListImg .= '<p class="img imgWidth'.$active.'" url="'._URL_IMAGE_.$file.'"><img src="'._URL_THUMB_.$file.'" alt="'.$row['name'].'" /></p>';
+			}
+			
+			$strListImg = '<div class="img-list">'.$strListImg.'<p class="clear1"></p></div>';
+		}
+		
+		$strData = '<div id="bid-detail">
+			<div class="img imgHeight"><img src="'._URL_IMAGE_.$data['img'].'" alt="'.$data['name'].'" /></div>
+			'.$strListImg.'
+			<div class="content viewpost">
+				<h1 style="font-size: 135%">'.$data['name'].'</h1>
+				<div class="more">
+					<p>Giá thị trường: <b>'.$this->model->_number($data['price_cost']).' Đ</b></p>
+					<p>Giá khởi điểm: <b>'.$this->model->_number($data['price_start']).' Đ</b></p>
+					<p>Bước giá: <b>'.$this->model->_number($data['price_step']).' Đ</b></p>
+					<p>Shipping: <b>'.$data['shipping'].'</b></p>
+					<p>Ngày BID: <b style="color:#06F">'.date(_DATETIME_, $data['date_bid']->sec).'</b></p>
+					<p>'.$reminders.'</p>
+				</div>
+				'.$data['content'].'
+			</div>
+			<p class="clear1"></p>
+		</div>';
+		
+		if($data){
+			return array('result'=>true, 'data'=>$strData);
+		}else{
+			return array('result'=>false, 'message'=>'ERROR: Không tìm thấy');
 		}
 	}
-	//end loadPages
+	
+	private function reminders(){
+		if(!isset($this->document['_id'])){
+			return array('result'=>false, 'message'=>'ERROR: Dữ liệu không đủ');
+		}
+		
+		$user = $this->model->_getUser();
+		if($user==""){
+			return array('result'=>false, 'message'=>'ERROR: Vui lòng đăng nhập');
+		}
+		
+		$count = 0;
+		$filter = array(
+			'where' => array('_id'=>$this->document['_id']),
+			'pretty' => array('_id'=>0, 'status'=>1, 'reminders'=>1),
+		);
+		$data = $this->model->findOne('posts', $filter);
+		if($data){
+			$dataNew = array(
+				'_id' => (string)$user['_id'],
+				'name' => $user['name'],
+				'email' => $user['email'],
+				'datetime' => $this->model->_dateObject(),
+			);
+			
+			$document = array();
+			
+			if(isset($data['reminders'])){
+				$count = count($data['reminders']);
+				foreach($data['reminders'] as $row){
+					if($row['_id']==(string)$user['_id']){
+						return array('result'=>false, 'message'=>'ERROR: Bạn đã chọn nhắc nhở cho sản phẩm này rồi');
+					}
+				}
+				
+				$document['reminders'] = $data['reminders'];
+				array_push($document['reminders'], $dataNew);
+			}else{
+				$document['reminders'][] = $dataNew;
+			}
+			
+			$count = $count + 1;
+		}else{
+			return array('result'=>false, 'message'=>'ERROR: Không tìm thấy dữ liệu');;
+		}
+		
+		$filter = array(
+			'_id' => $this->document['_id'],
+		);
+		$this->model->update('posts', $document, $filter);
+		
+		return array('result'=>true, 'count'=>$count);
+	}
+	//end BID
 }
 
 $control = new ajax();

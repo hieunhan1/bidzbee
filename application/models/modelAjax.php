@@ -45,6 +45,8 @@ class modelAjax extends modelDB{
 						}else if($type=='date'){
 							if($this->_validateDate($data, _DATETIME_)==true){
 								$data = $this->_dateObject($data);
+							}else if($this->_validateDate($data, _DATE_)==true){
+								$data = $this->_dateObject($data);
 							}else{
 								$data = '';
 							}
