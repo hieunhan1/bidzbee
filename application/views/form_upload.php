@@ -35,7 +35,7 @@
 						<p class="delete"><a href="javascript:;">Delete</a></p>
 					</div>';
 				}else{
-					$url = _URL_FILE_ . $file;
+					$url = _URL_FILES_ . $file;
 					echo '<div class="item" id="'.$id.'" _name="'.$name.'" _file="'.$file.'" _url="'.$url.'">
 						<p class="avarta">chọn làm<br />đại diện</p>
 						<p class="img imgWidth"><span>'.$files['extension'].'</span></p>
@@ -196,11 +196,11 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$("#uploads-console").on("click", ".item", function(){
+	$("#uploads-console").on("click", ".avarta", function(){
 		$("#uploads-console .item").removeClass("active");
-		$(this).addClass("active");
+		$(this).parents(".item").addClass("active");
 		
-		var file = $(this).attr("_file");
+		var file = $(this).parents(".item").attr("_file");
 		
 		if( $(".iAC-Collection input[name=img]").length ){
 			$(".iAC-Collection input[name=img]").val(file);
@@ -215,7 +215,7 @@ $(document).ready(function() {
 		var dropzone = document.getElementById("drop-zone");
 		
 		var displayUploads = function(data){
-			console.log(data);
+			//console.log(data);
 			
 			$("#standard-upload-files").val("");
 			
@@ -305,6 +305,61 @@ $(document).ready(function() {
 	$("#uploads-close").on("click", function(){
 		$("#uploads-console").toggle(200);
 	});
+	
+	/*delete*/
+	$("#uploads-console").on("click", ".list-file .delete", function(){
+		var file = $(this).parents(".item").attr("id");
+		var name = $(this).parents(".item").attr("_name");
+		var str = '<p>Bạn muốn xóa "' + name + '"?</p><p class="clear30"></p>';
+			str+= '<p><span class="btnMedium bgRed corner5 btnDelete" file="' + file + '">Delete</span> <span class="btnMedium bgGray corner5 ppClose">Cancel</span></p><p class="clear10"></p>';
+			
+		ppLoad(str);
+	});
+	
+	$("#pp").on("click", ".btnDelete", function(){
+		var id = $("#iAC-Collection input[name=_id]").val();
+		var file = $(this).attr("file");
+		var fileFull = $("#" + file).attr("_file");
+		var fields = new Object();
+			fields._request = 'deleteFiles';
+			fields.id = id;
+			fields.file = file;
+			fields.fileFull = fileFull;
+			
+		$.ajax({
+			url     : 'ajax',
+			type    : 'post',
+			data    : fields,
+			cache   : false,
+			success : function(data){
+				data = convertToJson(data);
+				console.log(data);
+				if(data==false){
+					var str = '<p class="error">ERROR: Server</p>';
+					ppLoad(str);
+				}else if(data.result!=false){
+					var active = $("#uploads-console .list-file .active").attr("id");
+					$("#" + file).remove();
+					
+					if(active==file){
+						if( $("#uploads-console .list-file .item").length ){
+							$("#uploads-console .list-file .item").removeClass("active");
+							$("#uploads-console .list-file .item:first").addClass("active");
+							var fileNew = $("#uploads-console .list-file .item:first").attr("_file");
+							$("#iAC-Collection input[name=img]").val(fileNew);
+						}else{
+							$("#iAC-Collection input[name=img]").val("");
+						}
+					}
+					
+					ppClose();
+				}else{
+					console.log(data);
+				}
+			}
+		});
+	});
+	/*end delete*/
 	
 	/*copy link image*/
 	/*function copySuccess(){

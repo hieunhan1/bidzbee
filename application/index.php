@@ -14,10 +14,6 @@ function urlExcept($url, $listUrl){
 }
 
 function getUrl(){
-	$host = '';
-	if(isset($_SERVER['HTTP_HOST'])){
-		$host = $_SERVER['HTTP_HOST'];
-	}
 	$uri = $_SERVER['REQUEST_URI'];
 	$urlArr = explode('/', $uri);
 	$total = count($urlArr);
@@ -46,7 +42,7 @@ function getUrl(){
 	}
 	
 	$arr = array(
-		'host' => $host,
+		'host' => _DOMAIN_,
 		'uri' => $uri,
 		'file' => $file,
 		'alias' => $alias,

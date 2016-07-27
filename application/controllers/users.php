@@ -67,7 +67,7 @@ class users{
 				$arr = array('result'=>true, 'message'=>'Success!');
 			}else{
 				$_SESSION['users'] = $result;
-				$arr = array('result'=>true, 'message'=>'Success!', 'url'=>'http://'.$_SERVER['HTTP_HOST']);
+				$arr = array('result'=>true, 'message'=>'Success!', 'url'=>_DOMAIN_);
 			}
 			
 			return $arr;

@@ -1,4 +1,5 @@
 <?php
+define('_DOMAIN_', 'http://bidzbee.localhost/');
 define('_HOST_', 'localhost');
 define('_DB_', 'bidzbee2');
 define('_DB_USER_', 'root'); //bidzbee
@@ -40,13 +41,13 @@ define('_UPLOAD_TEMP_',  '../public/temp/');
 define('_UPLOAD_IMAGE_', '../public/images/');
 define('_UPLOAD_THUMB_', '../public/thumbs/');
 define('_UPLOAD_AUDIO_', '../public/audios/');
-define('_UPLOAD_FILE_',  '../public/files/');
+define('_UPLOAD_FILES_', '../public/files/');
 define('_UPLOAD_VIDEO_', '../public/videos/');
 define('_URL_TEMP_',  '/public/temp/');
 define('_URL_IMAGE_', '/public/images/');
 define('_URL_THUMB_', '/public/thumbs/');
 define('_URL_AUDIO_', '/public/audios/');
-define('_URL_FILE_',  '/public/files/');
+define('_URL_FILES_', '/public/files/');
 define('_URL_VIDEO_', '/public/videos/');
 define('_THUMB_WIDTH_', 300);
 define('_THUMB_HEIGHT_', 250);

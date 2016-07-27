@@ -23,7 +23,7 @@ mongorestore --host localhost --port 27017 --username root --password PublicPass
 
 Backup va restore only database
 mongodump --db bidzbee2 --username root --password PublicPassword#123* --authenticationDatabase admin --out D:\MongoDB\backup\
-mongorestore --db bidzbee --username root --password PublicPassword#123* --authenticationDatabase admin D:\MongoDB\backup\webmanager --drop
+mongorestore --db bidzbee2 --username root --password PublicPassword#123* --authenticationDatabase admin D:\MongoDB\backup\bidzbee2 --drop
 
 mongodump --db bidzbee2 --out /home/bidzbee/backup/
 mongorestore --db bidzbee2 /home/bidzbee/backup/bidzbee2 --drop

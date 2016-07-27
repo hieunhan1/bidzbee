@@ -14,31 +14,19 @@ $data = $this->model->findOne($collection, $filter);
         </ul>
     </li>
     
-    <!--<li class="field" name="pages-load" type="noaction">
-        <span class="label">Page load</span>
-        <ul class="values">
-            <li class="field">
-                <p class="value">
-                	<select name="pages-load" class="select">
-                    	<option value="">-- load page tương tự --</option>
-                        <?php
-                        $filter = array(
-							'pretty' => array('name'=>1),
-							'sort' => array('type'=>-1, 'order'=>1),
-						);
-						$dataPageLoad = $this->model->find(_PAGES_, $filter);
-						foreach($dataPageLoad as $id=>$rowPageLoad){
-							echo '<option value="'.$id.'">'.$rowPageLoad['name'].'</option>';
-						}
-						?>
-                    </select>
-                </p>
-                <p class="clear1"></p>
-            </li>
-            <p class="error hidden">Select status</p>
-        </ul>
-        <p class="clear10"></p>
-    </li>-->
+    <?php
+    if((string)$data['_id']!=0){
+		echo '<li class="field" name="pages-create-site" type="noaction">
+			<span class="label"></span>
+			<ul class="values">
+				<li class="field">
+					<span class="btnSmall bgGray corner5 btnCreateSite">Create a similar site</span>
+				</li>
+			</ul>
+			<p class="clear10"></p>
+		</li>';
+	}
+	?>
     
 	<li class="field" name="status" type="checkbox" check="string" condition="1">
         <span class="label">Status</span>
@@ -106,7 +94,7 @@ $data = $this->model->findOne($collection, $filter);
         <span class="label">Icon</span>
         <ul class="values">
             <li class="field">
-                <p class="value"><input type="text" name="name" value="<?php if(isset($data['icon'])) echo $data['icon']; else echo 'iconDefault';?>" class="field input" /></p>
+                <p class="value"><input type="text" name="icon" value="<?php if(isset($data['icon'])) echo $data['icon']; else echo 'iconDefault';?>" class="field input" /></p>
             </li>
             <p class="error hidden">Icon is a required field</p>
         </ul>
@@ -117,7 +105,7 @@ $data = $this->model->findOne($collection, $filter);
         <span class="label">Order</span>
         <ul class="values">
             <li class="field">
-                <p class="value"><input type="text" name="name" value="<?php if(isset($data['order'])) echo $data['order']; else echo 0;?>" class="field input" /></p>
+                <p class="value"><input type="text" name="order" value="<?php if(isset($data['order'])) echo $data['order']; else echo 0;?>" class="field input" /></p>
             </li>
             <p class="error hidden">Input number</p>
         </ul>
@@ -378,12 +366,12 @@ $data = $this->model->findOne($collection, $filter);
     </li>
     
     <li class="field" name="upload" type="checkbox" check="string" condition="0">
-        <span class="label">Form upload</span>
+    	<span class="label">Form upload</span>
         <ul class="values">
             <li class="field">
                 <p class="value checkBox">
-                	<span><input type="radio" name="upload" value="1" id="upload1" class="field" <?php if(isset($data['upload']) && $data['upload']==1) echo 'checked="checked"';?> />Yes</span>
-                	<span><input type="radio" name="upload" value="0" id="upload0" class="field" checked="checked" />No</span>
+                    <span><input type="radio" name="upload" value="1" id="upload1" class="field" <?php if(isset($data['upload']) && $data['upload']==1) echo 'checked="checked"';?> />Yes</span>
+                	<span><input type="radio" name="upload" value="0" id="upload0" class="field" <?php if(isset($data['upload']) && $data['upload']==0) echo 'checked="checked"';?> />No</span>
                 </p>
                 <p class="clear1"></p>
             </li>
@@ -474,25 +462,19 @@ include_once('pages_add_fields.php');
 
 <script type="text/javascript">
 $(document).ready(function() {
-	//load page tuong tu
-	function loadPages(){
-		$("select[name=pages-load]").change(function(){
-			var id = $(this).val();
-			var fields = new Object();
-				fields._request = 'loadPages';
-				fields.id = id;
-				
-			$.ajax({ 	
-				url     : 'ajax',
-				type    : 'post',
-				data    : fields,
-				cache   : false,
-				success : function(data){
-					console.log(data);
-				}
-			});
-		});
-	}
+	//create page tuong tu
+	$(".btnCreateSite").click(function(){
+		$("#iAC-Collection").attr("action", "create");
+		$("#iAC-Collection input[name=_id]").attr("value", "0");
+		$("#iAC-Collection input[name=label]").val("");
+		$("#iAC-Collection input[name=name]").val("");
+		
+		var hostname = $(location).attr('hostname');
+		var pathname = $(location).attr('pathname');
+		window.history.pushState(null, 'Title', 'http://' + hostname + pathname + '?_id=0');
+		
+		$(this).hide(100);
+	});
 	
 	//load type web || admin
 	function autoLoadType(){

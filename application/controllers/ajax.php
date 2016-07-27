@@ -265,6 +265,83 @@ class ajax{
 		$result = $uploads->uploadAction($this->model, $this->document);
 		return $result;
 	}
+	
+	private function deleteFiles(){
+		if(!isset($this->document['id']) || !isset($this->document['file'])){
+			return array('result'=>false, 'message'=>'ERROR: Dữ liệu không đủ');
+		}
+		
+		$user = $this->model->_getUser();
+		if($user!=''){
+			if((is_array($user['groups']) && in_array('administrators', $user['groups'])) || $user['groups']=='administrators'){
+				$filter = array(
+					'where' => array(
+						'id'=>$this->document['id'],
+						'data.file'=>$this->document['file'],
+						//'_create.user._id'=>(string)$user['_id'],
+					),
+				);
+			}else{
+				$filter = array(
+					'where' => array(
+						'id'=>$this->document['id'],
+						'data.file'=>$this->document['file'],
+						'_create.user._id'=>(string)$user['_id'],
+					),
+				);
+			}
+			$data = $this->model->findOne(_FILES_, $filter);
+			if($data){
+				$listFile = $data['data'];
+				foreach($listFile as $key=>$row){
+					if($row['file']==$this->document['file']){
+						array_splice($listFile, $key, 1);
+						
+						$file = $row['file'].'.'.$row['extension'];
+						
+						if($row['type']=='image'){
+							$url = _UPLOAD_IMAGE_;
+							if(file_exists(_UPLOAD_THUMB_ . $file)){
+								unlink(_UPLOAD_THUMB_ . $file);
+							}
+						}else if($row['type']=='files'){
+							$url = _UPLOAD_FILES_;
+						}else if($row['type']=='audio'){
+							$url = _UPLOAD_AUDIO_;
+						}else if($row['type']=='video'){
+							$url = _UPLOAD_VIDEO_;
+						}
+						
+						if(file_exists($url . $file)){
+							unlink($url . $file);
+						}
+					}
+				}
+				
+				$document = array();
+				$document['data'] = $listFile;
+				$filter = array(
+					'id' => $this->document['id'],
+				);
+				$this->model->update(_FILES_, $document, $filter);
+				
+				return array('result'=>true, 'message'=>'Success!');
+			}else{
+				$file = '';
+				if(isset($this->document['fileFull'])){
+					$file = $this->document['fileFull'];
+				}
+				if(file_exists(_UPLOAD_TEMP_ . $file)){
+					unlink(_UPLOAD_TEMP_ . $file);
+					return array('result'=>true, 'message'=>'Success! Temp!');
+				}else{
+					return array('result'=>false, 'message'=>'ERROR: Không tìm thấy dữ liệu');
+				}
+			}
+		}else{
+			return array('result'=>false, 'message'=>'ERROR: Bạn không có quyền');
+		}
+	}
 	//END ACTION UPLOAD
 	
 	//BID

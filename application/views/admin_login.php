@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<base href="http://<?php echo $_SERVER['HTTP_HOST'];?>/" />
+<base href="<?php echo _DOMAIN_;?>" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Quản trị website</title>
 <meta name="robots" content="nofollow" />

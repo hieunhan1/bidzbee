@@ -1,47 +1,30 @@
-[27-Jul-2016 02:01:11 Asia/Ho_Chi_Minh] PHP Notice:  Undefined variable: row in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 319
-[27-Jul-2016 02:01:11 Asia/Ho_Chi_Minh] PHP Notice:  Undefined variable: row in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 319
-[27-Jul-2016 02:04:32 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:33 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:34 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:35 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:36 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:37 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:38 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:39 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:40 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:41 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:42 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:43 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:44 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:45 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:46 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:47 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:48 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:49 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:50 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:51 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:52 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:53 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:54 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:55 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:56 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:57 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:58 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:04:59 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:05:00 Asia/Ho_Chi_Minh] PHP Parse error:  syntax error, unexpected 'id' (T_STRING) in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 328
-[27-Jul-2016 02:06:32 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: img in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 329
-[27-Jul-2016 02:06:32 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: price_cost in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 333
-[27-Jul-2016 02:06:32 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: price_start in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 334
-[27-Jul-2016 02:06:32 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: price_step in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 335
-[27-Jul-2016 02:06:32 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: shipping in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 336
-[27-Jul-2016 02:06:32 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: date_bid in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 337
-[27-Jul-2016 02:06:32 Asia/Ho_Chi_Minh] PHP Notice:  Trying to get property of non-object in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 337
-[27-Jul-2016 02:06:32 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: content in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 340
-[27-Jul-2016 02:06:43 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: img in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 329
-[27-Jul-2016 02:06:43 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: price_cost in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 333
-[27-Jul-2016 02:06:43 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: price_start in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 334
-[27-Jul-2016 02:06:43 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: price_step in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 335
-[27-Jul-2016 02:06:43 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: shipping in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 336
-[27-Jul-2016 02:06:43 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: date_bid in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 337
-[27-Jul-2016 02:06:43 Asia/Ho_Chi_Minh] PHP Notice:  Trying to get property of non-object in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 337
-[27-Jul-2016 02:06:43 Asia/Ho_Chi_Minh] PHP Notice:  Undefined index: content in D:\xampp\htdocs\bidzbee\application\controllers\ajax.php on line 340
+[27-Jul-2016 15:50:26 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught exception 'MongoCursorException' with message 'Cannot natively represent the long 9223372036854775807 on this platform' in D:\xampp\htdocs\bidzbee\application\models\modelDB.php:835
+Stack trace:
+#0 D:\xampp\htdocs\bidzbee\application\models\modelDB.php(835): MongoCollection->findOne(Array, Array)
+#1 D:\xampp\htdocs\bidzbee\application\models\modelAdmin.php(18): modelDB->_findOne(Object(MongoCollection), Array)
+#2 D:\xampp\htdocs\bidzbee\application\controllers\admin.php(195): modelAdmin->findOne('users', Array)
+#3 D:\xampp\htdocs\bidzbee\application\controllers\admin.php(55): admin->pageAction(Array, '577cf3478ead0ee...')
+#4 D:\xampp\htdocs\bidzbee\application\controllers\admin.php(246): admin->pageCurrent()
+#5 D:\xampp\htdocs\bidzbee\application\index.php(61): include_once('D:\\xampp\\htdocs...')
+#6 {main}
+  thrown in D:\xampp\htdocs\bidzbee\application\models\modelDB.php on line 835
+[27-Jul-2016 15:50:57 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught exception 'MongoCursorException' with message 'Cannot natively represent the long 9223372036854775807 on this platform' in D:\xampp\htdocs\bidzbee\application\models\modelDB.php:835
+Stack trace:
+#0 D:\xampp\htdocs\bidzbee\application\models\modelDB.php(835): MongoCollection->findOne(Array, Array)
+#1 D:\xampp\htdocs\bidzbee\application\models\modelAdmin.php(18): modelDB->_findOne(Object(MongoCollection), Array)
+#2 D:\xampp\htdocs\bidzbee\application\controllers\admin.php(195): modelAdmin->findOne('users', Array)
+#3 D:\xampp\htdocs\bidzbee\application\controllers\admin.php(55): admin->pageAction(Array, '577cf3478ead0ee...')
+#4 D:\xampp\htdocs\bidzbee\application\controllers\admin.php(246): admin->pageCurrent()
+#5 D:\xampp\htdocs\bidzbee\application\index.php(61): include_once('D:\\xampp\\htdocs...')
+#6 {main}
+  thrown in D:\xampp\htdocs\bidzbee\application\models\modelDB.php on line 835
+[27-Jul-2016 15:57:31 Asia/Ho_Chi_Minh] PHP Fatal error:  Uncaught exception 'MongoCursorException' with message 'Cannot natively represent the long 9223372036854775807 on this platform' in D:\xampp\htdocs\bidzbee\application\models\modelDB.php:835
+Stack trace:
+#0 D:\xampp\htdocs\bidzbee\application\models\modelDB.php(835): MongoCollection->findOne(Array, Array)
+#1 D:\xampp\htdocs\bidzbee\application\models\modelAdmin.php(18): modelDB->_findOne(Object(MongoCollection), Array)
+#2 D:\xampp\htdocs\bidzbee\application\controllers\admin.php(195): modelAdmin->findOne('users', Array)
+#3 D:\xampp\htdocs\bidzbee\application\controllers\admin.php(55): admin->pageAction(Array, '577cf3478ead0ee...')
+#4 D:\xampp\htdocs\bidzbee\application\controllers\admin.php(246): admin->pageCurrent()
+#5 D:\xampp\htdocs\bidzbee\application\index.php(61): include_once('D:\\xampp\\htdocs...')
+#6 {main}
+  thrown in D:\xampp\htdocs\bidzbee\application\models\modelDB.php on line 835
