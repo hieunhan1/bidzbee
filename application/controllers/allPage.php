@@ -157,6 +157,16 @@ class allPage{
 			eval($dataWidgets['php']);
 		}
 		
+		//fields
+		$fields = '';
+		if(isset($dataWidgets['fields']) && isset($dataWidgets['action']) && $dataWidgets['fields']!='' && $dataWidgets['fields']!=''){
+			include_once('form.php');
+			$frm = new form();
+			
+			$action = $dataWidgets['action'];
+			$fields = $frm->view($this->model, $dataWidgets, $action, $dataFields);
+		}
+		
 		//xuất css
 		if(isset($dataWidgets['css']) && $dataWidgets['css']!=''){
 			$css = '<style type="text/css">'.$dataWidgets['css'].'</style>';

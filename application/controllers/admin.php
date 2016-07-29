@@ -151,6 +151,8 @@ class admin{
 			$label = str_replace('{width}', $width, $label);
 			
 			$html = '<p class="btnCreate"><a href="cp_admin/'.$this->page.'/?_id=0" class="btnSmall bgBlue corner5">Thêm mới</a></p>
+			
+			<p class="clear1"></p>
 			<div id="adminContent">
 				<table width="100%" border="1" cellpadding="0" cellspacing="0" class="adTable">
 					<tr class="header">

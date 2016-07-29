@@ -63,17 +63,8 @@ function autoSizeLeftRight(){
 		var right_h = parseInt($("#right").height());
 		var right_w = parseInt(win_w - left_w - 1);
 		
-		console.log(win_w, right_w);
 		$("#wrapper").width(win_w);
 		$("#right").width(right_w);
-		//width auto
-		/*if(right_w > 809){
-			$("#wrapper").width(win_w);
-			$("#right").width(right_w);
-		}else{
-			$("#wrapper").width(win_w);
-			$("#right").width(right_w);
-		}*/
 		
 		//height auto
 		if(win_h>=left_h+45 && win_h>=right_h+45){

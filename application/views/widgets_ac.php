@@ -233,6 +233,28 @@ $data = $this->model->findOne($collection, $filter);
         <p class="clear10"></p>
     </li>
     
+    <li class="field" name="action" type="text" check="string" condition="0">
+        <span class="label">Action</span>
+        <ul class="values">
+            <li class="field">
+                <p class="value"><input type="text" name="action" value="<?php if(isset($data['action'])) echo $data['action'];?>" class="field input" /></p>
+            </li>
+            <p class="error hidden">Action is a required field</p>
+        </ul>
+        <p class="clear1"></p>
+    </li>
+    
+    <li class="field" name="btnSubmit" type="textarea" check="string" condition="0">
+        <span class="label">View submit</span>
+        <ul class="values">
+            <li class="field">
+                <p class="value"><textarea name="btnSubmit" class="field text"><?php if(isset($data['btnSubmit'])) echo $data['btnSubmit'];?></textarea></p>
+            </li>
+            <p class="error hidden">View submit is a required field</p>
+        </ul>
+        <p class="clear1"></p>
+    </li>
+    
     <li class="field" name="submit" type="noaction">
         <span class="label"></span>
         <ul class="values">

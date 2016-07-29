@@ -22,6 +22,11 @@ class form{
 			$_id = $data['_id'];
 		}
 		
+		$btnSubmit = '<p class="clear20"></p><span class="label"></span><li class="field"><input type="button" name="iAC-Submit" value="Submit" class="iAC-Submit btnLarge bgBlue corner5" /></li>';
+		if(isset($dataPages['btnSubmit']) && $dataPages['btnSubmit']!=''){
+			$btnSubmit = $dataPages['btnSubmit'];
+		}
+		
 		$str = '<ul id="iAC-Collection" class="iAC-Collection" name="'.$dataPages['collection'].'" action="'.$action.'">
 			<li class="field" name="_id" type="string" check="string" condition="0">
 				<ul class="values">
@@ -32,21 +37,17 @@ class form{
 			</li>
 			'.$fieldsString.'
 			<li class="field" name="submit" type="noaction">
-				<span class="label"></span>
-				<ul class="values">
-					<p class="clear20"></p>
-					<li class="field">
-						<input type="button" name="iAC-Submit" value="Submit" class="iAC-Submit btnLarge bgBlue corner5" />
-					</li>
-				</ul>
+				'.$btnSubmit.'
 			</li>
-		</ul>
+		</ul>';
 		
-		<script type="text/javascript">
-		$(document).ready(function() {
-			btnAjaxSubmit();
-		});
-		</script>';
+		if( !isset($dataPages['action']) || (isset($dataPages['action']) && $dataPages['action']=='') ){
+			$str .= '<script type="text/javascript">
+			$(document).ready(function() {
+				btnAjaxSubmit();
+			});
+			</script>';
+		}
 		
 		return $str;
 	}
@@ -346,7 +347,7 @@ class form{
 			$i++;
 		}
 		
-		return '<p class="value '.$view.'">'.$str.'</p>';
+		return '<p class="value '.$view.'">'.$str.'</p><p class="clear1"></p>';
 	}
 	
 	private function textArea($input){
