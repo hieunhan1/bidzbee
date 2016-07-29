@@ -317,6 +317,33 @@ $data = $this->model->findOne($collection, $filter);
     </li>
     -->
     
+    <li class="field addFields" name="search" type="datalist" check="string" condition="0">
+    	<span class="label">Search</span>
+        <ul class="values dataListFull listAddFields sortable">
+            <?php
+			$str = '';
+			if(isset($data['search']) && is_array($data['search'])){
+				foreach($data['search'] as $name=>$row){
+					$fields = fieldArrayToString($row);
+					$str .= '<li class="field fieldAddFields" name="'.$name.'" type="datalist">
+						<span class="label2">'.$name.'</span>
+						<ul class="values values80 dataListFull" style="display:none">
+							'.$fields.'
+						</ul>
+						<p class="clear1"></p>
+					</li>';
+				}
+			}
+			
+			echo $str;
+			?>
+        </ul>
+        <div class="viewFrmAddFields values80 floatRight">
+            <input type="button" name="btnFormAddField" value="Add" class="btnFormAddField btnSmall bgGreen corner5" />
+        </div>
+        <p class="clear10"></p>
+    </li>
+    
     <li class="field addFields" name="fields" type="datalist" check="string" condition="0">
     	<span class="label">Fields</span>
         <ul class="values dataListFull listAddFields sortable">
@@ -549,16 +576,13 @@ $(document).ready(function() {
 	//load responsive
 	function autoLoadResponsive(){
 		$(".btnResponsive").click(function(){
-			var str = '/*mobile*/\n';
-				str+= '@media all and (min-width: 270px) {\n\n';
+			var str = '@media all and (min-width: 270px) {\n\t\n';
 				str+= '}\n\n';
-				str+= '/*tablet*/\n';
-				str+= '@media all and (min-width: 500px) {\n\n';
+				str+= '@media all and (min-width: 500px) {\n\t\n';
 				str+= '}\n\n';
-				str+= '@media all and (min-width: 750px) {\n\n';
+				str+= '@media all and (min-width: 750px) {\n\t\n';
 				str+= '}\n\n';
-				str+= '/*desktop*/\n';
-				str+= '@media all and (min-width: 1024px) {\n\n';
+				str+= '@media all and (min-width: 1024px) {\n\t\n';
 				str+= '}';
 				
 			$(".css-responsive").val(str);

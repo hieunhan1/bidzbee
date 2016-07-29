@@ -84,106 +84,116 @@ class admin{
 		//end lay thong tin data trang hiện tại
 		
 		//vòng lặp xuất data
-		$html = '';
 		if(isset($dataPages['php']) && $dataPages['php']!=''){
 			eval($dataPages['php']);
-		}else{
-			$strRow = '';
-			$pretty = $dataPages['pretty'];
-			if($dataCurrent){
-				foreach($dataCurrent as $key=>$row){
-					if(isset($row['status']) && $row['status']==true){
-						$status = '<a href="javascript:;" class="status status1 corner5"></a>';
-					}else if(isset($row['status']) && $row['status']==false){
-						$status = '<a href="javascript:;" class="status status0 corner5"></a>';
-					}else{
-						$status = '';
-					}
-					
-					$column = '<td align="center"><input type="checkbox" name="listRow" value="'.$row['_id'].'" style="margin-top:7px" /></td>
-					<td>
-						<p class="name height">'.$row['name'].'</p>
-						<p class="action"> 
-							<span class="hidden">
-							'.$status.'
-							<a href="cp_admin/'.$this->page.'/?_id='.$row['_id'].'" class="update iconBlack corner5"></a>
-							<a href="javascript:;" class="delete iconBlack corner5"></a>
-							</span>
-						</p>
-					</td>';
-					
-					foreach($pretty as $field){
-						if($field!='name' && $field!='status'){
-							$str = '&nbsp;';
-							if(isset($row[$field])){
-								$gettype = gettype($row[$field]);
-								if($gettype!='array' && $gettype!='object'){
-									$str = $row[$field];
-								}else if($gettype=='object'){
-									$str = $this->model->_dateMongo($row[$field], _DATETIME_);
-								}else{
-									foreach($row[$field] as $value){
-										$str .= $value.', ';
-									}
-									$str = trim($str, ', ');
-								}
-							}
-							$column .= '<td><p class="height">'.$str.'</p></td>';
-						}
-					}
-					
-					$strRow .= '<tr class="row" _id="'.$row['_id'].'">'.$column.'</tr>';
-				}
-			}
-			
-			$label = '';
-			$i = 0;
-			foreach($pretty as $field){
-				if($field!='name' && $field!='status'){
-					$i++;
-					$label .= '<th width="{width}%" align="left">'.ucfirst($field).'</th>';
-				}
-			}
-			$width = 15;
-			if($i == 1) $width = 35;
-			if($i == 2) $width = 25;
-			if($i == 3) $width = 20;
-			$label = str_replace('{width}', $width, $label);
-			
-			$html = '<p class="btnCreate"><a href="cp_admin/'.$this->page.'/?_id=0" class="btnSmall bgBlue corner5">Thêm mới</a></p>
-			
-			<p class="clear1"></p>
-			<div id="adminContent">
-				<table width="100%" border="1" cellpadding="0" cellspacing="0" class="adTable">
-					<tr class="header">
-						<th width="50">.NO</th>
-						<th align="left">Name</th>
-						'.$label.'
-					</tr>
-					'.$strRow.'
-				</table>
-			</div>';
 		}
-		//end vòng lặp xuất data
 		
-		//xuất html
+		//xuất css
 		$css = '';
 		if(isset($dataPages['css']) && $dataPages['css']!=''){
 			$css = $dataPages['css'];
 		}
 		
-		$javascript = '';
+		//xuất script
+		$script = '';
 		if(isset($dataPages['javascript']) && $dataPages['javascript']!=''){
-			$javascript = $dataPages['javascript'];
+			$script = $dataPages['javascript'];
 		}
 		
+		//xuất html
+		$html = '';
 		if(isset($dataPages['html']) && $dataPages['html']!=''){
 			eval($dataPages['html']);
 		}
 		
-		$html .= $css.$javascript;
-		//end xuất html
+		//xuất content
+		$strRow = '';
+		$pretty = $dataPages['pretty'];
+		if($dataCurrent){
+			foreach($dataCurrent as $key=>$row){
+				if(isset($row['status']) && $row['status']==true){
+					$status = '<a href="javascript:;" class="status status1 corner5"></a>';
+				}else if(isset($row['status']) && $row['status']==false){
+					$status = '<a href="javascript:;" class="status status0 corner5"></a>';
+				}else{
+					$status = '';
+				}
+				
+				$column = '<td align="center"><input type="checkbox" name="listRow" value="'.$row['_id'].'" style="margin-top:7px" /></td>
+				<td>
+					<p class="name height">'.$row['name'].'</p>
+					<p class="action"> 
+						<span class="hidden">
+						'.$status.'
+						<a href="cp_admin/'.$this->page.'/?_id='.$row['_id'].'" class="update iconBlack corner5"></a>
+						<a href="javascript:;" class="delete iconBlack corner5"></a>
+						</span>
+					</p>
+				</td>';
+				
+				foreach($pretty as $field){
+					if($field!='name' && $field!='status'){
+						$str = '&nbsp;';
+						if(isset($row[$field])){
+							$gettype = gettype($row[$field]);
+							if($gettype!='array' && $gettype!='object'){
+								$str = $row[$field];
+							}else if($gettype=='object'){
+								$str = $this->model->_dateMongo($row[$field], _DATETIME_);
+							}else{
+								foreach($row[$field] as $value){
+									$str .= $value.', ';
+								}
+								$str = trim($str, ', ');
+							}
+						}
+						$column .= '<td><p class="height">'.$str.'</p></td>';
+					}
+				}
+				
+				$strRow .= '<tr class="row" _id="'.$row['_id'].'">'.$column.'</tr>';
+			}
+		}
 		
+		$label = '';
+		$i = 0;
+		foreach($pretty as $field){
+			if($field!='name' && $field!='status'){
+				$i++;
+				$label .= '<th width="{width}%" align="left">'.ucfirst($field).'</th>';
+			}
+		}
+		$width = 15;
+		if($i == 1) $width = 35;
+		if($i == 2) $width = 25;
+		if($i == 3) $width = 20;
+		$label = str_replace('{width}', $width, $label);
+		
+		$search = '';
+		if(isset($dataPages['search']) && $dataPages['search']!=''){
+			include_once('form_search.php');
+			$frmSeach = new formSearch();
+			$search = $frmSeach->view($this->model, $dataPages);
+		}
+		
+		$html .= '<p class="btnCreate"><a href="cp_admin/'.$this->page.'/?_id=0" class="btnSmall bgBlue corner5">Add new</a></p>
+		'.$search.'
+		<p class="clear10"></p>
+		<div id="adminContent">
+			<table width="100%" border="1" cellpadding="0" cellspacing="0" class="adTable">
+				<tr class="header">
+					<th width="50">.NO</th>
+					<th align="left">Name</th>
+					'.$label.'
+				</tr>
+				'.$strRow.'
+			</table>
+		</div>';
+		
+		//page list
+		$pageList = $this->pageList($this->collection, $filter['where'], $filter['limit']);
+		
+		$html .= $pageList.$css.$script;
 		return $html;
 	}
 	
@@ -240,6 +250,111 @@ class admin{
 		}
 		
 		return $html;
+	}
+	
+	private function frmSearch($data){
+		foreach($data as $name=>$row){
+			if($row=='input'){
+				//$str .= '<p class="item"><input type="text" name="name" class="input" /></p>';
+			}
+		}
+		$str = '<div id="search">
+			
+			<p class="item"><select name="name" class="select">
+				<option value="">Text</option>
+			</select></p>
+			<p class="item radio">
+				<span><input type="radio" name="radio" class="radio" /> Enable</span>
+				<span><input type="radio" name="radio" class="radio" /> Enable</span>
+			</p>
+			<p class="item radio">
+				<span><input type="checkbox" name="radio" class="radio" /> Enable</span>
+			</p>
+			<p class="item"><input type="button" name="btn" class="btnSmall bgGreen corner5" value="Search" /></p>
+		</div>';
+		return $str;
+	}
+	
+	public function pageList($collection, $where, $limit){
+		$total = $this->model->findCount($collection, $where);
+		$total = ceil($total / $limit);
+		
+		$str = '';
+		if($total > 1){
+			$url = $_SERVER['REQUEST_URI'];
+			
+			if(!isset($_GET['number'])){
+				$page = 1;
+				if(count($_GET)==0){
+					$url .= '/?number=1';
+				}else{
+					$url .= '&number=1';
+				}
+			}else{
+				$page = $_GET['number'];
+				settype($page, 'int');
+				if($page <= 0){
+					$page = 1;
+				}
+			}
+			
+			if($total <= 5){
+				for($start=1; $start<=$total; $start++){
+					if($start != $page){
+						$url = preg_replace('/number=[0-9]*[0-9]/is', 'number='.$start, $url);
+						$str .= '<a href="'.$url.'">'.$start.'</a>';
+					}else{
+						$str .= '<span class="current">'.$start.'</span>';
+					}
+				}
+			}else{
+				//first page
+				if($page > 3){
+					$url = preg_replace('/number=[0-9]*[0-9]/is', 'number=1', $url);
+					$str .= '<a href="'.$url.'">&laquo;</a>';
+				}
+				
+				//before
+				if($page > 1){
+					$url = preg_replace('/number=[0-9]*[0-9]/is', 'number='.($page-1), $url);
+					$str .= '<a href="'.$url.'">&lsaquo;</a><span class="space"></span>';
+				}
+				
+				$start = $page-2;
+				if($start < 1){
+					$start = 1;
+				}
+				
+				$end = $page+2;
+				if($end > $total){
+					$end = $total;
+				}
+				
+				for($start; $start<=$end; $start++){
+					if($start != $page){
+						$url = preg_replace('/number=[0-9]*[0-9]/is', 'number='.$start, $url);
+						$str .= '<a href="'.$url.'">'.$start.'</a>';
+					}else{
+						$str .= '<span class="current">'.$start.'</span>';
+					}
+				}
+				
+				//after
+				if($page < $total){
+					$url = preg_replace('/number=[0-9]*[0-9]/is', 'number='.($page+1), $url);
+					$str .= '<span class="space"></span><a href="'.$url.'">&rsaquo;</a>';
+				}
+				
+				//last page
+				if($page+2 < $total){
+					$url = preg_replace('/number=[0-9]*[0-9]/is', 'number='.$total, $url);
+					$str .= '<a href="'.$url.'">&raquo;</a>';
+				}
+			}
+			$str = '<div class="page-list">'.$str.'</div>';
+		}
+		
+		return $str;
 	}
 }
 

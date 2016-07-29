@@ -76,12 +76,30 @@ class modelDB{
         return $arr;
     }
 	
-	public function _removeSymbol($str){
+	public function _removeSymbol($str, $remove=true){
+		if($remove==false) return $str;
 		$str = str_replace('"', '', $str);
 		$str = str_replace("'", '&#39;', $str);
 		$str = str_replace('&', '', $str);
 		$str = str_replace('<', '', $str);
 		$str = str_replace('>', '', $str);
+		return $str;
+	}
+	
+	public function _removeScript($str, $remove=true){
+		if($remove==false) return $str;
+		$str = preg_replace('/<script\b[^>]*>(.*?)<\/script>/is', "", $str);
+		return $str;
+	}
+	
+	public function _changeSymbol($str, $remove=true){
+		if($remove==false) return $str;
+		$str = str_replace("'", '&#39;', $str);
+		$str = str_replace('\\', '&#92;', $str);
+		$str = str_replace('"', '&quot;', $str);
+		$str = str_replace('<', '&lt;', $str);
+		$str = str_replace('>', '&gt;', $str);
+		$str = trim($str);
 		return $str;
 	}
 	
@@ -254,11 +272,14 @@ class modelDB{
 			$limit = $data['limit'];
 		}
 		
-		if(!isset($_GET['page'])){
+		if(!isset($_GET['number'])){
 			$page = 1;
 		}else{
-			$page = $_GET['page'];
+			$page = $_GET['number'];
 			settype($page, 'int');
+			if($page <= 0){
+				$page = 1;
+			}
 		}
 		$skip = ($page - 1) * $limit;
 		
@@ -430,7 +451,7 @@ class modelDB{
 	
 	public function _checkString($data, $condition){
 		if(!is_array($data)){
-			$data = trim($data);
+			$data = $this->_changeSymbol($data);
 		}else{
 			return $data;
 		}
@@ -491,6 +512,21 @@ class modelDB{
 		
 		$pattern = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)+$/';
 		if(preg_match($pattern, $data)){
+			return $data;
+		}else{
+			return false;
+		}
+	}
+	
+	public function _checkTextCKeditor($data, $condition){
+		$data = $this->_removeScript($data);
+		
+		settype($condition, 'int');
+		if($data=='' && $condition==0){
+			return $data;
+		}
+		
+		if(strlen($data) >= $condition){
 			return $data;
 		}else{
 			return false;
@@ -840,7 +876,7 @@ class modelDB{
 		return $result;
 	}
 	
-	public function _count($collection, $where=array()){
+	public function _count($collection, $where){
 		$pretty = array('_id'=>1);
 		$result = $collection->find($where, $pretty)->count();
 		return $result;

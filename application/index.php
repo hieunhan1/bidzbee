@@ -60,7 +60,7 @@ $file = "controllers/{$control}.php";
 if(file_exists($file)){
 	include_once($file);
 }else{
-	echo _ERROR_CONTROLLER_.$file;
+	echo 'Not found file controller: '.$file;
 }
 
 /*echo '<pre>';

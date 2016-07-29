@@ -339,16 +339,13 @@ $(document).ready(function() {
 	//load responsive
 	function autoLoadResponsive(){
 		$(".btnResponsive").click(function(){
-			var str = '/*mobile*/\n';
-				str+= '@media all and (min-width: 270px) {\n\n';
+			var str = '@media all and (min-width: 270px) {\n\t\n';
 				str+= '}\n\n';
-				str+= '/*tablet*/\n';
-				str+= '@media all and (min-width: 500px) {\n\n';
+				str+= '@media all and (min-width: 500px) {\n\t\n';
 				str+= '}\n\n';
-				str+= '@media all and (min-width: 750px) {\n\n';
+				str+= '@media all and (min-width: 750px) {\n\t\n';
 				str+= '}\n\n';
-				str+= '/*desktop*/\n';
-				str+= '@media all and (min-width: 1024px) {\n\n';
+				str+= '@media all and (min-width: 1024px) {\n\t\n';
 				str+= '}';
 				
 			$(".css-responsive").val(str);

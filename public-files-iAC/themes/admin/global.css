@@ -572,6 +572,36 @@ input, textarea, select {
 }
 /*end all icon*/
 
+/*page-list*/
+.page-list {
+	clear: both;
+	margin-bottom: 30px
+}
+.page-list a {
+	color: #FFF;
+	text-align: center;
+	text-decoration: none;
+	margin-right: 3px;
+	padding: 5px 10px;
+	background-color: #888;
+	border-radius: 5px;
+}
+.page-list a:hover {
+	background-color: #F90;
+}
+.page-list .current {
+	text-align: center;
+	color: #FFF;
+	margin-right: 3px;
+	padding: 5px 10px;
+	background-color: #F90;
+	border-radius: 5px;
+}
+.page-list .space {
+	margin: 0 8px;
+}
+/*end page-list*/
+
 /*popup*/
 #pp {
 	display: none;

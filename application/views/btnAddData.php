@@ -63,8 +63,8 @@ $(document).ready(function() {
 			value = $.trim(value);
 		}
 		
-		if(key=="" || value==""){
-			alert("Key and value not allow empty");
+		if(key==""){
+			alert("Key not allow empty");
 			return false;
 		}
 		
@@ -133,8 +133,8 @@ $(document).ready(function() {
 			value = $.trim(value);
 		}
 		
-		if(key=="" || value==""){
-			alert("Key and value not allow empty");
+		if(key==""){
+			alert("Key not allow empty");
 			return false;
 		}
 		

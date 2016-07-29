@@ -11,6 +11,7 @@
 				'date' => 'Date',
 				'bool' => 'Boolean',
 				'pass' => 'Password',
+				'textCKeditor' => 'Text CKeditor',
 				'auto' => 'Auto',
 			);
 			?>

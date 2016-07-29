@@ -298,44 +298,51 @@
 /*end right*/
 
 /*search*/
-#search {
-	clear: both;
+.frmSearch {
+	width: auto;
+	float: right;
 	padding: 3px 10px;
-	margin: 7px 0;
-	background-color: #BBB
 }
-#search input, #search select {
-	margin-right: 5px;
-	border: solid 1px #BBB;
-	border-radius: 3px
+.frmSearch .item{
+	width: auto;
+	float: left;
+	margin-left: 5px;
+	margin-bottom: 5px;
 }
-#search input:focus, #search select:focus {
-	outline: none;
-	border: solid 1px #666
+.frmSearch .item .btnMedium{
+	padding-top: 6px !important;
+	padding-bottom: 5px !important;
 }
-#search .txt {
+.frmSearch .input {
 	width: 150px;
-	padding: 5px
+	padding: 4px 3px;
+	border: solid 1px #CCC;
 }
-#search .select {
+.frmSearch .select {
 	width: 150px;
-	padding: 4px 3px
+	padding: 3px;
+	border: solid 1px #CCC;
 }
-#search .btn {
-	padding: 4px 15px;
-	color: #FFF;
-	background-color: #666;
-	border: solid 2px #666;
-	cursor: pointer
+.frmSearch .radio {
+	line-height: 26px;
 }
-#search .btn:hover {
-	background-color: #333
+.frmSearch .radio span{
+	display: inline-block;
+	padding: 0 5px;
+}
+.frmSearch .radio input{
+	width: auto;
+	float: left;
+	margin-top: 6px;
+	margin-right: 3px;
 }
 /*end search*/
 
 /*adTable*/
 .btnCreate{
-	margin:5px 0 15px 0;
+	width: auto;
+	float: left;
+	margin: 8px 0 15px 0;
 }
 .btnCreate a{
 	color:#FFF;
@@ -421,33 +428,6 @@
 	background-position: 50% -195px;
 }
 /*adTable*/
-
-/*pageList*/
-.pageList {
-	clear: both;
-	margin-bottom: 30px
-}
-.pageList a {
-	margin-right: 3px;
-	padding: 5px 10px;
-	text-align: center;
-	background-color: #888;
-	color: #FFF
-}
-.pageList a:hover {
-	background-color: #E18B05
-}
-.pageList .current {
-	margin-right: 3px;
-	padding: 5px 10px;
-	text-align: center;
-	background-color: #E18B05;
-	color: #FFF
-}
-.pageList .space {
-	margin: 0 5px
-}
-/*end pageList*/
 
 /*copy*/
 #copyData {

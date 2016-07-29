@@ -19,7 +19,7 @@ class modelAjax extends modelDB{
 		return $result;
 	}
 	
-	public function exportDocument($document, $fields=NULL){
+	public function exportDocument($removeSymbol, $document, $fields=NULL){
 		$documentNew = array();
 		if(is_array($fields)){
 			foreach($fields as $name=>$type){
@@ -27,7 +27,7 @@ class modelAjax extends modelDB{
 					$data = $document[$name];
 					if(!is_array($data)){
 						if($type=='text'){
-							$documentNew[$name] = trim($data);
+							$documentNew[$name] = $this->_changeSymbol($data, $removeSymbol);
 						}else if($type=='number'){
 							if(!preg_match('/\./', $data)){
 								settype($data, 'int');
@@ -48,11 +48,14 @@ class modelAjax extends modelDB{
 							}else if($this->_validateDate($data, _DATE_)==true){
 								$data = $this->_dateObject($data);
 							}else{
-								$data = '';
+								$data = $this->_changeSymbol($data, $removeSymbol);
 							}
 							$documentNew[$name] = $data;
+						}else if($type=='textCKeditor'){
+							$data = $this->_removeScript($data, $removeSymbol);
+							$documentNew[$name] = $data;
 						}else if($type=='pass'){
-							$documentNew[$name] = $data; //$this->_password($data);
+							$documentNew[$name] = $data;
 						}else{
 							if(is_numeric($data)){
 								if(!preg_match('/\./', $data)){
@@ -61,18 +64,12 @@ class modelAjax extends modelDB{
 									settype($data, 'float');
 								}
 								$documentNew[$name] = $data;
-							}/*else if($data=='true'){
-								$data == true;
-								$documentNew[$name] = $data;
-							}else if($data=='false'){
-								$data == false;
-								$documentNew[$name] = $data;
-							}*/else{
-								$documentNew[$name] = trim($data);
+							}else{
+								$documentNew[$name] = $this->_changeSymbol($data, $removeSymbol);
 							}
 						}
 					}else{
-						$documentNew[$name] = $this->exportDocument($data);
+						$documentNew[$name] = $this->exportDocument($removeSymbol, $data);
 					}
 				}
 			}
@@ -86,17 +83,11 @@ class modelAjax extends modelDB{
 							settype($data, 'float');
 						}
 						$documentNew[$name] = $data;
-					}/*else if($data=='true'){
-						$data = true;
-						$documentNew[$name] = $data;
-					}else if($data=='false'){
-						$data = false;
-						$documentNew[$name] = $data;
-					}*/else{
-						$documentNew[$name] = trim($data);
+					}else{
+						$documentNew[$name] = $this->_changeSymbol($data, $removeSymbol);
 					}
 				}else{
-					$documentNew[$name] = $this->exportDocument($data);
+					$documentNew[$name] = $this->exportDocument($removeSymbol, $data);
 				}
 			}
 		}
@@ -105,6 +96,11 @@ class modelAjax extends modelDB{
 	}
 	
 	public function documentCheckAdmin($collection, $document){
+		$removeSymbol = true;
+		if($collection==_PAGES_ || $collection==_WIDGETS_){
+			$removeSymbol = false;
+		}
+		
 		//check tồn tại collection
 		if($collection != _COLLECTION_){
 			$filter = array(
@@ -121,7 +117,7 @@ class modelAjax extends modelDB{
 		}
 		
 		//kiểm tra export document
-		$documentNew = $this->exportDocument($document, $fields);
+		$documentNew = $this->exportDocument($removeSymbol, $document, $fields);
 		
 		return $documentNew;
 	}

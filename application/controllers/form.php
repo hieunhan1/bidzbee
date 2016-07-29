@@ -22,7 +22,10 @@ class form{
 			$_id = $data['_id'];
 		}
 		
-		$btnSubmit = '<p class="clear20"></p><span class="label"></span><li class="field"><input type="button" name="iAC-Submit" value="Submit" class="iAC-Submit btnLarge bgBlue corner5" /></li>';
+		$btnSubmit = '<p class="clear20"></p><span class="label"></span>
+		<ul class="values">
+            <li class="field"><input type="button" name="iAC-Submit" value="Submit" class="iAC-Submit btnLarge bgBlue corner5" /></li>
+        </ul>';
 		if(isset($dataPages['btnSubmit']) && $dataPages['btnSubmit']!=''){
 			$btnSubmit = $dataPages['btnSubmit'];
 		}
@@ -54,7 +57,7 @@ class form{
 	
 	public function field($name, $field, $value){
 		$arrProperties = array('name', 'type', 'check', 'condition', 'class', 'id');
-		$properties = ' name="'.$name.'"';
+		$properties = '';
 		foreach($arrProperties as $key){
 			if(isset($field[$key])){
 				$properties .= ' '.$key.'="'.$field[$key].'"';

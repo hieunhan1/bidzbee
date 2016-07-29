@@ -75,6 +75,7 @@
                             <option value="date">Datetime</option>
                             <option value="bool">Boolean</option>
                             <option value="confirm">Confirm</option>
+                            <option value="textCKeditor">Text CKeditor</option>
                         </select>
                     </p>
                 </li>

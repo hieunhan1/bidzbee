@@ -1,15 +1,16 @@
 <style type="text/css">
-/*mobile*/
-@media all and (min-width: 320px) {
+@media all and (min-width: 270px) {
 	
 }
 
-/*tablet*/
-@media all and (min-width: 600px) {
+@media all and (min-width: 500px) {
 	
 }
 
-/*desktop*/
+@media all and (min-width: 750px) {
+	
+}
+
 @media all and (min-width: 1024px) {
 	
 }
