@@ -37,12 +37,12 @@ define('_ADMIN_CATALOG_', 'catalog_admin');
 
 /*UPLOAD*/
 define('_UPLOAD_SIZE_', 8*1024*1024);
-define('_UPLOAD_TEMP_',  '../public/temp/');
-define('_UPLOAD_IMAGE_', '../public/images/');
-define('_UPLOAD_THUMB_', '../public/thumbs/');
-define('_UPLOAD_AUDIO_', '../public/audios/');
-define('_UPLOAD_FILES_', '../public/files/');
-define('_UPLOAD_VIDEO_', '../public/videos/');
+define('_UPLOAD_TEMP_',  '../public-files-iAC/temp/');
+define('_UPLOAD_IMAGE_', '../public-files-iAC/images/');
+define('_UPLOAD_THUMB_', '../public-files-iAC/thumbs/');
+define('_UPLOAD_AUDIO_', '../public-files-iAC/audios/');
+define('_UPLOAD_FILES_', '../public-files-iAC/files/');
+define('_UPLOAD_VIDEO_', '../public-files-iAC/videos/');
 define('_URL_TEMP_',  '/public/temp/');
 define('_URL_IMAGE_', '/public/images/');
 define('_URL_THUMB_', '/public/thumbs/');
