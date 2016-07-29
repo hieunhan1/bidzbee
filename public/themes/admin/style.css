@@ -1,22 +1,91 @@
+@media all and (min-width: 270px) {
+	#left {
+		width: 80%;
+		margin: 20px auto;
+		background-color: #f2f2f2;
+		border: solid 1px #CCC;
+		border-bottom: none;
+	}
+	
+	#right .headerRight {
+		clear: both;
+		line-height: 40px;
+		height: 80px;
+		padding: 0 20px;
+		background-color: #f5f5f5;
+		border-bottom: solid 1px #CCC;
+		border-top: solid 1px #CCC;
+	}
+	
+	#loginPage .frmLoginPage {
+		max-width: 390px;
+		min-width: 250px;
+		margin: auto;
+	}
+	#loginPage .frmLoginPage .frm .title {
+		height: 50px;
+		line-height: 50px;
+		overflow: hidden;
+		color: #478fca;
+		font-size: 110%;
+		font-weight: normal;
+		margin-bottom: 30px;
+		padding-left: 40px;
+		border-bottom: solid 1px #d5e3ef;
+		background-position: 0 10px
+	}
+}
+
+@media all and (min-width: 500px) {
+	#right .headerRight {
+		clear: both;
+		height: 40px;
+		overflow: hidden;
+	}
+	
+	#loginPage .frmLoginPage .frm .title {
+		font-size: 120%;
+		letter-spacing: 1px;
+		word-wrap: 1px;
+		padding-left: 50px;
+	}
+}
+
+@media all and (min-width: 750px) {
+	#left {
+		width: 190px;
+		float: left;
+		margin: 0;
+		border-top: none;
+		border-left: none;
+	}
+	
+	#right {
+		float: right;
+	}
+	#right .headerRight {
+		border-top: none;
+	}
+}
+
 #wrapper {
 	width: 100%;
 	clear: both;
-	overflow: hidden
+	overflow: hidden;
 }
 .container {
 	width: 100%;
 	clear: both;
-	overflow: hidden
+	overflow: hidden;
 }
 
 /*header*/
 #header {
 	clear: both;
-	height: 45px;
 	overflow: hidden;
 	line-height: 45px;
 	padding: 0 20px;
-	background-color: #438eb9
+	background-color: #438eb9;
 }
 #header .logo {
 	width: auto;
@@ -24,26 +93,28 @@
 	color: #FFF;
 	font-size: 190%;
 	letter-spacing: -1px;
-	background-position: 0 -240px
+	background-position: 0 -240px;
 }
 #header .logo span {
 	font-weight: 100;
-	letter-spacing: 1px
+	letter-spacing: 1px;
 }
 #header .user {
 	width: auto;
 	float: right;
-	color: #d3e4ef
+	color: #d3e4ef;
 }
 #header .user .iconUser {
-	opacity: 0.6
-}
-#header .user .b {
-	margin-right: 20px
+	opacity: 0.6;
 }
 #header .user .link {
+	display: inline-block;
+	float: left;
 	color: #FFF;
-	margin-left: 10px
+	margin-left: 10px;
+}
+#header .user .name{
+	color: #d3e4ef;
 }
 /*end header*/
 
@@ -58,7 +129,7 @@
 	border-bottom: solid 1px #CCC;
 	position: fixed;
 	top: 0;
-	z-index: 10
+	z-index: 10;
 }
 #headerFixed .typeAdmin {
 	width: 187px;
@@ -67,74 +138,68 @@
 	margin: 0;
 	padding: 0 0 0 3px;
 	background-color: #f5f5f5;
-	border-right: solid 1px #CCC
+	border-right: solid 1px #CCC;
 }
 #headerFixed .typeAdmin li {
 	width: auto;
 	float: left;
 	line-height: 26px;
 	list-style: none;
-	margin-top: 7px
+	margin-top: 7px;
 }
 #headerFixed .typeAdmin li a {
 	text-decoration: none;
 	color: #666;
-	margin: 0 4px
+	margin: 0 4px;
 }
 #headerFixed .typeAdmin li .btn {
-	color: #FFF
+	color: #FFF;
 }
 #headerFixed .header {
-	margin-right: 20px
+	margin-right: 20px;
 }
 #headerFixed .header .navigator {
 	width: auto;
 	float: left;
-	margin-left: 20px
+	margin-left: 20px;
 }
 #headerFixed .header .navigator .span {
 	font-size: 70%;
 	opacity: 0.75;
-	margin-right: 10px
+	margin-right: 10px;
 }
 #headerFixed .header .navigator .link {
 	color: #888;
-	font-weight: bold
+	font-weight: bold;
 }
 #headerFixed .header .lang {
 	width: auto;
-	float: right
+	float: right;
 }
 #headerFixed .header .lang .link {
 	color: #666;
 	font-weight: bold;
-	margin-left: 20px
+	margin-left: 20px;
 }
 #headerFixed .header .btnQuick {
 	width: auto;
 	float: right;
 	line-height: 30px;
-	margin-top: 5px
+	margin-top: 5px;
 }
 #headerFixed .header p {
 	width: auto;
 	float: left;
 	margin-left: 10px;
 	padding: 0 10px;
-	cursor: pointer
+	cursor: pointer;
 }
 #headerFixed .header p:hover {
-	background-color: #DDD
+	background-color: #DDD;
 }
 /*end headerFixed*/
 
 /*left*/
-#left {
-	width: 190px;
-	float: left;
-	background-color: #f2f2f2;
-	border-right: solid 1px #CCC
-}
 #left .typeAdmin {
 	clear: both;
 	height: 40px;
@@ -142,7 +207,7 @@
 	margin: 0;
 	padding: 0 0 0 3px;
 	background-color: #f5f5f5;
-	border-bottom: solid 1px #CCC
+	border-bottom: solid 1px #CCC;
 }
 #left .typeAdmin li {
 	width: auto;
@@ -188,18 +253,6 @@
 /*end left*/
 
 /*right*/
-#right {
-	float: left;
-}
-#right .headerRight {
-	clear: both;
-	height: 40px;
-	line-height: 40px;
-	overflow: hidden;
-	padding: 0 20px;
-	background-color: #f5f5f5;
-	border-bottom: solid 1px #CCC;
-}
 #right .headerRight .navigator {
 	width: auto;
 	float: left;
@@ -396,167 +449,6 @@
 }
 /*end pageList*/
 
-/*field*/
-.datetimepick {
-	background: url(img/lich.jpg) no-repeat 96% 48%
-}
-.adChange {
-	color: #FFF !important;
-	text-decoration: none !important;
-	font-weight: bold;
-	margin-right: 10px
-}
-.adTxtSmall {
-	width: 200px
-}
-.adTxtMedium {
-	width: 350px
-}
-.adTxtLarge {
-	width: 500px
-}
-.adRadio {
-	margin-top: 7px
-}
-.adCheckBoxItem {
-	margin: 4px 0
-}
-.adTextArea {
-	width: 350px;
-	height: 66px;
-	line-height: 22px;
-	overflow: auto;
-	resize: none
-}
-.listCheckBox {
-	width: 360px;
-	height: 200px;
-	overflow: auto;
-	line-height: 27px;
-	padding: 6px 0;
-	background-color: #F9F9F9;
-	border: solid 1px #CCC
-}
-.listCheckBox .span {
-	display: block;
-	height: 27px;
-	overflow: hidden
-}
-.listCheckBox .span:hover {
-	background-color: #CCC
-}
-.listCheckBox .span input {
-	float: left;
-	margin: 7px 5px 0 8px
-}
-.listCheckBox2 {
-	line-height: 27px
-}
-.listCheckBox2 .span {
-	display: block;
-	height: 27px;
-	overflow: hidden
-}
-.listCheckBox2 .span input {
-	float: left;
-	margin: 7px 5px 0 8px
-}
-/*end field*/
-
-/*upload img*/
-#imageForm {
-}
-#imageForm .checkbox {
-	clear: both;
-	margin: 6px 0
-}
-#imageForm .checkbox span {
-	width: auto;
-	float: left;
-	margin-right: 20px
-}
-#imageForm .checkbox .b {
-	font-weight: bold;
-	color: #06F
-}
-#imageForm .checkbox span input {
-	float: left;
-	margin: 1px 5px 0 0
-}
-#imageloadstatus {
-	display: none;
-	margin-bottom: 5px
-}
-#imageloadbutton {
-	margin: 10px 0 15px
-}
-#imagePhoto {
-}
-#imageUpload {
-	clear: both;
-	font-size: 90%;
-}
-#imageUpload .active {
-	background-color: #FF3 !important;
-	border: solid 1px #FF3 !important
-}
-#imageUpload .imageSelect {
-	width: 90px;
-	font-size: 9px;
-	text-align: center;
-	color: #FFF;
-	background-color: #333;
-	padding: 3px 0;
-	position: absolute;
-	cursor: pointer;
-	opacity: 0.7
-}
-#imageUpload .item {
-	width: 90px;
-	height: 95px;
-	float: left;
-	overflow: hidden;
-	margin: 0 10px 10px 0;
-	background-color: #FFF;
-	border: solid 1px #CCC
-}
-#imageUpload .img {
-	height: 60px;
-	line-height: 150%;
-	text-align: center;
-	overflow: hidden;
-	text-align: center;
-	margin: 3px 3px 6px 3px
-}
-#imageUpload .img img {
-	max-height: 100%
-}
-#imageUpload .copylink {
-	width: auto;
-	float: left;
-	font-size: 90%;
-	color: #FFF;
-	margin: 0 0 0 3px;
-	padding: 3px 5px;
-	background-color: #2283c5;
-	border: solid 2px #2283c5;
-	border-radius: 3px;
-	cursor: pointer
-}
-#imageUpload .copylink:hover {
-	background-color: #045e9f
-}
-#imageUpload .imageDelete {
-	width: auto;
-	float: right;
-	margin: 2px 3px 0 0;
-	cursor: pointer
-}
-#imageUpload .data {
-	display: none
-}
-/*end upload img*/
-
 /*copy*/
 #copyData {
 	display: none;
@@ -581,56 +473,16 @@
 }
 /*end copy*/
 
-/*other*/
-.value_view {
-	line-height: 22px
-}
-.value_view .title {
-	font-weight: bold;
-	font-style: italic
-}
-.value_view .value_data {
-	color: #00F;
-	margin-left: 25px;
-	cursor: pointer
-}
-.value_view .value_data:hover {
-	color: #F00
-}
-.saved {
-	color: #666;
-	background-color: #FFF;
-	border: solid 1px #CCC
-}
-#loadingIframe {
-	display: none
-}
-#loadingIframe .loading {
-	display: block;
-	width: 100%;
-	height: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 1;
-	background: url(../website/img/loader.gif) center no-repeat;
-	background-size: 10%;
-	background-color: rgba(255,255,255,0.5)
-}
-
 /*form login*/
 #loginPage {
 	width: 100%;
 	height: 100%;
+	min-height: 500px;
 	position: absolute;
 	background-color: #222;
 }
 #loginPage .icon {
 	background: url(img/iconLogin.png) no-repeat;
-}
-#loginPage .frmLoginPage {
-	width: 400px;
-	margin: auto;
 }
 #loginPage .frmLoginPage .h1 {
 	color: #FFF;
@@ -667,18 +519,6 @@
 	padding: 20px 30px 30px 30px;
 	background-color: #f7f7f7;
 	border: solid 5px #394557;
-}
-#loginPage .frmLoginPage .frm .title {
-	line-height: 50px;
-	color: #478fca;
-	font-size: 120%;
-	font-weight: normal;
-	letter-spacing: 1px;
-	word-wrap: 1px;
-	margin-bottom: 30px;
-	padding-left: 50px;
-	border-bottom: solid 1px #d5e3ef;
-	background-position: 0 10px
 }
 #loginPage .frmLoginPage .frm .remember {
 	width: auto;

@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Quản trị website</title>
 <meta name="robots" content="nofollow" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <link type="icon/x-icon" href="public/themes/favicon.ico" rel="shortcut icon" />
 <link type="text/css" href="public/themes/admin/global.css" rel="stylesheet" />
 <link type="text/css" href="public/themes/admin/style.css" rel="stylesheet" />
@@ -20,8 +21,8 @@
         <h1 class="logo">iAC <span>Webmaster</span></h1>
         
         <div class="user">
-        	<span class="iconWhite iconUser"></span>Chào: <span class="b">Trần Nhân</span> | 
-            <a href="" class="link"><span class="iconWhite iconPass"></span>Đổi mật khẩu</a>
+        	<a href="javascript:;" class="link name"><span class="iconWhite iconUser"></span>Chào: <?php echo $control->user['name'];?></a>
+            <a href="javascript:;" class="link"><span class="iconWhite iconPass"></span>Đổi mật khẩu</a>
             <a href="javascript:;" id="logout" class="link"><span class="iconWhite iconLogOut"></span>Logout</a>
             <script type="text/javascript">
 			$(document).ready(function() {
@@ -116,10 +117,16 @@
             	<a href="javascript:;" class="link"><span class="iconBlack iconPosition"></span>English</a>
             </div>
             
-            <div class="btnQuick">
-                <p class="btnSubmitSave corner5"><span class="iconArticle iconBlack"></span>Save</p>
-                <p class="btnClose corner5"><span class="iconBack iconBlack"></span>Back</p>
-            </div>
+            <?php
+            if(isset($_GET['_id'])){
+				echo '<div class="btnQuick">
+					<p class="btnSubmitSave corner5"><span class="iconArticle iconBlack"></span>Save</p>
+					<p class="btnClose corner5"><span class="iconBack iconBlack"></span>Back</p>
+				</div>';
+			}
+			?>
+            
+            <p class="clear1"></p>
         </div>
         
         <div class="viewContent">

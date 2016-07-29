@@ -5,6 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Quản trị website</title>
 <meta name="robots" content="nofollow" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <link type="icon/x-icon" href="public/themes/favicon.ico" rel="shortcut icon" />
 <link rel="stylesheet" type="text/css" href="public/themes/admin/global.css">
 <link rel="stylesheet" type="text/css" href="public/themes/admin/style.css">
@@ -30,7 +31,7 @@
                 <li class="field" name="username" type="string" check="user" condition="3">
                     <ul class="values valuesFull">
                     	<li class="field">
-                    		<p class="value"><input type="text" name="username" class="field input icon" placeholder="Username" style="background-position: 305px -43px" /></p>
+                    		<p class="value"><input type="text" name="username" class="field input icon" placeholder="Username" style="background-position: 110% -43px" /></p>
                     	</li>
                     	<p class="error hidden">Username chưa đúng</p>
                     </ul>
@@ -39,7 +40,7 @@
                 <li class="field" name="password" type="string" check="string" condition="6">
                     <ul class="values valuesFull">
                     	<li class="field">
-                    		<p class="value"><input type="password" name="password" class="field input icon" placeholder="Password" style="background-position: 305px -93px" /></p>
+                    		<p class="value"><input type="password" name="password" class="field input icon" placeholder="Password" style="background-position: 110% -93px" /></p>
                     	</li>
                     	<p class="error hidden">Password chưa đúng</p>
                     </ul>

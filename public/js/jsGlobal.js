@@ -56,35 +56,41 @@ function autoSizeLeftRight(){
 	
 	var win_h = parseInt($(window).height());
 	var win_w = parseInt($(window).width());
-	
-	var left_h = parseInt($("#left").height());
-	var left_w = parseInt($("#left").width());
-	
-	var right_h = parseInt($("#right").height());
-	var right_w = parseInt(win_w - left_w - 1);
-	
-	//width auto
-	if(right_w > 809){
+	if(win_w >=733){
+		var left_h = parseInt($("#left").height());
+		var left_w = parseInt($("#left").width());
+		
+		var right_h = parseInt($("#right").height());
+		var right_w = parseInt(win_w - left_w - 1);
+		
+		console.log(win_w, right_w);
 		$("#wrapper").width(win_w);
 		$("#right").width(right_w);
+		//width auto
+		/*if(right_w > 809){
+			$("#wrapper").width(win_w);
+			$("#right").width(right_w);
+		}else{
+			$("#wrapper").width(win_w);
+			$("#right").width(right_w);
+		}*/
+		
+		//height auto
+		if(win_h>=left_h+45 && win_h>=right_h+45){
+			$("#left").height(win_h);
+			$("#wrapper").height(win_h);
+		}else if(right_h >= left_h){
+			$("#left").height(right_h);
+		}else{
+			$("#right").height(left_h);
+		}
 	}else{
-		$("#wrapper").width(1000);
-		$("#right").width(809);
-	}
-	
-	//height auto
-	if(win_h>=left_h+45 && win_h>=right_h+45){
-		$("#left").height(win_h);
-		$("#wrapper").height(win_h);
-	}else if(right_h >= left_h){
-		$("#left").height(right_h);
-	}else{
-		$("#right").height(left_h);
+		$("#wrapper, #right").css("width", "auto");
 	}
 }
 
 function autoScrollFixed(){
-	if ($(window).scrollTop() > 45) {
+	if ( $(window).scrollTop()>45 && $(window).width()>=733 ) {
 		var left = $("#left .typeAdmin").html();
 		var right = $("#right .headerRight").html();
 		var html = '<div class="typeAdmin">' + left + '</div>';
@@ -674,15 +680,39 @@ function removeSpecialCharacters(str, replace){
 	return alias;
 }
 
-function checkAlias(){
-	var alias = $.trim( $("input[name=alias]").val() );
+function checkAlias(tags){
+	var alias = $.trim( $(tags).val() );
+	var fields = new Object();
+		fields._request = 'getInfo';
+		fields.collection = 'posts';
+		fields.where = {alias:alias};
+		fields.pretty = {alias:1};
+		
+	$(tags).parents(".values").find(".error").hide(100);
+	
 	$.ajax({
-		url: 'ajax',
-		type:'POST',
-		data:{_request:checkAlias, alias:alias},
+		url:  'ajax',
+		type: 'POST',
+		data: fields,
 		cache:false,
 		success: function(data) {
-			console.log(data);
+			data = convertToJson(data);
+			if(data==false){
+				return false;
+			}
+			
+			if(data.result!=false){
+				if(typeof data.data != "undefined" && typeof data.data.alias != "undefined"){
+					var _id = $("#iAC-Collection input[name=_id]").val();
+					if(data.data._id != _id){
+						alias = data.data.alias + '-' + Math.floor((Math.random() * 100000) + 1);
+						$(tags).val(alias);
+						checkAlias(tags);
+					}
+				}
+			}else{
+				console.log(data);
+			}
 		}
 	});
 }
@@ -694,6 +724,8 @@ function aliasAuto(dest, source){
 			alias = changeAlias(alias, '-');
 		$(dest).val(alias);
 	}
+	
+	checkAlias(dest);
 }
 
 function titleAuto(dest, source){
@@ -719,7 +751,7 @@ $("input[name=name]").blur(function(){
 });
 
 $("input[name=alias]").blur(function(){
-	aliasAuto();
+	aliasAuto("input[name=alias]", "input[name=name]");
 });
 
 $("input[name=tags]").dblclick(function(){ 

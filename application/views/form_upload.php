@@ -51,146 +51,191 @@
 <div id="uploads-close">&raquo;</div>
 
 <style type="text/css">
-#standard-upload-files{
-	width: 65%;
-	max-width: 220px;
+@media all and (min-width: 270px) {
+	#standard-upload-files{
+		clear: both;
+		margin-bottom: 7px;
+		padding: 0 10px;
+	}
+	
+	#uploads-console{
+		width: 98%;
+		height: 80px;
+		position: fixed;
+		bottom: 0;
+		right: 0;
+		margin: auto;
+		padding: 5px 1%;
+		z-index: 2;
+		background-color: rgba(255,255,255,0.8);
+		border-top: solid 1px #999;
+	}
+	#uploads-console .drop-zone{
+		width: 30%;
+		height: 58px;
+		float: left;
+		color: #999;
+		text-align: center;
+		padding: 10px 0;
+		border: 1px dashed #999;
+	}
+	#uploads-console .drop-zone h4{
+		display: none;
+	}
+	#uploads-console .drag-over{
+		border-color: #333 !important;
+		color: #333;
+	}
+	#uploads-console .list-file{
+		width: 65%;
+		height: 80px;
+		overflow: auto;
+		line-height: 15px;
+		float: right;
+	}
+	#uploads-console .list-file .item{
+		width: 60px;
+		height: 71px;
+		float: left;
+		font-size: 90%;
+		margin: 0 5px 5px 0;
+		padding: 3px;
+		background-color: #FFF;
+		border: solid 1px #CCC;
+	}
+	#uploads-console .list-file .item:hover .avarta{
+		display: block;
+	}
+	#uploads-console .list-file .active{
+		border: solid 1px #d15b47;
+	}
+	#uploads-console .list-file .item .avarta{
+		display: none;
+		width: 66px;
+		height: 46px;
+		line-height: 22px;
+		text-align: center;
+		color: #555;
+		font-size: 90%;
+		position: absolute;
+		z-index: 1;
+		margin:-3px 0 0 -3px;
+		background-color: rgba(255,255,255,0.6);
+		cursor: pointer;
+	}
+	#uploads-console .list-file .item .img{
+		width: 100%;
+		height: 40px;
+		margin-bottom: 2px;
+	}
+	#uploads-console .list-file .item span{
+		display: block;
+		width: 100%;
+		height: 40px;
+		line-height: 40px;
+		color: #999;
+		font-size: 130%;
+		text-transform: uppercase;
+		margin-bottom: 2px;
+	}
+	#uploads-console .list-file .item .copy{
+		width: auto;
+		float: left;
+	}
+	#uploads-console .list-file .item .insert{
+		width: auto;
+		float: left;
+	}
+	#uploads-console .list-file .item .delete{
+		width: auto;
+		float: right;
+	}
+	#uploads-console .list-file .item .delete a{
+		color: #d15b47;
+	}
+	#uploads-close{
+		width: 3%;
+		max-width: 50px;
+		float: right;
+		line-height: 90px;
+		text-align: center;
+		background-color: #CCC;
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		z-index: 2;
+		cursor: pointer;
+	}
+	#uploads-close:hover{
+		color: #FFF;
+		background-color: #999;
+	}
 }
 
-#uploads-console{
-	width: 98%;
-	height: 120px;
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	margin: auto;
-	padding: 1%;
-	z-index: 2;
-	background-color: rgba(255,255,255,0.8);
-	border-top: solid 1px #999;
-}
-#uploads-console .drop-zone{
-	width: 30%;
-	max-width: 350px;
-	height: 100px;
-	line-height: 50px;
-	float: left;
-	color: #999;
-	text-align: center;
-	padding: 10px 0;
-	border: 2px dashed #999;
-}
-#uploads-console .drop-zone h4{
-	font-size: 130%;
-}
-#uploads-console .drag-over{
-	border-color: #333 !important;
-	color: #333;
-}
-#uploads-console .list-file{
-	width: 65%;
-	height: 110px;
-	overflow: auto;
-	line-height: 20px;
-	float: right;
-}
-#uploads-console .list-file .item{
-	width: 100px;
-	height: 80px;
-	float: left;
-	font-size: 90%;
-	font-weight: bold;
-	margin: 0 5px 5px 0;
-	padding: 5px;
-	background-color: #FFF;
-	border: solid 2px #CCC;
-}
-#uploads-console .list-file .item:hover .avarta{
-	display: block;
-}
-#uploads-console .list-file .active{
-	border: solid 2px #d15b47;
-}
-#uploads-console .list-file .item .avarta{
-	display: none;
-	width: 110px;
-	height: 43px;
-	text-align: center;
-	color: #555;
-	font-size: 110%;
-	text-transform: uppercase;
-	position: absolute;
-	z-index: 1;
-	margin:-5px 0 0 -5px;
-	padding: 15px 0;
-	background-color: rgba(255,255,255,0.6);
-	cursor: pointer;
-}
-#uploads-console .list-file .item .img{
-	width: 100%;
-	height: 58px;
-	margin-bottom: 5px;
-}
-#uploads-console .list-file .item span{
-	display: block;
-	width: 100%;
-	height: 58px;
-	line-height: 58px;
-	color: #999;
-	font-size: 200%;
-	text-transform: uppercase;
-	margin-bottom: 5px;
-}
-#uploads-console .list-file .item .copy{
-	width: auto;
-	float: left;
-}
-#uploads-console .list-file .item .insert{
-	width: auto;
-	float: left;
-}
-#uploads-console .list-file .item .delete{
-	width: auto;
-	float: right;
-}
-#uploads-console .list-file .item .delete a{
-	color: #d15b47;
-}
-#uploads-console .list-file .item .bar{
-	width: 100%;
-	color: #FFF;
-	border: 1px solid #09F;
-	border-radius: 20px;
-	overflow: hidden;
-	margin-top: 5px;
-}
-#uploads-console .list-file .item .bar-fill{
-	display: block;
-	width: 100%;
-	height: 20px;
-	line-height: 20px;
-	background-color: #09F;
-	-webkit-transform: width 0.2s ease;
-	transition: width 0.2s ease;
-}
-#uploads-console .list-file .item .bar-text{
-	margin-left: 10px;
-}
-#uploads-close{
-	width: 3%;
-	max-width: 50px;
-	float: right;
-	line-height: 145px;
-	text-align: center;
-	background-color: #CCC;
-	position: fixed;
-	right: 0;
-	bottom: 0;
-	z-index: 2;
-	cursor: pointer;
-}
-#uploads-close:hover{
-	color: #FFF;
-	background-color: #999;
+@media all and (min-width: 750px) {
+	#standard-upload-files{
+		width: 65%;
+		max-width: 220px;
+	}
+	
+	#uploads-console{
+		width: 98%;
+		height: 120px;
+		padding: 10px 1%;
+		border-top: solid 1px #999;
+	}
+	#uploads-console .drop-zone{
+		max-width: 350px;
+		height: 95px;
+		line-height: 47px;
+		border: 2px dashed #999;
+	}
+	#uploads-console .drop-zone h4{
+		display: block;
+		font-size: 130%;
+	}
+	#uploads-console .list-file{
+		height: 110px;
+		overflow: auto;
+	}
+	#uploads-console .list-file .item{
+		width: 90px;
+		height: 82px;
+		font-weight: bold;
+		margin: 0 5px 5px 0;
+		padding: 5px;
+		border: solid 2px #CCC;
+	}
+	#uploads-console .list-file .item:hover .avarta{
+		display: block;
+	}
+	#uploads-console .list-file .active{
+		border: solid 2px #d15b47;
+	}
+	#uploads-console .list-file .item .avarta{
+		width: 100px;
+		height: 40px;
+		font-size: 110%;
+		text-transform: uppercase;
+		margin:-5px 0 0 -5px;
+		padding: 13px 0;
+	}
+	#uploads-console .list-file .item .img{
+		width: 100%;
+		height: 60px;
+		margin-bottom: 5px;
+	}
+	#uploads-console .list-file .item span{
+		width: 100%;
+		height: 60px;
+		line-height: 60px;
+		font-size: 180%;
+		text-transform: uppercase;
+		margin-bottom: 5px;
+	}
+	#uploads-close{
+		line-height: 140px;
+	}
 }
 </style>
 

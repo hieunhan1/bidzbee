@@ -207,6 +207,32 @@ class ajax{
 		return $result;
     }
 	
+	//kiem tra thong tin
+	private function getInfo(){
+		if( !isset($this->document['where']) || !isset($this->document['collection']) ){
+			return array('result'=>false, 'message'=>'ERROR: Dữ liệu không đủ');
+		}
+		
+		$collection = $this->document['collection'];
+		$filter = array(
+			'where' => $this->document['where'],
+		);
+		if(isset($this->document['pretty'])){
+			$filter['pretty'] = $this->document['pretty'];
+		}
+		
+		$data = $this->model->findOne($collection, $filter);
+		if($data){
+			if(isset($data['_id'])){
+				$data['_id'] = (string)$data['_id'];
+			}
+			return array('result'=>true, 'data'=>$data);
+		}else{
+			return array('result'=>true, 'message'=>'Không tìm thấy dữ liệu yêu cầu');
+		}
+	}
+	//end kiem tra thong tin
+	
 	// USERS
 	private function users(){
 		include_once('users.php');

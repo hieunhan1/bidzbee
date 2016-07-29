@@ -318,10 +318,12 @@ $(document).ready(function() {
 	function autoLoadResponsive(){
 		$(".btnResponsive").click(function(){
 			var str = '/*mobile*/\n';
-				str+= '@media all and (min-width: 320px) {\n\n';
+				str+= '@media all and (min-width: 270px) {\n\n';
 				str+= '}\n\n';
 				str+= '/*tablet*/\n';
-				str+= '@media all and (min-width: 600px) {\n\n';
+				str+= '@media all and (min-width: 500px) {\n\n';
+				str+= '}\n\n';
+				str+= '@media all and (min-width: 750px) {\n\n';
 				str+= '}\n\n';
 				str+= '/*desktop*/\n';
 				str+= '@media all and (min-width: 1024px) {\n\n';

@@ -72,10 +72,6 @@ input, textarea, select {
 	max-width: 100%;
 	height: auto !important
 }
-.viewpost iframe{
-	width: 680px;
-	height: 420px;
-}
 .viewpost blockquote{
 	font-style: italic;
 	margin-left: 30px;
@@ -89,6 +85,45 @@ input, textarea, select {
 	margin: 0;
 }
 /*end viewpost*/
+
+@media all and (min-width: 270px) {
+	.viewpost iframe{
+		width: 100%;
+		max-width: 350px;
+		height: 250px;
+	}
+	
+	.iAC-Collection .values {
+		width: 80%;
+		float: left;
+	}
+}
+
+@media all and (min-width: 500px) {
+	.viewpost iframe{
+		width: 450px;
+		height: 300px;
+	}
+}
+
+@media all and (min-width: 750px) {
+	.iAC-Collection .values {
+		width: 70%;
+		float: left;
+	}
+}
+
+@media all and (min-width: 1024px) {
+	.viewpost iframe{
+		width: 680px;
+		height: 420px;
+	}
+	
+	.iAC-Collection .values {
+		width: 50%;
+		float: left;
+	}
+}
 
 /*corner*/
 .corner3  { border-radius: 3px; }
@@ -229,10 +264,6 @@ input, textarea, select {
     font-weight: bold;
     margin-right: 2%;
     padding-top: 5px;
-}
-.iAC-Collection .values {
-	width: 50%;
-    float: left;
 }
 .iAC-Collection .values80 {
 	width: 80% !important;
