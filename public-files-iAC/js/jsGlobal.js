@@ -757,6 +757,88 @@ $("input[name=tags]").dblclick(function(){
 });
 /*end auto name, alias, title, tags*/
 
+/*search*/
+function convertObjectToLink(fields){
+	var str = '';
+	for(var key in fields){
+		var value = fields[key];
+		if(typeof value!="object"){
+			if(value!=""){
+				str += '&' + key + '=' + value;
+			}
+		}else{
+			var v = '';
+			for(var i in value){
+				if(value[i]!=""){
+					v += ', ' + value[i];
+				}
+			}
+			
+			if(v!=""){
+				v = v.replace(", ", "");
+				str += '&' + key + '=' + v;
+			}
+		}
+	}
+	
+	return str;
+}
+function ajaxSearch(){
+	var fields = new Object();
+	$(".frmSearchActive .item").each(function(index, element) {
+		var type = $(element).find(".field").attr("type");
+        if(typeof type != "undefined" ){
+			if(type!="radio" && type!="checkbox"){
+				var key = $(element).find(".field").attr("name");
+				var value = $(element).find(".field").val();
+				fields[key] = value;
+			}else if(type=="radio"){
+				var key = $(element).find(".field:checked").attr("name");
+				var value = $(element).find(".field:checked").val();
+				fields[key] = value;
+			}else if(type=="checkbox"){
+				var key = $(element).find(".field:checked").attr("name");
+				var data = new Object();
+				$(element).find(".field:checked").each(function(i, elem) {
+					var value = $(elem).val();
+					data[i] = value;
+                });
+				fields[key] = data; 
+			}
+		}else{
+			if(typeof $(element).find(".field").attr("name")!="undefined"){
+				var key = $(element).find(".field").attr("name");
+				var value = $(element).find(".field").val();
+				fields[key] = value;
+			}
+		}
+    });
+	
+	var url = convertObjectToLink(fields);
+	var hostname = $(location).attr('hostname');
+	var pathname = $(location).attr('pathname');
+	
+	url = 'http://' + hostname + pathname + '/?' + url;
+	url = url.replace('//?', '/?');
+	
+	window.location = url;
+}
+$("body").on("click", ".btnSearch", function(){
+	$(".frmSearch").removeClass("frmSearchActive");
+	$(this).parents(".frmSearch").addClass("frmSearchActive");
+	
+	ajaxSearch();
+});
+$("body").on("keypress", ".frmSearch .field", function(e){
+	if(e.keyCode==13){
+		$(".frmSearch").removeClass("frmSearchActive");
+		$(this).parents(".frmSearch").addClass("frmSearchActive");
+		
+		ajaxSearch();
+	}
+});
+/*end search*/
+
 $(document).ready(function(e) {
 	/*auto load view width, height*/
 	autoSizeLeftRight();

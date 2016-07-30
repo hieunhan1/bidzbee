@@ -252,29 +252,6 @@ class admin{
 		return $html;
 	}
 	
-	private function frmSearch($data){
-		foreach($data as $name=>$row){
-			if($row=='input'){
-				//$str .= '<p class="item"><input type="text" name="name" class="input" /></p>';
-			}
-		}
-		$str = '<div id="search">
-			
-			<p class="item"><select name="name" class="select">
-				<option value="">Text</option>
-			</select></p>
-			<p class="item radio">
-				<span><input type="radio" name="radio" class="radio" /> Enable</span>
-				<span><input type="radio" name="radio" class="radio" /> Enable</span>
-			</p>
-			<p class="item radio">
-				<span><input type="checkbox" name="radio" class="radio" /> Enable</span>
-			</p>
-			<p class="item"><input type="button" name="btn" class="btnSmall bgGreen corner5" value="Search" /></p>
-		</div>';
-		return $str;
-	}
-	
 	public function pageList($collection, $where, $limit){
 		$total = $this->model->findCount($collection, $where);
 		$total = ceil($total / $limit);

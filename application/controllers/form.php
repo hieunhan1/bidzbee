@@ -243,6 +243,9 @@ class form{
 		}else if($type=='datalist'){
 			if(is_array($value)){
 				foreach($value as $key=>$v){
+					if(gettype($v)=='object'){
+						$v = date(_DATETIME_, $v->sec);
+					}
 					$result .= '<li class="field fieldAddData" key="'.$key.'" value="'.$v.'">'.$key.' <i>('.$v.')</i></li>';
 				}
 			}

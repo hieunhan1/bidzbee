@@ -41,10 +41,10 @@
     	<p class="login-error" style="color:#F00;"></p>
         <p class="clear10"></p>
         
-        <li name="email" type="email" check="email" condition="1" class="field">
+        <li name="username" type="text" check="string" condition="6" class="field">
             <ul class="values valuesFull">
-                <li class="field"><p class="value"><input type="email" name="email" value="" class="field input enter-login" maxlength="60" placeholder="Nhập email" /></p></li>
-                <p class="error hidden">Email chưa đúng</p>
+                <li class="field"><p class="value"><input type="text" name="username" value="" class="field input enter-register" maxlength="60" placeholder="Username hoặc email" /></p></li>
+                <p class="error hidden">Thông tin chưa đúng</p>
             </ul>
             <p class="clear1"></p>
         </li>

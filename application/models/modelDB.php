@@ -109,10 +109,10 @@ class modelDB{
 	}
 	
 	public function _randomString($lenght){
-		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-';
 		$randstring = '';
 		for($i=0; $i<$lenght; $i++) {
-			$randstring .= $characters[rand(0, strlen($characters))];
+			$randstring .= $characters[rand(0, strlen($characters)-1)];
 		}
 		return $randstring;
 	}
@@ -166,7 +166,7 @@ class modelDB{
 		$key = explode(' ', $key);
 		$total = count($key);
 		
-		if(!is_bool($value)){
+		if(!is_bool($value) && gettype($value)!='object'){
 			$value = trim($value);
 		}
 		
@@ -264,6 +264,30 @@ class modelDB{
 			}
 		}
 		
+		if(isset($data['search']) && is_array($data['search'])){
+			$search = $data['search'];
+			foreach($_GET as $name=>$value){
+				if(isset($search[$name]) && $value!='null' && $value!=''){
+					$keys = $name;
+					if(isset($search[$name]['condition']) && $search[$name]['condition']!='0'){
+						if($search[$name]['condition']=='$regex'){
+							$value = "/{$value}/i";
+						}
+						$keys = $name.' '.$search[$name]['condition'];
+					}
+					
+					if($name=='or') $name = '$or';
+					
+					if(isset($search[$name]['check'])){
+						$check = '_check'.ucfirst($search[$name]['check']);
+						$value = $this->$check($value, NULL);
+					}
+					
+					$where[$name] = $this->_getWhere($keys, $value);
+				}
+			}
+		}
+		
 		if(isset($data['sort'])){
 			$sort = $data['sort'];
 		}
@@ -314,11 +338,6 @@ class modelDB{
 			$user = $_SESSION['admin'];
 		}else{
 			$user = '';
-			/*$user = array(
-				'name' => 'Guest',
-				'username' => 'guest',
-				'groups' => 'everyone',
-			);*/
 		}
 		
 		return $user;
@@ -564,7 +583,7 @@ class modelDB{
 		}
 		
 		$pattern = '/^\w+([\.]?\w+){2,30}$/';
-		if(preg_match($pattern, $data)){
+		if(preg_match($pattern, $data) && strlen($data)>=$condition){
 			return $data;
 		}else{
 			return false;

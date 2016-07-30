@@ -62,9 +62,9 @@
     
     <div id="left">
         <ul class="typeAdmin">
-        	<li><a href="" class="btn btnSmall bgGray corner5">Web</a></li>
-        	<li><a href="">Admin</a></li>
-        	<li><a href="">Manager</a></li>
+        	<li><a href="javascript:;" class="btn btnSmall bgGray corner5">Web</a></li>
+        	<li><a href="javascript:;">Admin</a></li>
+        	<li><a href="javascript:;">Manager</a></li>
         </ul>
         
         <ul class="listMenu">

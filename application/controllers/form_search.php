@@ -21,8 +21,7 @@ class formSearch{
 		$str = '<div class="frmSearch" name="'.$dataPages['collection'].'">
 			'.$fieldsString.'
 			<p class="item"><input type="button" name="btnSearch" class="btnSearch btnSmall bgGreen corner5" value="Search" /></p>
-		</div>
-		<script type="text/javascript"> btnAjaxSearch(); </script>';
+		</div>';
 		
 		return $str;
 	}
@@ -37,7 +36,7 @@ class formSearch{
 				'type' => $type,
 				'name' => $name,
 				'value' => $value,
-				'class' => 'input',
+				'class' => 'field input',
 			);
 			
 			if(isset($field['label'])){
@@ -49,7 +48,7 @@ class formSearch{
 			$input = array();
 			$input['properties'] = array(
 				'name' => $name,
-				'class' => 'select',
+				'class' => 'field select',
 			);
 			
 			if(isset($field['data'])){
@@ -68,7 +67,7 @@ class formSearch{
 			$input['properties'] = array(
 				'type' => $type,
 				'name' => $name,
-				'class' => 'radio',
+				'class' => 'field radio',
 			);
 			
 			if(isset($field['data'])){
@@ -79,31 +78,37 @@ class formSearch{
 				$input['connect'] = $field['connect'];
 			}
 			
+			$value = explode(', ', $value);
+			if(count($value)==1){
+				$value = end($value);
+			}
 			$input['value'] = $value;
 			
 			$result = $this->inputList($input);
 		}else if($type=='datetime'){
-			if($value!=''){
-				$value = date(_DATETIME_, $value->sec);
-			}
 			$input = array(
 				'type' => 'text',
 				'name' => $name,
 				'value' => $value,
-				'class' => 'input datetimepicker',
+				'class' => 'field input datetimepicker',
 			);
+			
+			if(isset($field['label'])){
+				$input['placeholder'] = $field['label'];
+			}
 			
 			$result = $this->inputText($input);
 		}else if($type=='date'){
-			if($value!=''){
-				$value = date(_DATE_, $value->sec);
-			}
 			$input = array(
 				'type' => 'text',
 				'name' => $name,
 				'value' => $value,
-				'class' => 'input datepicker',
+				'class' => 'field input datepicker',
 			);
+			
+			if(isset($field['label'])){
+				$input['placeholder'] = $field['label'];
+			}
 			
 			$result = $this->inputText($input);
 		}
