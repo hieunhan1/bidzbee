@@ -509,6 +509,62 @@ class ajax{
 		
 		return array('result'=>true, 'count'=>$count);
 	}
+	
+	private function viewUserBID(){
+		if(!isset($this->document['product'])){
+			return array('result'=>false, 'message'=>'ERROR: Dữ liệu không đủ');
+		}
+		
+		$filter = array(
+			'where' => array('product'=>$this->document['product']),
+			'sort' => array('_id'=>-1),
+		);
+		$data = $this->model->find('user_bid', $filter);
+		if($data){
+			$i = 0;
+			$item = '';
+			$item2 = '';
+			foreach($data as $row){
+				$i++;
+				if($i<=3){
+					$filter = array(
+						'where' => array('_id'=>$row['user']['_id']),
+						'pretty' => array('email'=>1, 'phone'=>1, 'address'=>1),
+					);
+					$user = $this->model->findOne('users', $filter);
+					
+					$tel = '';
+					if(isset($user['tel'])){
+						$tel = '<p class="tel">Điện thoại: '.$user['tel'].'</p>';
+					}
+					
+					$address = '';
+					if(isset($user['address'])){
+						$address = '<p class="address">Địa chỉ: '.$user['address'].'</p>';
+					}
+					
+					$item .= '<div class="item">
+						<p class="price">Giá: '.$this->model->_number($row['price']).'đ</p>
+						<p class="name">Người BID: '.ucfirst($row['user']['name']).'</p>
+						<p class="date">Ngày BID: '.date(_DATETIME_, $row['date_bid']->sec).'</p>
+						<p class="email">Email: '.$user['email'].'</p>
+						'.$tel.$address.'
+					</div>';
+				}else{
+					$item2 .= '<p class="item2">
+						<span class="price">Giá: '.$this->model->_number($row['price']).'đ</span>
+						<span class="name">'.ucfirst($row['user']['name']).'</span>
+						<span class="date">('.date(_DATETIME_, $row['date_bid']->sec).')</span>
+					</p>';
+				}
+			}
+			
+			$str = '<div class="frmUserBID">'.$item.'<p class="clear1"></p>'.$item2.'</div>';
+			return array('result'=>true, 'data'=>$str);
+		}else{
+			return array('result'=>false, 'message'=>'ERROR: Không tìm thấy dữ liệu');;
+		}
+	}
 	//end BID
 }
 

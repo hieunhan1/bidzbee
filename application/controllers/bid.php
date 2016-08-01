@@ -230,10 +230,12 @@ class bid{
 			$row = end($data);
 			if(isset($this->product['count_bid'])) $count = $this->product['count_bid'];
 			$message = 'Đã bán: '.$this->model->_number($row['price']).' đ';
+			$winner = 'Chúc mừng<b>'.ucfirst($row['user']['name']).'</b>đã dành chiến thắng';
 		}else{
 			$message = 'Không người BID';
+			$winner = '';
 		}
 		
-		return array('result'=>true, 'message'=>$message, 'status'=>'end', 'time'=>$time, 'count'=>$count);
+		return array('result'=>true, 'message'=>$message, 'status'=>'end', 'time'=>$time, 'count'=>$count, 'winner'=>$winner);
 	}
 }

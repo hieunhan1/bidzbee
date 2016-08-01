@@ -271,7 +271,6 @@ $data = $this->model->findOne($collection, $filter);
     
     <p class="clear1 admin" style="background-color:#FC0;"></p><p class="clear10"></p>
     
-    <!--
     <li class="field admin" name="php_admin" type="textarea" check="string" condition="0">
         <span class="label">PHP admin</span>
         <ul class="values values80">
@@ -315,7 +314,6 @@ $data = $this->model->findOne($collection, $filter);
         </ul>
         <p class="clear1"></p>
     </li>
-    -->
     
     <li class="field addFields" name="search" type="datalist" check="string" condition="0">
     	<span class="label">Search</span>

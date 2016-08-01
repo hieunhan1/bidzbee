@@ -221,25 +221,23 @@ class admin{
 		include_once('controllers/form.php');
 		$form = new form();
 		
-		//xuất html
+		//xuất css
 		$css = '';
 		if(isset($dataPages['css_admin']) && $dataPages['css_admin']!=''){
-			$css = $dataPages['css_admin'];
+			$css = '<style type="text/css">'.$dataPages['css_admin'].'</style>';
 		}
 		
-		$javascript = '';
+		//xuất script
+		$script = '';
 		if(isset($dataPages['javascript_admin']) && $dataPages['javascript_admin']!=''){
-			$javascript = $dataPages['javascript_admin'];
+			$script = $dataPages['javascript_admin'];
 		}
 		
+		//xuất html
 		$html = '';
-		if(isset($dataPages['html_admin']) && $dataPages['html_admin']!=''){
-			eval($dataPages['html_admin']);
-		}else{
-			$html = $form->view($this->model, $dataPages, $this->action, $dataCurrent);
-		}
-		$html .= $css.$javascript;
-		//end xuất html
+		eval($dataPages['html_admin']);
+		$html .= $form->view($this->model, $dataPages, $this->action, $dataCurrent);
+		$html .= $css.$script;
 		
 		//view form upload
 		if(isset($dataPages['upload']) && $dataPages['upload']==true){
