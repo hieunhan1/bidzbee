@@ -28,6 +28,9 @@ mongorestore --db bidzbee2 --username root --password PublicPassword#123* --auth
 mongodump --db bidzbee2 --out /home/bidzbee/backup/
 mongorestore --db bidzbee2 /home/bidzbee/backup/bidzbee2 --drop
 
+mongorestore --db eco-schulte --username root --password PublicPassword#123* --authenticationDatabase admin D:\MongoDB\backup\eco-schulte --drop
+
+
 //Tim hieu sau:
 1. Replica Set
 2. Sharding

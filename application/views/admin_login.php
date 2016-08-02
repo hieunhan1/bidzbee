@@ -7,7 +7,7 @@
 <meta name="robots" content="nofollow" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link type="icon/x-icon" href="public/themes/favicon.ico" rel="shortcut icon" />
-<link rel="stylesheet" type="text/css" href="public/themes/admin/global.css">
+<link rel="stylesheet" type="text/css" href="public/themes/global.css">
 <link rel="stylesheet" type="text/css" href="public/themes/admin/style.css">
 <script type="text/javascript" src="public/js/jsJquery.js"></script>
 <script type="text/javascript" src="public/js/jsGlobal.js"></script>

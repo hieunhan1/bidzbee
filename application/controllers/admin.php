@@ -111,9 +111,11 @@ class admin{
 		$pretty = $dataPages['pretty'];
 		if($dataCurrent){
 			foreach($dataCurrent as $key=>$row){
+				$viewStatus = '';
 				if(isset($row['status']) && $row['status']==true){
 					$status = '<a href="javascript:;" class="status status1 corner5"></a>';
 				}else if(isset($row['status']) && $row['status']==false){
+					$viewStatus = ' statusDisable';
 					$status = '<a href="javascript:;" class="status status0 corner5"></a>';
 				}else{
 					$status = '';
@@ -151,7 +153,7 @@ class admin{
 					}
 				}
 				
-				$strRow .= '<tr class="row" _id="'.$row['_id'].'">'.$column.'</tr>';
+				$strRow .= '<tr class="row'.$viewStatus.'" _id="'.$row['_id'].'">'.$column.'</tr>';
 			}
 		}
 		

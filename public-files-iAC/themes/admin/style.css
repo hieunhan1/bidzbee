@@ -376,6 +376,9 @@
 .adTable .row:hover {
 	background-color: rgba(255,255,153,0.3);
 }
+.adTable .statusDisable{
+	opacity: 0.6;
+}
 .adTable .name{
 	font-weight: bold;
 }

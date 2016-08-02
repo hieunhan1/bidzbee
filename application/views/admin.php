@@ -7,7 +7,7 @@
 <meta name="robots" content="nofollow" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link type="icon/x-icon" href="public/themes/favicon.ico" rel="shortcut icon" />
-<link type="text/css" href="public/themes/admin/global.css" rel="stylesheet" />
+<link type="text/css" href="public/themes/global.css" rel="stylesheet" />
 <link type="text/css" href="public/themes/admin/style.css" rel="stylesheet" />
 <link type="text/css" href="public/js/datetimepicker/jquery.datetimepicker.css" rel="stylesheet" />
 <script type="text/javascript" src="public/js/jsJquery.js"></script>
