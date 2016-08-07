@@ -28,7 +28,7 @@ class users{
 	private function login(){
 		if(isset($this->document['username'])){
 			$user = $this->document['username'];
-		}else if($this->document['email']){
+		}else if(isset($this->document['email'])){
 			$user = $this->document['email'];
 		}else{
 			$this->loginFail('Login: Username or email empty');
